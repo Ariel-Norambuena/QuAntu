@@ -1,6 +1,6 @@
 # Publicación del repositorio privado
 
-Destino autorizado: **Ariel-Norambuena/QuAntu**, privado. La raíz del checkout es la carpeta que contiene este README, `models/`, `reports/` y `.github/`.
+Destino autorizado: **Ariel-Norambuena/QuAntu**, privado. La raíz del checkout es la carpeta que contiene el README principal, `models/`, `reports/` y `.github/`.
 
 El publicador [publish_repository.py](../scripts/publish_repository.py) usa Git y GitHub CLI. Comprueba los archivos importados, la cuenta autenticada, la rama `main`, la ausencia de cambios pendientes y la visibilidad privada antes de subir. Crea el repositorio si todavía no existe; no fuerza el historial ni cambia la visibilidad de uno existente.
 

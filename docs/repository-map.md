@@ -62,7 +62,7 @@ importación y no se borró de la carpeta de trabajo. También se excluyeron los
 el PDF del reporte, los fotogramas de control y los recursos de la animación
 sí están incluidos.
 
-Los resultados de nuevas ejecuciones deben guardarse en `results/generated/`;
+Los resultados de nuevas ejecuciones se guardan bajo `results/` (D2 y controles), `outputs/oqs/` (dos niveles) o una carpeta explícita; ambas raíces de salida se excluyen de Git. Las evidencias seleccionadas se conservan en `validation/`;
 esa ubicación, los entornos y las cachés están excluidos mediante `.gitignore`.
 El alcance de la atribución y los materiales externos se documentan en
 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
