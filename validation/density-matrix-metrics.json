@@ -1,0 +1,15 @@
+{
+  "density_states_checked": 32,
+  "max_trace_error": 5.551147396266559e-16,
+  "max_hermiticity_error": 7.938856033966175e-16,
+  "minimum_eigenvalue": -2.0731552807018095e-17,
+  "max_stationarity_residual": 3.4866865276223043e-15,
+  "fast_direct_common_grid_max_error": 0.0,
+  "matlab_version": "25.2.0.3312555 (R2025b) Update 6",
+  "matlab_states_checked": 16,
+  "matlab_spectra_checked": 8,
+  "matlab_density_max_absolute_error": 7.790182722709218e-16,
+  "matlab_response_max_absolute_error": 1.2576745200831851e-17,
+  "matlab_spectrum_max_absolute_error": 9.974659986866641e-18,
+  "scope": "Selected-state and coarse-grid parity; not production-grid convergence or experimental validation"
+}

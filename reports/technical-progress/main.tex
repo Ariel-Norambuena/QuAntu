@@ -1,0 +1,501 @@
+\documentclass[11pt]{article}
+
+%=================================================
+% PAQUETES
+%=================================================
+
+\usepackage[a4paper,margin=2cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+%=================================================
+% TYPOGRAPHY
+%=================================================
+
+% Use the standard LaTeX fonts for maximum portability.  This avoids local
+% font-generation dependencies and compiles unchanged on Overleaf.
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Minimal Dirac-notation helpers.  Keeping these definitions local avoids
+% requiring the large physics package on a fresh Overleaf/MiKTeX setup.
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\mel}[3]{\left\langle#1\right|#2\left|#3\right\rangle}
+\newcommand{\matrixel}[3]{\left\langle#1\right|#2\left|#3\right\rangle}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\dv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+
+%=================================================
+% NUMERACIÓN DE ECUACIONES
+%=================================================
+
+\numberwithin{equation}{section}
+
+%=================================================
+% FIGURAS
+%=================================================
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+
+\usepackage[numbers,sort&compress]{natbib}
+
+%=================================================
+% COLORES
+%=================================================
+
+\definecolor{mainblue}{RGB}{0,70,140}
+
+%=================================================
+% HIPERVÍNCULOS
+%=================================================
+
+\hypersetup{
+colorlinks=true,
+linkcolor=mainblue,
+urlcolor=blue,
+citecolor=mainblue
+}
+
+%=================================================
+% TÍTULOS
+%=================================================
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\Large\bfseries\color{mainblue}}
+{\thesection}
+{1em}
+{}
+
+% \titleformat{\section}
+% {\Large\bfseries\color{mainblue}}
+% {\thesection.}{0.5em}{}
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection.}{0.5em}{}
+
+%=================================================
+% PROFUNDIDAD DEL ÍNDICE
+%=================================================
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+%=================================================
+% CAJAS
+%=================================================
+
+\newtcolorbox{idea}{
+colback=blue!5,
+colframe=mainblue,
+title=Key idea
+}
+
+%=================================================
+% CABECERA
+%=================================================
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+
+\fancyhf{}
+
+\fancyhead[L]{\itshape Technical Progress Report}
+\fancyhead[R]{\itshape QuAntü Project}
+
+\fancyfoot[L]{Alexis R. Legón}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{2026}
+
+%=================================================
+% DOCUMENTO
+%=================================================
+
+\begin{document}
+
+%=================================================
+% PORTADA
+%=================================================
+
+% \noindent
+% \textit{Open Quantum Systems}
+% \hfill
+% \textit{Guía de exploración científica}
+
+\vspace{0.3cm}
+
+\begin{center}
+
+{\Huge\bfseries\color{mainblue}
+Technical Progress Report
+}
+
+\vspace{0.4cm}
+
+{\LARGE\bfseries
+Development of Progressive Theoretical Models\\
+for the Rubidium Absorption Spectrum
+}
+
+\vspace{0.3cm}
+
+{\large\itshape
+Project QuAntü
+}
+
+\vspace{0.45cm}
+
+\hrule
+
+\vspace{0.45cm}
+
+{\Large\bfseries Alexis R. Legón}
+
+\vspace{0.15cm}
+
+Pontificia Universidad Católica de Chile\\
+QuAntü Research Group
+
+\vspace{0.15cm}
+
+\texttt{alexis.legon@uc.cl}
+
+\vspace{0.4cm}
+
+Reporting Period\\
+{\large May 2026 -- July 2026}
+
+\vspace{0.45cm}
+
+\hrule
+
+\end{center}
+
+\vspace{0.02cm}
+
+%=================================================
+% TABLE OF CONTENTS
+%=================================================
+
+\clearpage
+\tableofcontents
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Executive Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This report summarizes the research activities carried out during the present reporting period within the QuAntü research project at the Pontificia Universidad Católica de Chile. The work focuses on the theoretical modeling of the absorption spectrum of natural-abundance rubidium vapor, with the objective of developing progressively more realistic microscopic descriptions of light--matter interactions in atomic systems.
+
+During this period, a systematic theoretical framework was established by progressively incorporating the dominant physical mechanisms governing the observed absorption spectrum. The research began with a phenomenological Gaussian description of Doppler broadening, followed by the explicit inclusion of the natural isotopic composition of rubidium and a microscopic optical-susceptibility model. The framework was then extended to a full steady-state density-matrix calculation that resolves every D2 hyperfine and magnetic sublevel of both abundant isotopes. The earlier stages were validated against reconstructed experimental spectra, while the density-matrix implementation was verified against atomic constants, transition centers, selection rules, and an independent direct-solver formulation.
+
+In parallel with the development of the theoretical models, an extensive literature review was conducted covering experimental spectroscopy, susceptibility-based approaches, rate-equation models, density-matrix formulations, and the detailed rubidium data compilations of Steck. This analysis supplied the hyperfine constants, isotope shift, wavelengths, natural linewidths, angular-momentum reduction formulas, and optical-pumping theory used in the implementation.
+
+The results establish a computational and theoretical platform that connects phenomenological spectra to open-system atomic dynamics. The new master-equation model includes coherent laser coupling, spontaneous-emission branching, phenomenological ground-state remixing, optical pumping, saturation, Doppler averaging, and natural-isotope mixing. The remaining step toward parameter-free quantitative spectroscopy is to replace the empirical frequency and optical-depth calibrations by independently measured experimental parameters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Project Objectives}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The primary objective of this project is to develop a progressively more realistic theoretical framework for describing the optical absorption spectrum of thermal rubidium vapor. Starting from simple phenomenological models and advancing toward microscopic quantum descriptions, the project aims to identify the physical mechanisms governing the observed spectral features while establishing a computational platform for quantitative spectroscopy.
+
+During the present reporting period, the research focused on the implementation and validation of successive theoretical models with increasing levels of physical complexity. The work began with a phenomenological Gaussian description of Doppler broadening, followed by the natural-isotope and microscopic optical-susceptibility models, and culminated in a Zeeman-resolved density-matrix solver for the D2 manifolds of \(^{85}\mathrm{Rb}\) and \(^{87}\mathrm{Rb}\).
+
+Beyond reproducing experimental spectra, the project seeks to establish a unified and reproducible modeling framework. The implemented optical Bloch and density-matrix approach now provides the basis for investigating nonlinear optical phenomena, optical pumping, coherent light--matter interactions, and open quantum dynamics relevant to quantum technologies.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Activities Performed}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+During the present reporting period, the research activities focused on the development and validation of theoretical models for describing the optical absorption spectrum of thermal rubidium vapor. The work followed a progressive modeling strategy, beginning with simple phenomenological descriptions and systematically incorporating additional physical mechanisms to achieve increasingly accurate agreement with experimental observations.
+
+The activities carried out can be grouped into the following stages:
+
+\begin{enumerate}
+    \item Literature review and theoretical background.
+    \item Analysis of the experimental absorption spectrum.
+    \item Development of progressively more realistic theoretical models.
+    \item Numerical implementation and validation of each model.
+    \item Comparison with experimental data and assessment of model performance.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Literature Review}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The first stage of this project consisted of a comprehensive literature review to establish the theoretical and experimental foundations for modeling the optical absorption spectrum of thermal rubidium vapor. The objective was to identify the physical mechanisms governing the observed spectral features and to define a systematic strategy for the progressive development of increasingly realistic theoretical models.
+
+The review covered experimental absorption measurements \cite{Ma2017}, spectroscopic techniques including Doppler-free spectroscopy \cite{Jacques2009}, susceptibility-based models \cite{Siddons2008,Agnew2024}, rate-equation approaches \cite{Bala2022}, and density-matrix methods based on the optical Bloch equations \cite{Horn2011}. Together, these studies provided the theoretical framework adopted throughout this project.
+
+Based on this review, a progressive modeling methodology was established, where each successive model incorporates additional physical mechanisms while preserving the physical insight gained from the previous description. This strategy forms the basis for the theoretical developments presented in the following sections.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Experimental Dataset}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To validate the theoretical models developed in this project, a reference experimental dataset was reconstructed from the published absorption spectrum reported by Ma \textit{et al.} \cite{Ma2017}. The selected spectrum corresponds to thermal rubidium vapor with natural isotopic abundance and provides a high-quality benchmark for comparison with theoretical calculations.
+
+The published absorption spectrum was digitally extracted and normalized to generate a numerical dataset suitable for quantitative analysis. This reconstructed dataset was subsequently used as the common reference for evaluating the successive theoretical models developed throughout this project. By comparing the calculated spectra with the experimental measurements, it was possible to assess the accuracy of each model and identify the physical mechanisms required for a progressively more realistic description of the rubidium absorption spectrum.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Progressive Development of Theoretical Models}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Phenomenological Gaussian Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+As a first approximation, the absorption spectrum of thermal rubidium vapor was described using a phenomenological Gaussian model that accounts only for Doppler broadening. At room temperature, Doppler broadening is the dominant mechanism determining the spectral linewidth, making this simplified description an appropriate starting point for the progressive development of more realistic theoretical models.
+
+Under this approximation, each absorption resonance is represented by an effective Gaussian profile sharing a common Doppler linewidth. The resulting phenomenological absorption model is given by Eq.~(\ref{eq:gaussian_model}),
+
+\begin{equation}
+\label{eq:gaussian_model}
+A(\Omega)=
+\sum_i A_i
+\exp\left[
+-\frac{(\Omega-\Omega_i)^2}{2\sigma^2}
+\right],
+\end{equation}
+
+where $A_i$ and $\Omega_i$ denote the effective amplitude and central frequency of the $i$-th absorption resonance, respectively, while $\sigma$ represents the common Doppler linewidth. In this model, the resonance amplitudes and positions are treated as phenomenological fitting parameters, and the isotopic and hyperfine structures of natural rubidium are not explicitly included.
+
+Figure~\ref{fig:gaussian_model} compares the phenomenological Gaussian model with the reconstructed experimental absorption spectrum. The model successfully reproduces the overall spectral profile and captures the four dominant absorption resonances observed experimentally. However, the resonance positions require phenomenological adjustments, and the model does not provide a microscopic interpretation of the isotopic and hyperfine structure. These limitations motivate the introduction of increasingly realistic theoretical descriptions in the following sections.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{figure_1.png}
+\caption{Comparison between the phenomenological Gaussian model and the reconstructed experimental absorption spectrum. The model reproduces the overall spectral profile and the four dominant absorption resonances but does not explicitly incorporate the isotopic and hyperfine structure of natural rubidium.}
+\label{fig:gaussian_model}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Gaussian Model with Natural Isotopic Composition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Building upon the phenomenological Gaussian model, the second approach explicitly incorporates the natural isotopic composition of rubidium. Since naturally occurring rubidium consists of approximately 72.17\% $^{85}$Rb and 27.83\% $^{87}$Rb, the absorption spectrum is modeled as the superposition of the independent contributions from both isotopes while retaining Doppler broadening as the dominant linewidth mechanism.
+
+Under this approximation, the total absorption spectrum is expressed as the sum of the isotopic contributions according to Eq.~(\ref{eq:isotopic_model}),
+
+\begin{equation}
+\label{eq:isotopic_model}
+A(\Omega)=A_{85}(\Omega)+A_{87}(\Omega),
+\end{equation}
+
+where $A_{85}(\Omega)$ and $A_{87}(\Omega)$ denote the effective Doppler-broadened absorption spectra associated with the $^{85}$Rb and $^{87}$Rb isotopes, respectively. Each isotopic contribution is represented by effective Gaussian resonances corresponding to the experimentally observed hyperfine transitions, while the natural isotopic abundances are explicitly incorporated into the model.
+
+Figure~\ref{fig:isotopic_model} compares the calculated spectrum with the reconstructed experimental dataset. Incorporating the natural isotopic composition significantly improves the agreement with the experimental spectrum by providing a physical interpretation of the four dominant absorption resonances. In particular, the model yields more accurate resonance positions and relative peak amplitudes while preserving the simplicity of the phenomenological Gaussian description. These results demonstrate that explicitly accounting for the isotopic composition constitutes an important step toward a more realistic description of the rubidium absorption spectrum.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{figure_2.png}
+\caption{Comparison between the Gaussian model including the natural isotopic composition of rubidium and the reconstructed experimental absorption spectrum. Explicitly incorporating the contributions of the $^{85}$Rb and $^{87}$Rb isotopes improves the agreement with the experimental data and provides a physical interpretation of the observed absorption resonances.}
+\label{fig:isotopic_model}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Microscopic Optical Susceptibility Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The third model adopts a microscopic description of the rubidium absorption spectrum based on the optical susceptibility of the atomic medium. Unlike the previous phenomenological approaches, the absorption spectrum is directly obtained from the optical response of the atomic vapor, providing a physically grounded description of the light--matter interaction.
+
+Within the weak-probe approximation, the optical susceptibility is described by Eq.~(\ref{eq:susceptibility}),
+
+\begin{equation}
+\label{eq:susceptibility}
+\chi(\omega)=
+\sum_i
+\frac{A_i}
+{\omega-\omega_i+i\Gamma_i},
+\end{equation}
+
+where $A_i$, $\omega_i$, and $\Gamma_i$ denote the transition strength, resonance frequency, and homogeneous linewidth of the $i$-th transition, respectively. The absorption spectrum is proportional to the imaginary part of the optical susceptibility and incorporates Doppler broadening by averaging over the Maxwell--Boltzmann velocity distribution according to Eq.~(\ref{eq:doppler_average}),
+
+\begin{equation}
+\label{eq:doppler_average}
+\chi_D(\omega)=
+\int dv\,f(v)\,\chi(\omega,v),
+\end{equation}
+
+where $f(v)$ is the Maxwell--Boltzmann velocity distribution.
+
+Figure~\ref{fig:susceptibility_model} compares the microscopic susceptibility model with the reconstructed experimental absorption spectrum. The inclusion of both homogeneous and Doppler broadening yields the best agreement with the experimental data among the models considered in this work. Furthermore, the model provides a microscopic description of the optical response and achieves the lowest mean squared error (MSE) and mean absolute error (MAE), demonstrating its superior accuracy for describing the absorption spectrum of thermal rubidium vapor.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{figure_3.png}
+\caption{Comparison between the microscopic optical susceptibility model and the reconstructed experimental absorption spectrum. The susceptibility-based model incorporates both homogeneous and Doppler broadening, providing the best agreement with the experimental data and the most accurate microscopic description of the optical response.}
+\label{fig:susceptibility_model}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FULL DENSITY-MATRIX MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{density_matrix_model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Main Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Model Performance Comparison}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Table~\ref{tab:model_comparison} summarizes the four theoretical models developed during this project. Starting from a phenomenological Gaussian description, progressively incorporating additional physical mechanisms improves both the interpretation of the spectrum and the microscopic content of the calculation. The MSE and MAE values shown for the first three models were obtained in the established comparison workflow. The density-matrix spectrum has not yet been evaluated with exactly the same fitting and residual protocol, so no error metric is reported for it rather than presenting a non-comparable number.
+
+The phenomenological Gaussian model reproduces the overall Doppler-broadened spectral envelope, whereas the explicit inclusion of the natural isotopic composition identifies the four dominant absorption resonances. The microscopic optical-susceptibility model further improves agreement with experiment by incorporating homogeneous broadening and Doppler averaging. The density-matrix model goes beyond a sum of independent linear resonances: it resolves magnetic sublevels and predicts optical coherences, population redistribution, saturation, and spontaneous-emission branching.
+
+\begin{table}[h]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+
+\caption{Comparison of the theoretical models developed during this project.}
+\label{tab:model_comparison}
+
+\begin{tabularx}{\textwidth}{
+>{\bfseries\raggedright\arraybackslash}p{3.3cm}
+>{\raggedright\arraybackslash}X
+>{\raggedright\arraybackslash}X
+c c}
+\toprule
+Model &
+Physical ingredients &
+Physical interpretation &
+MSE &
+MAE \\
+\midrule
+
+Phenomenological Gaussian
+&
+Doppler broadening
+&
+Overall spectral envelope
+&
+$6.77\times10^{-3}$
+&
+$5.48\times10^{-2}$ \\
+
+Gaussian with natural isotopic composition
+&
+Doppler broadening + natural isotopic abundance
+&
+Four resonances identified
+&
+$4.76\times10^{-3}$
+&
+$5.21\times10^{-2}$ \\
+
+Microscopic optical susceptibility
+&
+Optical susceptibility + homogeneous and Doppler broadening
+&
+Microscopic optical response
+&
+$4.00\times10^{-3}$
+&
+$4.85\times10^{-2}$ \\
+
+\addlinespace
+Full density matrix
+&
+Hyperfine--Zeeman basis + coherent drive + Lindblad relaxation + Doppler average
+&
+Optical pumping, saturation, and coherence-resolved absorption
+&
+--
+&
+-- \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Main Scientific Findings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The results obtained throughout this project demonstrate that the optical absorption spectrum of thermal rubidium vapor can be understood through the progressive incorporation of increasingly realistic physical mechanisms. The phenomenological Gaussian model shows that Doppler broadening determines the overall spectral envelope at room temperature, whereas the explicit inclusion of the natural isotopic composition significantly improves the description of the observed resonances by providing a direct physical interpretation of the four dominant absorption peaks.
+
+A further improvement is achieved by adopting a microscopic optical-susceptibility formalism, which naturally incorporates homogeneous broadening together with Doppler averaging over the Maxwell--Boltzmann velocity distribution. Among the models evaluated with the common residual protocol, this approach provides the closest agreement with the experimental spectrum.
+
+The density-matrix implementation establishes the direct connection between atomic dynamics and the measured absorption: the signal is obtained from the imaginary part of the steady-state optical coherence rather than from an assigned line amplitude. The model also makes explicit which parts of the current comparison are empirical---the global optical-depth normalization and affine frequency-axis calibration---and which are calculated from atomic data.
+
+Overall, the results demonstrate that progressively increasing the physical realism of the theoretical description improves the explanatory capability of the models. A quantitative claim for the density-matrix model will be made only after a common validation and parameter-estimation protocol has been completed.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Quantitative Spectroscopic Framework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The next stage of this project will place both the optical-susceptibility and density-matrix calculations on an absolute spectroscopic scale, following the quantitative framework developed by Siddons \textit{et al.} \cite{Siddons2008}. Unlike the normalized spectra considered in the present work, this approach will predict the absorption coefficient from microscopic atomic and independently measured experimental parameters.
+
+Within this framework, the absorption coefficient is described by Eq.~(\ref{eq:absorption_coefficient}),
+
+\begin{equation}
+\label{eq:absorption_coefficient}
+\alpha(\omega)
+=
+k\,N(T)\,
+\mathrm{Im}\!\left[\chi(\omega)\right],
+\end{equation}
+
+where $N(T)$ is the temperature-dependent atomic density, $\chi(\omega)$ is the Doppler-averaged optical susceptibility, and $k$ is a proportionality constant determined by the spectroscopic parameters of the atomic transition. This formulation will further incorporate realistic hyperfine transition strengths and experimentally measured atomic parameters, enabling direct quantitative comparisons with absolute absorption measurements.
+
+The proposed framework will subsequently be validated against additional experimental absorption spectra available in the literature, including the measurements reported by Siddons \textit{et al.}~\cite{Siddons2008}, Ma \textit{et al.}~\cite{Ma2017}, Jacques \textit{et al.}~\cite{Jacques2009}, and Agnew \textit{et al.}~\cite{Agnew2024}, as well as future experimental measurements. This systematic validation will enable a comprehensive assessment of the predictive capability, robustness, and applicability of the proposed theoretical models across different spectroscopic configurations, temperatures, and vapor densities, while providing a unified framework for quantitative comparisons between theory and experiment.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Density-Matrix Validation and Extensions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The density-matrix solver is now implemented; future work will focus on validation and experimentally constrained extensions. The fast interpolation method will be benchmarked against the direct detuning--velocity solver, and convergence will be quantified with respect to response-grid spacing, velocity-grid density, Doppler truncation, and linear-solver tolerances. The drive strength will be scanned from the weak-probe limit into the saturated regime to separate linear susceptibility, optical pumping, and power-broadening effects.
+
+The present uniform ground-state mixing rate will be replaced, where possible, by relaxation rates inferred from beam geometry, atomic transit times, collisions, and measured magnetic fields. Further extensions will add a Zeeman Hamiltonian, physically calibrated laser polarization and intensity, pressure and collisional broadening, and uncertainty propagation for the atomic and experimental parameters. These developments will allow the model to be tested across temperatures, cell geometries, and probe powers without absorbing discrepancies into a global scale or affine frequency calibration.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Conclusions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This report presented the progressive development of theoretical models for the optical absorption spectrum of thermal rubidium vapor, ranging from simple phenomenological descriptions to a full steady-state density-matrix formalism. By systematically incorporating increasingly realistic physical mechanisms, each successive model improved the interpretation of the observed spectral features and made additional assumptions explicit.
+
+The results demonstrate that Doppler broadening governs the overall spectral envelope at room temperature, whereas the natural isotopic composition and hyperfine structure determine the four dominant resonance groups. The optical-susceptibility model provides the lowest error within the completed common comparison. The new density-matrix model derives the spectrum from the D2 hyperfine--Zeeman Hamiltonian, Wigner-reduced dipole couplings, Lindblad spontaneous emission and ground-state mixing, steady-state optical coherences, and Maxwell--Boltzmann Doppler averaging.
+
+Overall, this work establishes a reproducible computational and theoretical foundation for quantitative spectroscopy of thermal rubidium vapor. The immediate priorities are an absolute susceptibility and optical-depth calibration, common residual-based validation of the density-matrix spectrum, and replacement of phenomenological relaxation parameters by apparatus-specific measurements.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+
+\bibliographystyle{apsrev4-2}
+\bibliography{references}
+
+\end{document}

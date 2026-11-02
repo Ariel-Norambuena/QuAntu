@@ -1,0 +1,6 @@
+# Supported ranges for the absorption notebooks and local interactive model.
+# These are compatibility bounds, not an environment lock file.
+# Python 3.11 or newer is recommended; record exact installed versions per run.
+-r requirements-core.txt
+plotly>=5.18,<7
+jupyterlab>=4,<5

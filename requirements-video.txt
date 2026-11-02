@@ -1,0 +1,4 @@
+# Optional MOT renderer; compatibility ranges, not a lock file.
+numpy>=1.26,<3
+pillow>=10.2,<13
+imageio-ffmpeg>=0.5,<0.7

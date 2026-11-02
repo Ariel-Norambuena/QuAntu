@@ -1,0 +1,61 @@
+# Operating-system and editor state
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python environments, bytecode, notebooks, and tool caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Temporary QA artifacts and results from future executions
+/tmp/
+/results/generated/
+/education/mot/preview.mp4
+/education/mot/preview.png
+
+# LaTeX intermediates; the report PDF and useful figures are versioned
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# MATLAB temporary state; preserve source .m and saved .fig results
+*.asv
+*.m~
+
+# Imported Git metadata is never part of the collection
+**/.git/
+
+# Local validation environments and generated outputs
+/.cache/
+/outputs/
+/results/
+/build/
+/environment-local.txt

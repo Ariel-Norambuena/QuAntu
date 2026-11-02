@@ -1,0 +1,6 @@
+# Numerical Python models; compatibility ranges, not a lock file.
+# numpy.trapezoid requires NumPy >=2.0. Tested locally with Python 3.13.12,
+# NumPy 2.4.6 and SciPy 1.18.0; record exact versions for each scientific run.
+numpy>=2.0,<3
+scipy>=1.14,<2
+matplotlib>=3.8,<4

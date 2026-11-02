@@ -1,0 +1,22 @@
+# Preserve imported bytes; inventory.csv records SHA256 across platforms.
+* -text
+
+# New repository metadata and tools use LF without rewriting imported sources.
+/.gitignore text eol=lf
+/.gitattributes text eol=lf
+/*.md text eol=lf
+/CITATION.cff text eol=lf
+/docs/*.md text eol=lf
+/docs/*.csv text eol=lf
+/scripts/*.py text eol=lf
+/.github/** text eol=lf
+
+# Explicit binary formats for clear diffs and merges.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.mp4 binary
+*.pptx binary
+*.docx binary
+*.fig binary

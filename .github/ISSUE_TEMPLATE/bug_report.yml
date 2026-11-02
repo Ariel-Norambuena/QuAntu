@@ -1,0 +1,22 @@
+name: Error reproducible
+description: Reportar un fallo de código, datos o documentación
+title: "[Error] "
+body:
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Comando y pasos para reproducir
+      description: Incluye directorio de trabajo y parámetros.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Resultado esperado y observado
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Entorno
+      description: Sistema operativo, versión de Python y dependencias relevantes. No incluyas credenciales.

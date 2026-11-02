@@ -1,0 +1,20 @@
+name: Propuesta científica
+description: Proponer un modelo, validación o conjunto de datos
+title: "[Investigación] "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Pregunta física y motivación
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Referencias, datos y convención de unidades
+  - type: textarea
+    id: validation
+    attributes:
+      label: Criterio de validación y resultado esperado
+    validations:
+      required: true

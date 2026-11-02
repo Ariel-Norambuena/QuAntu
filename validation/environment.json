@@ -1,0 +1,17 @@
+{
+  "local_validation_date": "2026-11-02",
+  "system": "Windows",
+  "python": "3.13.12",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "matplotlib": "3.10.9",
+    "plotly": "6.9.0",
+    "streamlit": "1.66.1",
+    "qiskit": "2.6.1",
+    "Pillow": "12.2.0",
+    "imageio-ffmpeg": "0.6.0",
+    "ipython": "9.18.1"
+  },
+  "note": "Local virtual environment with system-site-packages; this records observed versions and is not a fully isolated dependency lock."
+}
