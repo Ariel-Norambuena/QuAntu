@@ -1,6 +1,6 @@
 # Ejemplos de sistemas cuánticos abiertos en Python
 
-El módulo [two_level.py](../models/open-quantum-systems/two_level.py) implementa el sistema de dos niveles de la reunión del 10 de abril de 2026. Incluye Liouvilliana, estado estacionario, dinámica, barrido de detuning con promedio Doppler y espectro de fluorescencia por regresión cuántica. Usa NumPy, SciPy y Matplotlib; no requiere MATLAB ni QuTiP.
+El módulo autónomo [two_level.py](../models/open-quantum-systems/two_level.py) implementa un sistema de dos niveles. Incluye Liouvilliana, estado estacionario, dinámica, barrido de detuning con promedio Doppler y espectro de fluorescencia por regresión cuántica. Usa NumPy, SciPy y Matplotlib; no requiere MATLAB ni QuTiP. Su desarrollo tomó como referencia ejemplos de la reunión del 10 de abril de 2026, cuyos archivos originales se retiraron del árbol publicado.
 
 ## Convenciones y correspondencia
 
@@ -23,14 +23,14 @@ Las frecuencias de este ejemplo están en unidades angulares consistentes con el
 
 | Original histórico | Implementación Python | Observación |
 | --- | --- | --- |
-| [BuildLiouvillianTLS.m](../meetings/2026-04-10-oqs/Codes/BuildLiouvillianTLS.m) | `build_liouvillian`, `tls_liouvillian` | Conserva vectorización por columnas y productos de Kronecker. |
-| [SteadyStateLiouvillian.m](../meetings/2026-04-10-oqs/Codes/SteadyStateLiouvillian.m) | `steady_state` | Sustituye una fila por la restricción de traza y simetriza al final; no recorta autovalores. |
-| [SolvesMasterEquation.m](../meetings/2026-04-10-oqs/Codes/SolvesMasterEquation.m) | `propagate` | Resuelve el mismo generador constante mediante exponenciales matriciales en lugar de `ode45`. No renormaliza estados durante la propagación. |
-| [MainSpectrumTLS.m](../meetings/2026-04-10-oqs/Codes/MainSpectrumTLS.m) | CLI `dynamics` y `scan` | Reproduce las cantidades calculadas: poblaciones, coherencias y su promedio Doppler. |
-| [FlurescenceSpectrumOnResonanceTLS.m](../meetings/2026-04-10-oqs/Codes/FlurescenceSpectrumOnResonanceTLS.m) | CLI `fluorescence`, `correlation`, `fluorescence_spectrum` | Conserva parámetros de drive y desarrolla explícitamente la regresión cuántica antes ausente. |
-| [rgb.m](../meetings/2026-04-10-oqs/Codes/rgb.m) | Colores por nombre de Matplotlib | Sustituye la función auxiliar de color; no pretende reproducir su redondeo RGB histórico. |
+| `BuildLiouvillianTLS.m` | `build_liouvillian`, `tls_liouvillian` | Conserva vectorización por columnas y productos de Kronecker. |
+| `SteadyStateLiouvillian.m` | `steady_state` | Sustituye una fila por la restricción de traza y simetriza al final; no recorta autovalores. |
+| `SolvesMasterEquation.m` | `propagate` | Resuelve el mismo generador constante mediante exponenciales matriciales en lugar de `ode45`. No renormaliza estados durante la propagación. |
+| `MainSpectrumTLS.m` | CLI `dynamics` y `scan` | Reproduce las cantidades calculadas: poblaciones, coherencias y su promedio Doppler. |
+| `FlurescenceSpectrumOnResonanceTLS.m` | CLI `fluorescence`, `correlation`, `fluorescence_spectrum` | Conserva parámetros de drive y desarrolla explícitamente la regresión cuántica antes ausente. |
+| `rgb.m` | Colores por nombre de Matplotlib | Sustituye la función auxiliar de color; no pretende reproducir su redondeo RGB histórico. |
 
-Los originales se conservan como respaldo. La comparación se apoya en ecuaciones y soluciones analíticas; no se ejecutó MATLAB para certificar equivalencia numérica de extremo a extremo.
+Los originales citados en esta tabla no forman parte de la publicación actual y permanecen en la carpeta de trabajo del proyecto. El módulo Python y sus pruebas no dependen de ellos. La comparación OQS se apoya en ecuaciones y soluciones analíticas; no se ejecutó MATLAB para certificar equivalencia numérica de extremo a extremo de este ejemplo.
 
 ## Ejecución
 

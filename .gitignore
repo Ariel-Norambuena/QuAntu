@@ -59,3 +59,6 @@ htmlcov/
 /results/
 /build/
 /environment-local.txt
+
+# Meeting material is excluded from the published collection
+/meetings/

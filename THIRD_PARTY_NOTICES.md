@@ -2,9 +2,8 @@
 
 Este repositorio reúne código, datos, documentos y material docente utilizados
 por QuAntü. Su inclusión en la colección no transfiere derechos de autor ni
-establece una licencia nueva para los archivos originales. Esta preparación se
-destina a un repositorio privado. No se ha confirmado una autorización de
-redistribución pública para todos los materiales externos.
+establece una licencia nueva para los archivos originales. La colección se
+publica con acceso público y conserva las atribuciones de sus componentes.
 
 No se aplica una licencia general a toda la colección. Deben respetarse los
 avisos, autores y condiciones que consten en cada documento y en sus fuentes.
@@ -65,9 +64,9 @@ atribuido a Ariel Norambuena por su README y
 archivos importados no se identificó una licencia independiente que autorice
 aplicar una licencia general al taller.
 
-Las presentaciones de reuniones, clases y extensión mantienen los nombres y
+Las presentaciones de clases y extensión mantienen los nombres y
 créditos presentes en sus originales, entre ellos Ariel Norambuena y Alonso
-Recabarren. Conservarlas en esta colección privada no implica permiso para
+Recabarren. Conservarlas en esta colección no implica permiso para
 relicenciar sus imágenes, marcas u otros componentes externos.
 
 Las bibliotecas de Python y MATLAB necesarias para ejecutar los programas no se
@@ -78,8 +77,9 @@ según las convenciones descritas en su README.
 
 ## Registro de procedencia
 
-[docs/inventory.csv](docs/inventory.csv) relaciona las 137 rutas de origen con
+[docs/inventory.csv](docs/inventory.csv) relaciona las 126 rutas de origen con
 sus destinos y hashes; [docs/repository-map.md](docs/repository-map.md) explica
-las copias, exclusiones y el snapshot Git. Antes de distribuir públicamente
-material externo, deben confirmarse sus condiciones o sustituirse las copias
-por referencias a sus fuentes autorizadas.
+las copias, exclusiones y el snapshot Git. Los 11 materiales de reuniones se
+retiraron del árbol publicado y sus originales permanecen en la carpeta de
+trabajo del proyecto. Los avisos y condiciones específicos de cada material
+continúan aplicándose a su reutilización.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish this reviewed checkout as Ariel-Norambuena/QuAntu, always private.
+"""Publish this reviewed checkout as Ariel-Norambuena/QuAntu, public.
 
 Requires an authenticated GitHub CLI and an existing local main commit.
 Does not overwrite remote history or change an existing repository's visibility.
@@ -38,15 +38,15 @@ def main() -> int:
     existing = run("gh", "repo", "view", REPOSITORY, "--json", "isPrivate,nameWithOwner", capture=True, check=False)
     if existing.returncode == 0:
         metadata = json.loads(existing.stdout)
-        if not metadata["isPrivate"]:
-            raise SystemExit("The existing remote is public. Publication stopped; visibility was not changed.")
+        if metadata["isPrivate"]:
+            raise SystemExit("The existing remote is private. Publication stopped; visibility was not changed.")
     else:
-        run("gh", "repo", "create", REPOSITORY, "--private", "--description",
+        run("gh", "repo", "create", REPOSITORY, "--public", "--description",
             "Rubidium D2 spectroscopy, open quantum systems and quantum education — QuAntü")
     if remote.returncode != 0:
         run("git", "remote", "add", "origin", URL)
     run("git", "push", "--set-upstream", "origin", "main")
-    print("Published private repository: https://github.com/" + REPOSITORY)
+    print("Published public repository: https://github.com/" + REPOSITORY)
     return 0
 
 if __name__ == "__main__":

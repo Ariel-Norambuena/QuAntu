@@ -167,14 +167,14 @@ python education/mot/render_mot_workshop.py --output results/MOT_Rb87_workshop_1
 La animación es pedagógica y sus escalas representativas no constituyen una
 medición de una MOT construida por el proyecto.
 
-## Material OQS histórico y límites conocidos
+## Procedencia OQS y límites conocidos
 
-Los códigos de `meetings/` se conservan como material de trabajo. En el material
-del 10 de abril de 2026, `FlurescenceSpectrumOnResonanceTLS.m` requiere
-`CorrelationTRG`, función ausente del material recibido. `SolvesMasterEquation.m`
-pasa un estado inicial matricial a `ode45`, que requiere un vector; esa ruta
-necesita corrección y prueba antes de considerarse ejecutable. No se han
-modificado estos códigos ni presentado como pipeline validado.
+Los materiales históricos de reuniones se retiraron del árbol publicado.
+La [implementación Python OQS](open-quantum-systems.md) permanece como modelo
+autónomo y ejecutable con sus pruebas. La referencia histórica de fluorescencia
+invocaba `CorrelationTRG`, función ausente del material recibido; Python incorpora
+una rutina QRT explícita verificada mediante controles analíticos. Las ecuaciones
+y convenciones se documentan sin depender de los archivos retirados.
 
 No se recibió un script que regenere automáticamente todos los CSV procesados
 desde los datos brutos. Los archivos existentes documentan el trabajo recibido;
@@ -182,4 +182,4 @@ no implican trazabilidad completa del procesamiento ni validación experimental.
 
 ## Reproducción automática y registro
 
-`python scripts/validate.py --with-notebooks --with-qiskit` ejecuta las comprobaciones estructurales, Voigt, D2, OQS y ambos grupos de notebooks. Las dependencias opcionales deben estar instaladas. Véanse los [resultados y límites registrados](validation.md) y el [procedimiento de publicación privada](publishing.md).
+`python scripts/validate.py --with-notebooks --with-qiskit` ejecuta las comprobaciones estructurales, Voigt, D2, OQS y ambos grupos de notebooks. Las dependencias opcionales deben estar instaladas. Véanse los [resultados y límites registrados](validation.md) y el [procedimiento de publicación](publishing.md).

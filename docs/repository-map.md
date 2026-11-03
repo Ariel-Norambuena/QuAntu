@@ -1,11 +1,11 @@
 # Mapa de la colección QuAntü
 
-La importación inicial conserva **137 archivos** de la carpeta de trabajo. El
+La colección publicada conserva **126 archivos** de la carpeta de trabajo. El
 [inventario](inventory.csv) registra cada ruta original, su ruta en el repositorio,
 el tamaño actual, el SHA256 actual y el SHA256 de origen. La columna
 `modified_for_portability` identifica los cambios realizados para ejecutar los
 materiales desde su nueva ubicación. Los documentos y herramientas de organización
-añadidos al repositorio se suman a estos 137 archivos.
+añadidos al repositorio se suman a estos 126 archivos.
 
 | Ruta | Archivos importados | Contenido y procedencia |
 |---|---:|---|
@@ -23,10 +23,6 @@ añadidos al repositorio se suman a estos 137 archivos.
 | [education/qiskit](../education/qiskit/) | 7 | Snapshot del taller Qiskit, incluido su archivo `.gitignore`. |
 | [education/mot](../education/mot/) | 36 | Fuentes y video MOT, ecuaciones renderizadas y fotogramas de control. |
 | [education/lectures](../education/lectures/) | 1 | Presentación de modelado dinámico de Ariel Norambuena. |
-| [meetings/kickoff](../meetings/kickoff/) | 2 | Presentaciones general y técnica de la reunión inicial. |
-| [meetings/2026-03-13-sas](../meetings/2026-03-13-sas/) | 1 | Presentación SAS. |
-| [meetings/2026-04-10-oqs](../meetings/2026-04-10-oqs/) | 7 | Presentación OQS y seis archivos MATLAB. |
-| [meetings/questions](../meetings/questions/) | 1 | Preguntas de teoría SAS. |
 | [outreach/quantu-stem](../outreach/quantu-stem/) | 2 | Documento del evento y presentación de Alonso Recabarren. |
 
 ## Duplicados y versiones preservadas
@@ -55,6 +51,12 @@ repositorio y los archivos originales permanecen en la carpeta de trabajo.
 
 ## Exclusiones
 
+La carpeta `meetings/`, con 11 archivos de reuniones y ejemplos históricos,
+se retiró del árbol publicado por solicitud del responsable del proyecto.
+Los archivos originales permanecen fuera de este checkout, en la carpeta
+de trabajo. El [modelo Python de dos niveles](../models/open-quantum-systems/)
+se mantiene como implementación autónoma con sus pruebas y documentación.
+
 La carpeta original `tmp/` contenía 91 imágenes renderizadas y extracciones de
 texto usadas para revisar PDF, con 21,029,968 bytes. No forma parte de la
 importación y no se borró de la carpeta de trabajo. También se excluyeron los
@@ -75,7 +77,7 @@ Desde la raíz del repositorio:
 python scripts/verify_repository.py
 ```
 
-La herramienta usa sólo la biblioteca estándar de Python. Verifica los 137
+La herramienta usa sólo la biblioteca estándar de Python. Verifica los 126
 registros, tamaños y hashes actuales, unicidad y seguridad de rutas, recursos
 LaTeX, enlaces locales Markdown, sintaxis Python y las celdas de código de los
 notebooks. No ejecuta los modelos, no recompila el PDF ni consulta enlaces

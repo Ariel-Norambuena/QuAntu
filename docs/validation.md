@@ -2,11 +2,13 @@
 
 Fecha local: **2 de noviembre de 2026**. El [entorno registrado](../validation/environment.json) documenta Python y las dependencias efectivamente usadas. La ejecución local usó Windows y Python 3.13.12 en un entorno virtual que comparte las bibliotecas científicas existentes; no equivale a un entorno aislado congelado.
 
+Actualización estructural del **3 de noviembre de 2026**: se retiraron los 11 archivos de reuniones del árbol publicado y se comprobó el inventario restante de 126 archivos y sus enlaces locales. Esto no modifica los resultados científicos registrados el día anterior.
+
 ## Resultados ejecutados
 
 | Componente | Evidencia | Resultado y alcance |
 | --- | --- | --- |
-| Inventario, referencias y sintaxis | `python scripts/verify_repository.py` | Integridad de los 137 archivos importados, rutas locales, recursos LaTeX, fuentes Python y cuatro notebooks. |
+| Inventario, referencias y sintaxis | `python scripts/verify_repository.py` | Integridad de los 126 archivos importados conservados para publicación, rutas locales, recursos LaTeX, fuentes Python y cuatro notebooks. Los 11 materiales de reuniones se retiraron del árbol publicado. |
 | Exploradores Voigt | `python scripts/check_science.py` | 36 combinaciones de temperatura, anchura e isótopos; valores finitos, no negativos, normalizados, acuerdo entre interfaces y escalado térmico. |
 | Matriz densidad Python | [Pruebas](../models/density-matrix/test_rb_d2.py), [registro](../validation/density-matrix-metrics.json) | Dos pruebas automatizadas, con 32 estados físicos, canales de decaimiento, drive cero y comparación rápida/directa en una malla común. |
 | Comparación D2 contra MATLAB | [Fixture independiente](../tests/fixtures/matlab_density_matrix.json) | MATLAB R2025b Update 6 ejecutó funciones originales: 16 matrices y ocho espectros pequeños. Error máximo en rho: `7.79e-16`; en espectros: `9.97e-18`. |

@@ -19,7 +19,7 @@ Repositorio de investigación del proyecto QuAntü: modelos de absorción de vap
 | Datos de literatura | Curvas digitalizadas y versiones procesadas | [Brutos](data/raw/) · [Procesados](data/processed/) |
 | Reporte | Fuentes LaTeX, bibliografía, figuras y PDF | [Informe](reports/technical-progress/) |
 | Formación | Taller Qiskit, animación MOT y clases | [Educación](education/) |
-| Actividades | Reuniones, kickoff y evento QuAntü-STEM | [Reuniones](meetings/) · [Divulgación](outreach/quantu-stem/) |
+| Divulgación | Evento QuAntü-STEM | [Materiales del evento](outreach/quantu-stem/) |
 | Fuentes | Artículos, parámetros atómicos y documentación de celdas | [Referencias](references/) |
 
 ## Inicio rápido
@@ -75,7 +75,7 @@ La [reproducción automática](scripts/run_absorption_notebooks.py) confirmó la
 
 ## Organización y conservación
 
-Se importaron **137 archivos de trabajo** de la carpeta original (135.27 MiB antes de mejoras de portabilidad). El [inventario verificable](docs/inventory.csv) conserva la ruta original y los hashes de origen y del archivo incorporado. Los temporales de revisión y los metadatos Git de repositorios anidados se excluyen; los archivos de investigación permanecen representados.
+La colección publicada conserva **126 archivos de trabajo** de la carpeta original (57.21 MiB de archivos inventariados). El [inventario verificable](docs/inventory.csv) conserva la ruta original y los hashes de origen y del archivo incorporado. Los 11 archivos de reuniones se retiraron del árbol publicado; sus originales permanecen en la carpeta de trabajo. Los temporales de revisión y los metadatos Git de repositorios anidados se excluyen.
 
 La copia histórica [theoretical-group](archive/theoretical-group/) conserva variantes de figuras que difieren de las de la carpeta principal. El taller [Qiskit](education/qiskit/) se incorporó como archivos ordinarios desde [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), manteniendo su documentación y cita. El [mapa del repositorio](docs/repository-map.md) explica el origen de cada colección.
 
@@ -89,6 +89,6 @@ El proyecto asociado en [Overleaf](https://www.overleaf.com/project/6a679a4b0c07
 
 Consulta [CONTRIBUTING.md](CONTRIBUTING.md) antes de añadir resultados y [ROADMAP.md](ROADMAP.md) para los hitos pendientes. Cada nuevo resultado debe indicar parámetros, datos de entrada, entorno y comandos de reproducción.
 
-Este repositorio se prepara para uso **privado**. No se ha asignado una licencia abierta global: artículos, digitalizaciones y documentos de terceros conservan sus derechos. Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Las citas del informe y del taller son independientes de los derechos de redistribución.
+Este repositorio se publica con acceso **público**. No se ha asignado una licencia abierta global: artículos, digitalizaciones y documentos de terceros conservan sus derechos y atribuciones. Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Las citas del informe y del taller son independientes de las condiciones de reutilización de cada componente.
 
 *English: QuAntü collects rubidium D2 spectroscopy models, open quantum system examples, reference datasets, a technical report and quantum education materials. Python is the primary execution path. Historical fit metrics and pending scientific validation are explicitly separated.*

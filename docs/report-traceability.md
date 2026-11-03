@@ -35,10 +35,7 @@ Estos elementos forman parte de la carpeta de trabajo, aunque no son resultados 
 | Taller Qiskit | [education/qiskit](../education/qiskit/README.md) | Notebook, requisitos, constructor y validador del taller. Conserva su propia información de citación. |
 | Material MOT | [education/mot](../education/mot/README.md) | Video, generador, ecuaciones y vistas previas educativas. |
 | Clases | [education/lectures](../education/lectures/) | Presentación de modelamiento dinámico. |
-| Inicio del proyecto | [meetings/kickoff](../meetings/kickoff/) | Presentaciones general y técnica de Ariel Norambuena. |
-| SAS, 13 de marzo de 2026 | [meetings/2026-03-13-sas](../meetings/2026-03-13-sas/) | Material de reunión. |
-| Sistemas cuánticos abiertos, 10 de abril de 2026 | [meetings/2026-04-10-oqs](../meetings/2026-04-10-oqs/) y [versión Python](../models/open-quantum-systems/two_level.py) | Presentación y originales MATLAB de dos niveles; la [documentación OQS](open-quantum-systems.md) explica el port y la rutina QRT nueva. |
-| Preguntas teóricas | [meetings/questions](../meetings/questions/) | Documento de preguntas SAS. |
+| Sistemas cuánticos abiertos | [Modelo Python](../models/open-quantum-systems/two_level.py) | Implementación autónoma de dos niveles; la [documentación OQS](open-quantum-systems.md) explica su procedencia y la rutina QRT nueva. Los materiales originales de reuniones se retiraron del árbol publicado. |
 | Divulgación STEM | [outreach/quantu-stem](../outreach/quantu-stem/) | Documento del evento y presentación de Alonso Recabarren. |
 | Teoría atómica de consulta | [references/rubidium-theory](../references/rubidium-theory/) | Documentos sobre ambos isótopos. |
 | Celda y materiales | [references/hardware](../references/hardware/) | Documentación de celda Thorlabs y vidrio Borofloat; no acredita adquisición ni caracterización del montaje. |
@@ -47,4 +44,6 @@ Estos elementos forman parte de la carpeta de trabajo, aunque no son resultados 
 
 El [inventario](inventory.csv) relaciona rutas originales con rutas del repositorio e incluye tamaños y hashes. Los cambios de portabilidad, si los hay, deben reflejarse en sus campos correspondientes. Este mapa permite revisar la incorporación de materiales sin confundir su organización con una validación física nueva.
 
-La preparación del repositorio no atribuye una licencia abierta global a artículos, figuras publicadas, documentos de fabricantes ni presentaciones de terceros. La licencia del proyecto requiere una decisión de sus titulares; las atribuciones existentes deben conservarse. La publicación privada permite organizar el material, pero no establece derechos de redistribución pública.
+Los 11 materiales de reuniones se retiraron del árbol publicado por solicitud del responsable del proyecto; sus originales permanecen en la carpeta de trabajo. La colección mantiene 126 archivos importados en su inventario.
+
+La publicación pública no atribuye una licencia abierta global a artículos, figuras, documentos de fabricantes ni presentaciones de terceros. Se conservan las atribuciones y condiciones de sus respectivos titulares.
