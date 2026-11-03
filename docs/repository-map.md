@@ -52,7 +52,7 @@ repositorio y los archivos originales permanecen en la carpeta de trabajo.
 ## Exclusiones
 
 La carpeta `meetings/`, con 11 archivos de reuniones y ejemplos históricos,
-se retiró del árbol publicado por solicitud del responsable del proyecto.
+se retiró del árbol y del historial de la rama publicada por solicitud del responsable del proyecto.
 Los archivos originales permanecen fuera de este checkout, en la carpeta
 de trabajo. El [modelo Python de dos niveles](../models/open-quantum-systems/)
 se mantiene como implementación autónoma con sus pruebas y documentación.

@@ -75,7 +75,7 @@ La [reproducción automática](scripts/run_absorption_notebooks.py) confirmó la
 
 ## Organización y conservación
 
-La colección publicada conserva **126 archivos de trabajo** de la carpeta original (57.21 MiB de archivos inventariados). El [inventario verificable](docs/inventory.csv) conserva la ruta original y los hashes de origen y del archivo incorporado. Los 11 archivos de reuniones se retiraron del árbol publicado; sus originales permanecen en la carpeta de trabajo. Los temporales de revisión y los metadatos Git de repositorios anidados se excluyen.
+La colección publicada conserva **126 archivos de trabajo** de la carpeta original (57.21 MiB de archivos inventariados). El [inventario verificable](docs/inventory.csv) conserva la ruta original y los hashes de origen y del archivo incorporado. Los 11 archivos de reuniones se retiraron del árbol y del historial de la rama publicada; sus originales permanecen en la carpeta de trabajo. Los temporales de revisión y los metadatos Git de repositorios anidados se excluyen.
 
 La copia histórica [theoretical-group](archive/theoretical-group/) conserva variantes de figuras que difieren de las de la carpeta principal. El taller [Qiskit](education/qiskit/) se incorporó como archivos ordinarios desde [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), manteniendo su documentación y cita. El [mapa del repositorio](docs/repository-map.md) explica el origen de cada colección.
 
