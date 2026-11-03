@@ -30,9 +30,9 @@ SCENES = (
     (0.0, 6.0, "INTRO"),
     (6.0, 23.0, "SAS"),
     (23.0, 42.0, "DOPPLER"),
-    (42.0, 59.0, "CAMPO B"),
-    (59.0, 84.0, "CAPTURA MOT"),
-    (84.0, 98.0, "NUBE FRÍA"),
+    (42.0, 59.0, "B FIELD"),
+    (59.0, 84.0, "MOT CAPTURE"),
+    (84.0, 98.0, "COLD CLOUD"),
 )
 
 
@@ -303,7 +303,7 @@ def section_title(draw, canvas, number, kicker, title_value, subtitle, alpha=255
     text(draw, canvas, (112, 112), number, 24, COLORS["cyan"], "bold", alpha=alpha)
     text(draw, canvas, (170, 112), kicker.upper(), 22, COLORS["muted"], "bold", alpha=alpha)
     text(draw, canvas, (112, 177), title_value, 54, COLORS["white"], "bold", alpha=alpha)
-    text(draw, canvas, (114, 231), subtitle, 25, COLORS["muted"], "regular", alpha=alpha)
+    text(draw, canvas, (114, 260), subtitle, 25, COLORS["muted"], "regular", alpha=alpha)
 
 
 def timeline(draw, canvas, t):
@@ -371,9 +371,9 @@ def draw_intro(canvas: Canvas, t: float) -> Image.Image:
         q = (u * 1.4 + j / 3) * 2 * math.pi
         atom(draw, canvas, (cx + rx * math.cos(q), cy + 0.48 * ry * math.sin(q)), 7, fade, col)
     atom(draw, canvas, (cx, cy), 22, fade, COLORS["gold"])
-    text(draw, canvas, (960, 650), "DE UN VAPOR TÉRMICO", 27, COLORS["cyan"], "bold", "mm", fade)
-    text(draw, canvas, (960, 715), "a una nube atrapada", 67, COLORS["white"], "bold", "mm", fade)
-    text(draw, canvas, (960, 789), "Anatomía visual de una trampa magneto-óptica", 29, COLORS["muted"], "regular", "mm", fade)
+    text(draw, canvas, (960, 650), "FROM A THERMAL VAPOR", 27, COLORS["cyan"], "bold", "mm", fade)
+    text(draw, canvas, (960, 715), "to a trapped cloud", 67, COLORS["white"], "bold", "mm", fade)
+    text(draw, canvas, (960, 789), "A visual guide to a magneto-optical trap", 29, COLORS["muted"], "regular", "mm", fade)
     pill(draw, canvas, (748, 850), "⁸⁷Rb · D₂ · 780 nm", COLORS["violet"], fade, 424)
     return im
 
@@ -406,7 +406,7 @@ def draw_cell(draw, canvas, t, alpha=255):
         x = bx + 7 * math.sin(t * (0.9 + (i % 7) * 0.13) + i)
         y = by + 5 * math.cos(t * (0.7 + (i % 5) * 0.11) + i * 1.7)
         atom(draw, canvas, (x, y), 2.3, int(alpha * 0.72), COLORS["gold"])
-    text(draw, canvas, (522, 638), "celda de vapor de rubidio", 21, COLORS["muted"], "regular", "mm", alpha)
+    text(draw, canvas, (522, 638), "rubidium vapor cell", 21, COLORS["muted"], "regular", "mm", alpha)
 
 
 def draw_sas(canvas: Canvas, t: float) -> Image.Image:
@@ -414,7 +414,7 @@ def draw_sas(canvas: Canvas, t: float) -> Image.Image:
     local = t - 6.0
     u = clamp(local / 17.0)
     scene_alpha = int(255 * smooth(min(local / 0.7, (17 - local) / 0.7)))
-    section_title(draw, canvas, "01", "referencia de frecuencia", "Primero: fijar el color del láser", "Espectroscopía de absorción saturada (SAS)", scene_alpha)
+    section_title(draw, canvas, "01", "frequency reference", "First: lock the laser frequency", "Saturated absorption spectroscopy (SAS)", scene_alpha)
     draw_cell(draw, canvas, t, scene_alpha)
 
     # Counterpropagating pump and probe beams.
@@ -428,9 +428,9 @@ def draw_sas(canvas: Canvas, t: float) -> Image.Image:
     text(draw, canvas, (810, 583), "PROBE", 17, COLORS["cyan"], "bold", "ra", beam_a)
     # Laser and detector modules.
     panel(draw, canvas, (130, 714, 433, 848), alpha=180, radius=18)
-    text(draw, canvas, (158, 746), "LÁSER DE ENFRIAMIENTO", 17, COLORS["muted"], "bold", alpha=scene_alpha)
+    text(draw, canvas, (158, 746), "COOLING LASER", 17, COLORS["muted"], "bold", alpha=scene_alpha)
     latex(im, canvas, "nu_lock", (285, 798), 27, COLORS["white"], "mm", scene_alpha)
-    text(draw, canvas, (285, 833), "referencia atómica", 15, COLORS["muted"], "regular", "mm", scene_alpha)
+    text(draw, canvas, (285, 833), "atomic reference", 15, COLORS["muted"], "regular", "mm", scene_alpha)
     draw.rounded_rectangle([canvas.p(481, 738), canvas.p(620, 824)], radius=canvas.s(14), fill=rgba(COLORS["cyan"], 26), outline=rgba(COLORS["cyan"], 110))
     text(draw, canvas, (550, 780), "PID", 29, COLORS["cyan"], "bold", "mm", scene_alpha)
     arrow(draw, canvas, (435, 780), (478, 780), COLORS["cyan"], 3, 13, scene_alpha)
@@ -438,12 +438,12 @@ def draw_sas(canvas: Canvas, t: float) -> Image.Image:
 
     # Spectrum card.
     panel(draw, canvas, (955, 319, 1782, 850), alpha=205, radius=30)
-    text(draw, canvas, (1000, 359), "SEÑAL SAS", 18, COLORS["muted"], "bold", alpha=scene_alpha)
+    text(draw, canvas, (1000, 359), "SAS SIGNAL", 18, COLORS["muted"], "bold", alpha=scene_alpha)
     gx0, gy0, gx1, gy1 = 1020, 760, 1726, 421
     line(draw, canvas, [(gx0, gy1), (gx0, gy0), (gx1, gy0)], rgba(COLORS["line"], scene_alpha), 2)
-    text(draw, canvas, (1328, 806), "desintonía", 20, COLORS["muted"], "regular", "rm", scene_alpha)
+    text(draw, canvas, (1328, 806), "detuning", 20, COLORS["muted"], "regular", "rm", scene_alpha)
     latex(im, canvas, "detuning_axis", (1347, 806), 22, COLORS["muted"], "lm", scene_alpha)
-    text(draw, canvas, (987, 587), "absorción", 18, COLORS["muted"], "regular", "mm", scene_alpha)
+    text(draw, canvas, (987, 587), "absorption", 18, COLORS["muted"], "regular", "mm", scene_alpha)
     # Broad Doppler envelope.
     broad_pts = []
     sas_pts = []
@@ -478,11 +478,11 @@ def draw_sas(canvas: Canvas, t: float) -> Image.Image:
     a1 = int(scene_alpha * smooth((local - 3) / 1.0))
     a2 = int(scene_alpha * smooth((local - 6) / 1.0))
     a3 = int(scene_alpha * smooth((local - 9) / 1.0))
-    pill(draw, canvas, (696, 887), "ancho Doppler", COLORS["blue"], a1, 230)
+    pill(draw, canvas, (696, 887), "Doppler width", COLORS["blue"], a1, 230)
     text(draw, canvas, (946, 911), "→", 30, COLORS["muted"], "bold", "mm", a2)
-    pill(draw, canvas, (980, 887), "dip estrecho", COLORS["cyan"], a2, 218)
+    pill(draw, canvas, (980, 887), "narrow dip", COLORS["cyan"], a2, 218)
     text(draw, canvas, (1217, 911), "→", 30, COLORS["muted"], "bold", "mm", a3)
-    pill(draw, canvas, (1252, 887), "frecuencia estable", COLORS["green"], a3, 292)
+    pill(draw, canvas, (1252, 887), "stable frequency", COLORS["green"], a3, 292)
     return im
 
 
@@ -492,7 +492,7 @@ def gaussian_curve(mu, sigma, x):
 
 def draw_velocity_distribution(im, draw, canvas, u, alpha):
     panel(draw, canvas, (128, 355, 715, 817), alpha=190, radius=28)
-    text(draw, canvas, (169, 394), "DISTRIBUCIÓN DE VELOCIDADES", 17, COLORS["muted"], "bold", alpha=alpha)
+    text(draw, canvas, (169, 394), "VELOCITY DISTRIBUTION", 17, COLORS["muted"], "bold", alpha=alpha)
     x0, x1, y0, y1 = 180, 662, 749, 450
     line(draw, canvas, [(x0, y1), (x0, y0), (x1, y0)], rgba(COLORS["line"], alpha), 2)
     latex(im, canvas, "velocity_axis", ((x0 + x1) / 2, 785), 22, COLORS["muted"], "mm", alpha)
@@ -507,8 +507,8 @@ def draw_velocity_distribution(im, draw, canvas, u, alpha):
         pts_now.append((xx, y0 - now * (y0 - y1) * 0.82))
     line(draw, canvas, pts_hot, rgba(COLORS["red"], int(alpha * 0.35)), 5)
     line(draw, canvas, pts_now, rgba(COLORS["cyan"], alpha), 5)
-    text(draw, canvas, (215, 493), "caliente", 18, COLORS["red"], "bold", alpha=int(alpha * 0.7))
-    text(draw, canvas, (516, 493), "fría", 18, COLORS["cyan"], "bold", alpha=alpha)
+    text(draw, canvas, (215, 493), "warm", 18, COLORS["red"], "bold", alpha=int(alpha * 0.7))
+    text(draw, canvas, (516, 493), "cold", 18, COLORS["cyan"], "bold", alpha=alpha)
     # Velocity samples contract toward zero.
     rng = np.random.default_rng(912)
     raw = rng.normal(size=36)
@@ -524,7 +524,7 @@ def draw_doppler(canvas: Canvas, t: float) -> Image.Image:
     local = t - 23.0
     u = clamp(local / 19.0)
     scene_alpha = int(255 * smooth(min(local / 0.7, (19 - local) / 0.7)))
-    section_title(draw, canvas, "02", "intercambio de momento", "La luz se opone al movimiento", "Dos haces rojos respecto de la resonancia", scene_alpha)
+    section_title(draw, canvas, "02", "momentum transfer", "Light opposes motion", "Two beams red-detuned from resonance", scene_alpha)
     equation_badge(im, draw, canvas, (1374, 177, 1775, 241), "red_detuning", 27, COLORS["red"], scene_alpha)
     cool_u = smooth((local - 3.5) / 11.0)
     draw_velocity_distribution(im, draw, canvas, cool_u, scene_alpha)
@@ -555,15 +555,15 @@ def draw_doppler(canvas: Canvas, t: float) -> Image.Image:
             a = j * 2 * math.pi / 7 + local * 0.4
             r = 36 + 35 * (event - 0.84) / 0.16
             line(draw, canvas, [(atom_x, cy), (atom_x + r * math.cos(a), cy + r * math.sin(a))], rgba(COLORS["violet"], int(scene_alpha * 0.55)), 2)
-    text(draw, canvas, (1279, 721), "absorción preferente", 20, COLORS["cyan"], "bold", "mm", scene_alpha)
-    text(draw, canvas, (1279, 751), "desde el haz opuesto a v", 18, COLORS["muted"], "regular", "mm", scene_alpha)
+    text(draw, canvas, (1279, 721), "preferential absorption", 20, COLORS["cyan"], "bold", "mm", scene_alpha)
+    text(draw, canvas, (1279, 751), "from the beam opposite to v", 18, COLORS["muted"], "regular", "mm", scene_alpha)
 
     # Key equation and physical floor.
     eq_alpha = int(scene_alpha * smooth((local - 6) / 1.0))
     panel(draw, canvas, (806, 858, 1290, 956), alpha=int(180 * eq_alpha / 255), radius=20)
     latex(im, canvas, "doppler_force", (1048, 906), 37, COLORS["white"], "mm", eq_alpha)
     panel(draw, canvas, (1322, 858, 1774, 956), alpha=int(180 * eq_alpha / 255), radius=20)
-    text(draw, canvas, (1548, 892), "límite Doppler ideal", 16, COLORS["muted"], "bold", "mm", eq_alpha)
+    text(draw, canvas, (1548, 892), "ideal Doppler limit", 16, COLORS["muted"], "bold", "mm", eq_alpha)
     latex(im, canvas, "doppler_temp", (1548, 928), 42, COLORS["cyan"], "mm", eq_alpha)
     return im
 
@@ -603,7 +603,7 @@ def draw_coil_scene(canvas: Canvas, t: float) -> Image.Image:
     im, draw = frame_shell(canvas, t)
     local = t - 42.0
     scene_alpha = int(255 * smooth(min(local / 0.7, (17 - local) / 0.7)))
-    section_title(draw, canvas, "03", "campo cuadrupolar", "El centro magnético es especial", "Bobinas anti-Helmholtz: corrientes opuestas y un cero magnético central", scene_alpha)
+    section_title(draw, canvas, "03", "quadrupole field", "The magnetic center is special", "Anti-Helmholtz coils: opposing currents and a field zero", scene_alpha)
     panel(draw, canvas, (142, 320, 1170, 875), alpha=105, radius=30)
     cx, cy = 655, 598
     coil_a = int(scene_alpha * smooth((local - 1.0) / 1.2))
@@ -613,14 +613,14 @@ def draw_coil_scene(canvas: Canvas, t: float) -> Image.Image:
     draw.rounded_rectangle([canvas.p(cx - 265, cy - 123), canvas.p(cx + 265, cy + 123)], radius=canvas.s(74), fill=(34, 87, 118, 24), outline=rgba(COLORS["cyan"], int(scene_alpha * 0.45)), width=canvas.s(2))
     for r, a in ((44, 18), (27, 42), (8, 255)):
         draw.ellipse([canvas.p(cx - r, cy - r), canvas.p(cx + r, cy + r)], fill=rgba(COLORS["green"], int(a * scene_alpha / 255)))
-    text(draw, canvas, (cx, cy + 169), "cero de campo", 21, COLORS["green"], "bold", "mm", scene_alpha)
+    text(draw, canvas, (cx, cy + 169), "field zero", 21, COLORS["green"], "bold", "mm", scene_alpha)
     text(draw, canvas, (cx, 849), "I", 24, COLORS["gold"], "bold", "mm", scene_alpha)
     # The Maxwell equation has a dedicated quiet zone, outside the field arrows.
     equation_badge(im, draw, canvas, (168, 344, 414, 407), "div_b", 27, COLORS["violet"], scene_alpha)
 
     # Concept card on the right.
     panel(draw, canvas, (1234, 321, 1780, 875), alpha=205, radius=30)
-    text(draw, canvas, (1281, 367), "CERCA DEL CENTRO", 18, COLORS["muted"], "bold", alpha=scene_alpha)
+    text(draw, canvas, (1281, 367), "NEAR THE CENTER", 18, COLORS["muted"], "bold", alpha=scene_alpha)
     latex(im, canvas, "linear_field", (1281, 425), 43, COLORS["white"], "lm", scene_alpha)
     equation_badge(im, draw, canvas, (1280, 485, 1680, 537), "gradient_value", 24, COLORS["violet"], scene_alpha)
     # Zeeman ladder.
@@ -629,9 +629,9 @@ def draw_coil_scene(canvas: Canvas, t: float) -> Image.Image:
         col = (COLORS["cyan"], COLORS["white"], COLORS["red"])[j]
         line(draw, canvas, [(1302, y0 + shift), (1492, y0 + shift)], rgba(col, scene_alpha), 4)
         latex(im, canvas, ("mf_minus", "mf_zero", "mf_plus")[j], (1518, y0 + shift), 20, col, "lm", scene_alpha)
-    text(draw, canvas, (1281, 726), "El desplazamiento Zeeman cambia", 21, COLORS["white"], "regular", alpha=scene_alpha)
-    text(draw, canvas, (1281, 761), "qué haz circular está más resonante.", 21, COLORS["white"], "regular", alpha=scene_alpha)
-    text(draw, canvas, (1502, 811), "fuerza restauradora hacia el centro", 17, COLORS["green"], "bold", "mm", scene_alpha)
+    text(draw, canvas, (1281, 726), "The Zeeman shift changes", 21, COLORS["white"], "regular", alpha=scene_alpha)
+    text(draw, canvas, (1281, 761), "which circular beam is closer to resonance.", 21, COLORS["white"], "regular", alpha=scene_alpha)
+    text(draw, canvas, (1502, 811), "restoring force toward the center", 17, COLORS["green"], "bold", "mm", scene_alpha)
     arrow(draw, canvas, (1304, 846), (1699, 846), COLORS["green"], 5, 17, scene_alpha)
     return im
 
@@ -683,7 +683,7 @@ def draw_mot_scene(canvas: Canvas, t: float, particle_data, fps: int) -> Image.I
     local = t - 59.0
     u = clamp(local / 25.0)
     scene_alpha = int(255 * smooth(min(local / 0.7, (25 - local) / 0.7)))
-    section_title(draw, canvas, "04", "luz + campo", "Ahora aparece la trampa", "Seis haces, dos bobinas y una fuerza restauradora en 3D", scene_alpha)
+    section_title(draw, canvas, "04", "light + field", "Now the trap appears", "Six beams, two coils and a restoring force in 3D", scene_alpha)
     panel(draw, canvas, (102, 304, 1325, 919), alpha=90, radius=34)
     cx, cy = 705, 614
     # Back beams first for pseudo-depth.
@@ -724,11 +724,11 @@ def draw_mot_scene(canvas: Canvas, t: float, particle_data, fps: int) -> Image.I
 
     # Side diagnostic card.
     panel(draw, canvas, (1372, 304, 1806, 919), alpha=205, radius=30)
-    text(draw, canvas, (1412, 350), "RECETA MOT", 18, COLORS["muted"], "bold", alpha=scene_alpha)
+    text(draw, canvas, (1412, 350), "MOT INGREDIENTS", 18, COLORS["muted"], "bold", alpha=scene_alpha)
     items = (
-        ("mot_detuning", "láser rojo", COLORS["red"], True),
-        ("repumper ON", "evita F = 1 oscuro", COLORS["cyan"], False),
-        ("gradient_value", "gradiente", COLORS["violet"], True),
+        ("mot_detuning", "red-detuned laser", COLORS["red"], True),
+        ("repumper ON", "prevents a dark F = 1 state", COLORS["cyan"], False),
+        ("gradient_value", "gradient", COLORS["violet"], True),
     )
     for j, (value, label, col, is_equation) in enumerate(items):
         yy = 425 + j * 112
@@ -740,7 +740,7 @@ def draw_mot_scene(canvas: Canvas, t: float, particle_data, fps: int) -> Image.I
         text(draw, canvas, (1452, yy + 22), label, 18, COLORS["muted"], "regular", alpha=scene_alpha)
     line(draw, canvas, [(1412, 741), (1765, 741)], rgba(COLORS["line"], int(scene_alpha * 0.75)), 1)
     latex(im, canvas, "mot_force", (1588, 794), 29, COLORS["green"], "mm", scene_alpha)
-    text(draw, canvas, (1588, 838), "enfriamiento + restauración", 18, COLORS["muted"], "regular", "mm", scene_alpha)
+    text(draw, canvas, (1588, 838), "cooling + restoring force", 18, COLORS["muted"], "regular", "mm", scene_alpha)
     # Compression meter from simulated ensemble.
     sigma_r = float(np.sqrt(np.mean(np.sum(p * p, axis=1))))
     frac = clamp(1.0 - sigma_r / 0.95)
@@ -754,9 +754,9 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
     local = t - 84.0
     u = clamp(local / 14.0)
     scene_alpha = int(255 * smooth(min(local / 0.7, (14 - local) / 1.0 if local > 12.6 else 1)))
-    text(draw, canvas, (960, 118), "RESULTADO", 22, COLORS["cyan"], "bold", "mm", scene_alpha)
-    text(draw, canvas, (960, 180), "Una nube fría, localizada y fluorescente", 53, COLORS["white"], "bold", "mm", scene_alpha)
-    text(draw, canvas, (960, 231), "Sólo la fracción lenta del vapor queda capturada", 24, COLORS["muted"], "regular", "mm", scene_alpha)
+    text(draw, canvas, (960, 118), "RESULT", 22, COLORS["cyan"], "bold", "mm", scene_alpha)
+    text(draw, canvas, (960, 180), "A cold, localized, fluorescent cloud", 53, COLORS["white"], "bold", "mm", scene_alpha)
+    text(draw, canvas, (960, 231), "Only the slow fraction of the vapor is captured", 24, COLORS["muted"], "regular", "mm", scene_alpha)
     cx, cy = 960, 579
     # Dark viewing chamber and faint beams.
     draw.rounded_rectangle([canvas.p(298, 309), canvas.p(1622, 840)], radius=canvas.s(86), fill=(3, 8, 19, int(scene_alpha * 0.62)), outline=rgba(COLORS["line"], int(scene_alpha * 0.65)), width=canvas.s(2))
@@ -791,15 +791,15 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
     # Callouts.
     call_alpha = int(scene_alpha * smooth((local - 2.0) / 1.6))
     line(draw, canvas, [(894, 543), (668, 414), (478, 414)], rgba(COLORS["cyan"], call_alpha), 2)
-    text(draw, canvas, (467, 393), "escala milimétrica", 22, COLORS["cyan"], "bold", "ra", call_alpha)
+    text(draw, canvas, (467, 393), "millimeter scale", 22, COLORS["cyan"], "bold", "ra", call_alpha)
     latex(im, canvas, "cloud_size", (467, 433), 19, COLORS["muted"], "rm", call_alpha)
-    text(draw, canvas, (467, 458), "valor típico", 15, COLORS["muted"], "regular", "ra", call_alpha)
+    text(draw, canvas, (467, 458), "typical value", 15, COLORS["muted"], "regular", "ra", call_alpha)
     line(draw, canvas, [(1018, 548), (1257, 411), (1451, 411)], rgba(COLORS["violet"], call_alpha), 2)
-    text(draw, canvas, (1463, 390), "temperatura Doppler-scale", 22, COLORS["violet"], "bold", alpha=call_alpha)
+    text(draw, canvas, (1463, 390), "Doppler-scale temperature", 22, COLORS["violet"], "bold", alpha=call_alpha)
     latex(im, canvas, "cloud_temp", (1463, 433), 19, COLORS["muted"], "lm", call_alpha)
     line(draw, canvas, [(1012, 614), (1270, 743), (1451, 743)], rgba(COLORS["gold"], call_alpha), 2)
-    text(draw, canvas, (1463, 722), "fluorescencia a 780 nm", 22, COLORS["gold"], "bold", alpha=call_alpha)
-    text(draw, canvas, (1463, 757), "color realzado para visualizar", 18, COLORS["muted"], "regular", alpha=call_alpha)
+    text(draw, canvas, (1463, 722), "fluorescence at 780 nm", 22, COLORS["gold"], "bold", alpha=call_alpha)
+    text(draw, canvas, (1463, 757), "color enhanced for visibility", 18, COLORS["muted"], "regular", alpha=call_alpha)
 
     # Final synthesis ribbon.
     recap_alpha = int(scene_alpha * smooth((local - 6.0) / 1.3))
@@ -823,9 +823,9 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
             [canvas.p(0, 0), canvas.p(DESIGN_W, 968)],
             fill=rgba(COLORS["bg0"], int(255 * numbers_u)),
         )
-        text(draw, canvas, (960, 112), "ESCALAS EXPERIMENTALES", 21, COLORS["cyan"], "bold", "mm", numbers_alpha)
-        text(draw, canvas, (960, 176), "¿Qué significa «en tiempo real»?", 51, COLORS["white"], "bold", "mm", numbers_alpha)
-        text(draw, canvas, (960, 226), "Ejemplo representativo para una MOT de vapor de ⁸⁷Rb", 23, COLORS["muted"], "regular", "mm", numbers_alpha)
+        text(draw, canvas, (960, 112), "EXPERIMENTAL SCALES", 21, COLORS["cyan"], "bold", "mm", numbers_alpha)
+        text(draw, canvas, (960, 176), "What does “real time” mean?", 51, COLORS["white"], "bold", "mm", numbers_alpha)
+        text(draw, canvas, (960, 226), "A representative ⁸⁷Rb vapor-cell MOT example", 23, COLORS["muted"], "regular", "mm", numbers_alpha)
 
         equation_badge(
             im,
@@ -839,9 +839,9 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
         )
 
         metrics = (
-            ((220, 430, 690, 753), "ENFRIAMIENTO", "cooling_time", "frenado de un átomo capturado", COLORS["cyan"]),
-            ((725, 430, 1195, 753), "CARGA DE LA MOT", "loading_time", "hacia la población estacionaria", COLORS["violet"]),
-            ((1230, 430, 1700, 753), "POBLACIÓN TÍPICA", "atom_number", "aprox. 50 millones de átomos", COLORS["gold"]),
+            ((220, 430, 690, 753), "COOLING", "cooling_time", "slowing a captured atom", COLORS["cyan"]),
+            ((725, 430, 1195, 753), "MOT LOADING", "loading_time", "toward the steady-state population", COLORS["violet"]),
+            ((1230, 430, 1700, 753), "TYPICAL POPULATION", "atom_number", "about 50 million atoms", COLORS["gold"]),
         )
         for box, label, equation_key, note, col in metrics:
             x0, y0, x1, y1 = box
@@ -852,12 +852,12 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
             line(draw, canvas, [(x0 + 38, y0 + 209), (x1 - 38, y0 + 209)], rgba(COLORS["line"], int(numbers_alpha * 0.70)), 1)
             text(draw, canvas, ((x0 + x1) / 2, y0 + 257), note, 19, COLORS["white"], "regular", "mm", numbers_alpha)
 
-        text(draw, canvas, (960, 819), "Orden de magnitud, no especificación universal", 20, COLORS["green"], "bold", "mm", numbers_alpha)
+        text(draw, canvas, (960, 819), "Order of magnitude, not a universal specification", 20, COLORS["green"], "bold", "mm", numbers_alpha)
         text(
             draw,
             canvas,
             (960, 860),
-            "Depende de potencia y diámetro de los haces, presión de Rb y pérdidas por colisiones.",
+            "Depends on beam power and diameter, Rb pressure, and collisional losses.",
             20,
             COLORS["muted"],
             "regular",
@@ -865,7 +865,7 @@ def draw_final(canvas: Canvas, t: float, particle_data, fps: int) -> Image.Image
             numbers_alpha,
         )
     elif local > 10.2:
-        text(draw, canvas, (960, 972), "Física atómica visible, en tiempo real", 21, COLORS["white"], "bold", "mm", int(scene_alpha * smooth((local - 10.2) / 1.0)))
+        text(draw, canvas, (960, 972), "Atomic physics made visible, in real time", 21, COLORS["white"], "bold", "mm", int(scene_alpha * smooth((local - 10.2) / 1.0)))
     return im
 
 

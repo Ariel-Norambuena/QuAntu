@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this workshop material, please cite it as follows."
-title: "Del átomo atrapado al algoritmo cuántico: taller práctico de Qiskit"
+title: "From a trapped atom to a quantum algorithm: hands-on Qiskit workshop"
 type: software
 authors:
   - family-names: Norambuena

@@ -1,80 +1,69 @@
-# Taller Qiskit: del átomo atrapado al algoritmo cuántico
+# Qiskit workshop: from a trapped atom to a quantum algorithm
 
-Notebook autónomo para la sección práctica de un taller introductorio de una
-hora sobre computación cuántica con átomos neutros.
+A self-contained notebook for the practical section of a one-hour introductory
+workshop on quantum computing with neutral atoms.
 
-**Evento:** Workshop Astro Physics  
-**Autor y relator:** Prof. Ariel Norambuena — Universidad Técnica Federico
+**Event:** Workshop Astro Physics<br>
+**Author and instructor:** Prof. Ariel Norambuena — Universidad Técnica Federico
 Santa María · QSTATE · QuAntü
 
-## Archivo para entregar
+## Student notebook
 
-- `Taller_Qiskit_Atomos_Neutros_1h.ipynb`
+[`Neutral_Atom_Qiskit_Workshop_1h.ipynb`](Neutral_Atom_Qiskit_Workshop_1h.ipynb)
+connects a conceptual introduction to Shor with a complete, manually constructed
+two-qubit Grover algorithm. It also includes a one-qubit circuit, a Bell state,
+an editable programming challenge, and automated checks. All teaching text,
+comments, and displayed messages are in English.
 
-El notebook conecta una introducción conceptual a Shor con una implementación
-completa y manual de Grover para dos qubits. También incluye un circuito de un
-qubit, un estado de Bell, un reto editable y pruebas automáticas.
-
-## Dependencia obligatoria
+## Required dependency
 
 ```text
 qiskit>=1.4,<3
 ```
 
-No necesita:
+The workshop does not require `qiskit-aer`, `qiskit-algorithms`,
+`qiskit-ibm-runtime`, Matplotlib, pylatexenc, credentials, network access, or
+quantum hardware. Simulation uses `qiskit.quantum_info.Statevector` from the
+Qiskit core. Python's `random` module generates shots with a fixed seed.
 
-- `qiskit-aer`
-- `qiskit-algorithms`
-- `qiskit-ibm-runtime`
-- Matplotlib
-- pylatexenc
-- credenciales, red o acceso a hardware
+Earlier complete executions were validated with Qiskit 1.4.5 and 2.5.1. The
+English edition was also validated with Qiskit 2.6.1.
 
-La simulación usa `qiskit.quantum_info.Statevector`, parte del núcleo de Qiskit.
-Los shots se generan con el módulo `random` de Python y una semilla fija.
+## Instructor preparation
 
-La ejecución completa fue validada con Qiskit 1.4.5 y Qiskit 2.5.1.
+1. Open the notebook in the Python environment where Qiskit is installed.
+2. Run **Restart Kernel and Run All**.
+3. Confirm that the final code cell prints `ALL TESTS PASSED`.
+4. During the workshop, ask students to change only `MY_ANSWER` in the challenge.
 
-## Preparación del instructor
+Use local simulation during the session. Hardware access introduces accounts,
+queues, API changes, and noise that distract from a first hands-on exercise.
 
-1. Abrir el notebook con el mismo entorno donde está instalado Qiskit.
-2. Ejecutar **Restart Kernel and Run All**.
-3. Confirmar que la última celda imprime `TODAS LAS PRUEBAS PASARON`.
-4. Durante el taller, pedir a los estudiantes que cambien únicamente
-   `MI_RESPUESTA` en el reto.
+## Background
 
-Se recomienda usar simulación local durante la sesión. El acceso a hardware
-introduce cuentas, colas, cambios de API y ruido que distraen del objetivo de una
-primera práctica.
+The earlier 2023 material depended on APIs that were removed or split from the
+base package, including `from qiskit import Aer`, `qiskit.providers.aer`,
+`qiskit.ignis`, and Ignis-based mitigation. Stored widgets and outputs increased
+its size beyond 500 KB. The current notebook uses core APIs and does not store
+precomputed results.
 
-## Por qué se reemplazó el notebook de 2023
+## Regeneration and validation
 
-El material anterior dependía de APIs eliminadas o separadas del paquete base,
-incluyendo `from qiskit import Aer`, `qiskit.providers.aer`, `qiskit.ignis` y
-mitigación basada en Ignis. También guardaba widgets y salidas que aumentaban su
-tamaño a más de 500 KB. Esta versión contiene sólo APIs estables del núcleo y no
-guarda resultados precomputados.
-
-## Regeneración
-
-El notebook se genera de forma determinista mediante:
+From the repository root:
 
 ```text
-python build_workshop_notebook.py
+python education/qiskit/build_workshop_notebook.py
+python education/qiskit/validate_notebook.py
 ```
 
-Puede validarse sin instalar Jupyter o nbconvert:
+Generation is deterministic. Validation executes all 12 code cells without
+requiring Jupyter or nbconvert.
 
-```text
-python validate_notebook.py
-```
+## Official references
 
-## Referencias oficiales
+- [Grover's algorithm](https://qiskit.qotlabs.org/docs/tutorials/grovers-algorithm)
+- [Shor's algorithm](https://quantum.cloud.ibm.com/docs/en/tutorials/shors-algorithm)
 
-- Grover: <https://qiskit.qotlabs.org/docs/tutorials/grovers-algorithm>
-- Shor: <https://quantum.cloud.ibm.com/docs/en/tutorials/shors-algorithm>
+## Citation
 
-## Cómo citar
-
-La información bibliográfica está disponible en `CITATION.cff`. En GitHub,
-puede utilizarse directamente la opción **Cite this repository**.
+Bibliographic information is provided in [`CITATION.cff`](CITATION.cff).

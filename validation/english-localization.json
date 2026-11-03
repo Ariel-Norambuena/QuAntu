@@ -1,0 +1,54 @@
+{
+  "validation_date": "2026-11-03",
+  "language": "en",
+  "scope": [
+    "documentation and GitHub templates",
+    "code comments and interface labels",
+    "four teaching/model notebooks",
+    "editable Office content and templates",
+    "MOT video and review images"
+  ],
+  "preserved_identifiers": [
+    "personal and institutional names",
+    "official logos",
+    "bibliographic titles",
+    "inventory.original_path",
+    "inventory.source_sha256"
+  ],
+  "renamed_paths": {
+    "models/interactive/mod_interactivo.py": "models/interactive/interactive_model.py",
+    "education/qiskit/Taller_Qiskit_Atomos_Neutros_1h.ipynb": "education/qiskit/Neutral_Atom_Qiskit_Workshop_1h.ipynb",
+    "outreach/quantu-stem/Presentación Alonso Recabarren/Presentación Alonso Recabarren.pptx": "outreach/quantu-stem/Alonso Recabarren Presentation/Alonso Recabarren Presentation.pptx",
+    "outreach/quantu-stem/Evento QuAntü-STEM.docx": "outreach/quantu-stem/QuAntu-STEM Event.docx",
+    "references/hardware/Thorlabs Celda Rb.pdf": "references/hardware/Thorlabs_Rb_Cell.pdf"
+  },
+  "numerical_checks": {
+    "voigt_cases": 36,
+    "density_matrix_tests": 2,
+    "open_quantum_system_tests": 9,
+    "absorption_notebooks": 3,
+    "qiskit_code_cells": 12,
+    "numerical_results_unchanged": true
+  },
+  "office_checks": {
+    "slides_rendered": 51,
+    "visibly_changed_slides_reviewed": 6,
+    "other_slides_pixel_identical": 45,
+    "document_pages_reviewed": 2
+  },
+  "mot": {
+    "sampled_frames": 98,
+    "text_overflows": 0,
+    "video_frames": 2940,
+    "duration_seconds": 98.0,
+    "size": [
+      1920,
+      1080
+    ],
+    "fps": 30.0,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "reference_documents": "Reference PDFs and the technical report already have English content; proper names are preserved.",
+  "original_files_outside_checkout": "Unchanged"
+}

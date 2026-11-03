@@ -1,13 +1,10 @@
-# Reproducibilidad
+# Reproducibility
 
-Los comandos siguientes se ejecutan desde la raíz del repositorio. Los rangos
-de `requirements*.txt` describen compatibilidad prevista; **no son archivos de
-bloqueo de versiones**. Para comparar corridas, registrar sistema operativo,
-versión de Python/MATLAB, parámetros y dependencias exactas.
+Run the following commands from the repository root. The ranges in `requirements*.txt` describe intended compatibility; **they are not dependency lock files**. To compare runs, record the operating system, Python/MATLAB version, parameters, and exact dependencies.
 
-## Entorno Python
+## Python environment
 
-Se recomienda Python 3.11 o posterior en un entorno virtual. En PowerShell:
+Python 3.11 or later in a virtual environment is recommended. In PowerShell:
 
 ```powershell
 python -m venv .venv
@@ -17,58 +14,40 @@ python -m pip freeze > environment-local.txt
 python scripts/check_science.py
 ```
 
-En Linux/macOS, la activación es `source .venv/bin/activate`; los demás comandos
-son iguales. `environment-local.txt` registra la instalación local y no implica
-que ese entorno haya sido comprobado en todas las plataformas.
+On Linux/macOS, activate with `source .venv/bin/activate`; the remaining commands are the same. `environment-local.txt` records the local installation and does not imply that the environment has been tested on every platform.
 
-`check_science.py` comprueba sintaxis Python y de celdas de los cuatro notebooks,
-integridad de los CSV utilizados por modelos/notebooks y 36 combinaciones del
-modelo Voigt. Ejecuta las funciones científicas existentes sin importar las
-interfaces. Verifica finitud, positividad, normalización, acuerdo entre ambas
-interfaces y dependencia térmica de la anchura. No valida el ajuste a datos ni
-los cálculos completos de matriz densidad.
+`check_science.py` checks Python and notebook-cell syntax for all four notebooks, the integrity of CSVs used by models/notebooks, and 36 Voigt-model combinations. It executes existing scientific functions without importing the interfaces. It checks finiteness, positivity, normalization, agreement between both interfaces, and the linewidth's temperature dependence. It does not validate data fitting or full density-matrix calculations.
 
-## Absorción con Python
+## Absorption with Python
 
-Interfaz local con Matplotlib:
+Local Matplotlib interface:
 
 ```powershell
-python models/interactive/mod_interactivo.py
+python models/interactive/interactive_model.py
 ```
 
-Dashboard opcional:
+Optional dashboard:
 
 ```powershell
 python -m pip install -r requirements-dashboard.txt
 python -m streamlit run models/interactive/dashboard_rb.py
 ```
 
-Ambas interfaces cargan `Data_Rb_Gas.csv` junto al script y fallan explícitamente
-si falta. El modelo agrupa transiciones hiperfinas en cuatro perfiles efectivos;
-no sustituye el cálculo completo de subniveles de matriz densidad. En ambos exploradores `gamma_MHz` es HWHM Lorentziano; la FWHM es el doble. El valor inicial histórico se conserva y está rotulado con esta convención.
+Both interfaces load `Data_Rb_Gas.csv` alongside the script and fail explicitly if it is missing. The model groups hyperfine transitions into four effective profiles; it does not replace the full density-matrix sublevel calculation. In both explorers, `gamma_MHz` is the Lorentzian HWHM; FWHM is twice that value. The historical initial value is retained and labeled using this convention.
 
-Los notebooks históricos conservan rutas relativas y sus salidas originales.
-Abrirlos con su propia carpeta como directorio de trabajo:
+The notebooks preserve relative paths and numerical results, with English teaching text and displayed output. Open them with their own folder as the working directory:
 
 ```powershell
 python -m jupyterlab --notebook-dir=notebooks/absorption
 ```
 
-Ejecutar las celdas en orden. Su sintaxis se comprueba automáticamente; la
-ejecución completa requiere las dependencias de `requirements.txt`. Los datos
-digitalizados y las figuras de publicaciones requieren consultar su procedencia
-en la documentación de datos.
+Execute cells in order. Their syntax is checked automatically; complete execution requires the dependencies in `requirements.txt`. Consult the data documentation for the provenance of digitized data and published figures.
 
-## Matriz densidad con Python
+## Density matrices with Python
 
-La implementación principal es `models/density-matrix/rb_d2.py`, con NumPy y
-SciPy sparse. Incluye todos los subniveles hiperfinos y Zeeman de ambos isótopos
-(dimensiones 36 y 24), símbolos Wigner 3j/6j mediante Racah, Hamiltoniano,
-emisión espontánea con branching normalizado, mezcla del estado fundamental y
-dephasing opcional. Conserva la vectorización por columnas y los factores
-`2*pi` de las fuentes MATLAB. No necesita MATLAB, GPU ni Parallel Toolbox.
+The primary implementation is `models/density-matrix/rb_d2.py`, using NumPy and SciPy sparse matrices. It includes all hyperfine and Zeeman sublevels of both isotopes (dimensions 36 and 24), Wigner 3j/6j symbols evaluated through Racah formulas, the Hamiltonian, spontaneous emission with normalized branching, ground-state mixing, and optional dephasing. It retains column-major vectorization and the MATLAB sources' `2*pi` factors. MATLAB, a GPU, and the Parallel Computing Toolbox are not required.
 
-Para comprobar ejecución con mallas deliberadamente gruesas:
+To check execution using deliberately coarse grids:
 
 ```powershell
 python -m pip install -r requirements-core.txt
@@ -78,108 +57,62 @@ python scripts/check_density_matrix.py
 python -m unittest discover -s models/density-matrix -p 'test_*.py'
 ```
 
-`--quick` usa siete frecuencias, cinco clases Doppler y, en fast, un paso de
-respuesta de 250 MHz. **No resuelve resonancias estrechas y no es un espectro
-convergido**. Sin `--quick`, fast usa 1001 frecuencias, 1001 clases Doppler y
-paso 0.5 MHz; direct usa 301 frecuencias y 301 clases. La segunda estrategia
-resuelve cada par frecuencia/velocidad y puede resultar considerablemente más
-lenta. Los valores predeterminados reproducen diferencias de los scripts
-originales: fast usa polarización `pi` y calibración horizontal activa;
-direct usa `linear_x` y calibración desactivada. Para comparar ambos métodos,
-igualar explícitamente estos parámetros:
+`--quick` uses seven frequencies, five Doppler classes, and, in fast mode, a response spacing of 250 MHz. **It does not resolve narrow resonances and is not a converged spectrum**. Without `--quick`, fast mode uses 1001 frequencies, 1001 Doppler classes, and 0.5 MHz spacing; direct mode uses 301 frequencies and 301 classes. The latter solves every frequency/velocity pair and can be substantially slower. Defaults reproduce differences between the original scripts: fast uses `pi` polarization with horizontal calibration enabled; direct uses `linear_x` with calibration disabled. To compare the methods, explicitly match those parameters:
 
 ```powershell
 python models/density-matrix/run_fast.py --nomega 101 --nv 101 --response-step 1 --polarization pi --no-axis-calibration
 python models/density-matrix/run_direct.py --nomega 101 --nv 101 --polarization pi --no-axis-calibration
 ```
 
-Estos comandos sólo fijan un ejemplo común; también debe comprobarse
-convergencia incrementando las mallas. `--help` enumera temperatura, Rabi,
-anchuras, abundancia, promedio de polarizaciones y conversión Beer–Lambert o
-lineal. Las salidas `spectrum.csv`, `metadata.json` y figuras PNG/SVG/PDF se
-guardan en una carpeta nueva bajo `results/density-matrix/`. `--output` permite
-elegir una carpeta nueva y rechaza una existente. `--no-plot` omite figuras.
+These commands only establish a common example; convergence must also be checked by refining the grids. `--help` lists temperature, Rabi frequency, linewidths, abundance, polarization averaging, and Beer–Lambert or linear conversion. Outputs `spectrum.csv`, `metadata.json`, and PNG/SVG/PDF figures are saved in a new directory under `results/density-matrix/`. `--output` selects a new directory and rejects an existing one. `--no-plot` skips figures.
 
-La absorción máxima se escala por defecto a 0.42; la calibración afín opcional
-del eje usa parámetros empíricos (`aCal=1.0434`, `bCal=0.0781 GHz`) y sólo cambia
-la representación horizontal, no el Hamiltoniano. Las figuras no son una
-predicción absoluta de amplitud independiente de esa escala. Los archivos de
-referencia se buscan junto a los scripts.
+Maximum absorption is scaled to 0.42 by default; the optional affine axis calibration uses empirical parameters (`aCal=1.0434`, `bCal=0.0781 GHz`) and changes only the horizontal representation, not the Hamiltonian. The figures are not absolute amplitude predictions independent of that scale. Reference files are located alongside the scripts.
 
-### Verificación de la traducción
+### Port verification
 
-`check_density_matrix.py` comprueba 32 estados estacionarios para ambos isótopos
-y las cuatro polarizaciones: traza, Hermiticidad, positividad y residual del
-generador original. Comprueba además branching, conservación de traza, límite
-sin drive, descomposición Beer–Lambert y coincidencia fast/direct cuando los
-puntos consultados pertenecen a la malla de respuesta.
+`check_density_matrix.py` checks 32 steady states for both isotopes and all four polarizations: trace, Hermiticity, positivity, and the original generator's residual. It also checks branching, trace preservation, the zero-drive limit, the Beer–Lambert decomposition, and fast/direct agreement when queried points lie on the response grid.
 
-La fixture `tests/fixtures/matlab_density_matrix.json` se generó ejecutando
-las funciones MATLAB originales con MATLAB R2025b Update 6: 16 matrices de
-densidad y ocho espectros pequeños (fast/direct, ambos isótopos, `pi` y
-`linear_x`). Registra las huellas SHA-256 de ambos archivos fuente. La
-comparación Python/MATLAB obtuvo errores absolutos máximos de `7.8e-16` en las
-matrices y `1.0e-17` en espectros; el registro completo está en
-`validation/density-matrix-metrics.json`. Los tests requieren la fixture y no
-requieren MATLAB.
+The `tests/fixtures/matlab_density_matrix.json` fixture was generated by executing original MATLAB functions with MATLAB R2025b Update 6: 16 density matrices and eight small spectra (fast/direct, both isotopes, `pi` and `linear_x`). It records SHA-256 hashes of the source revisions executed during the original parity validation, before later comment-only English translation. The imported source hashes remain in the inventory. The Python/MATLAB comparison produced maximum absolute errors of `7.8e-16` in matrices and `1.0e-17` in spectra; the complete record is in `validation/density-matrix-metrics.json`. Tests require the fixture and do not require MATLAB.
 
-Para regenerarla opcionalmente, pasar las dos fuentes MATLAB originales al
-harness; se extraen sus funciones locales sin ejecutar la malla grande inicial:
+To regenerate it optionally, pass both original MATLAB sources to the harness; it extracts their local functions without executing the large initial grid:
 
 ```powershell
 python scripts/generate_matlab_fixture.py --fast-source archive/theoretical-group/Rb_D2_density_matrix_fast_COHERENCE_ABS.m --direct-source archive/theoretical-group/Rb_D2_density_matrix_slow_direct.m
 ```
 
-El harness y sus preferencias temporales quedan bajo `results/`; el comando
-necesita una instalación MATLAB con licencia funcional. Las fuentes MATLAB
-se conservan como referencia histórica. La paridad de muestras pequeñas no
-demuestra convergencia de mallas de producción ni validación experimental.
+The harness and its temporary preferences remain under `results/`; the command needs a MATLAB installation with a working license. MATLAB sources are preserved as historical references. Small-sample parity does not establish production-grid convergence or experimental validation.
 
-## Taller Qiskit
+## Qiskit workshop
 
 ```powershell
 python -m pip install -r education/qiskit/requirements.txt
 python education/qiskit/validate_notebook.py
 ```
 
-El validador ejecuta todas las celdas sin Jupyter. El taller usa Statevector del
-núcleo de Qiskit; no requiere credenciales, Aer o hardware. El README original
-registra comprobaciones previas con Qiskit 1.4.5 y 2.5.1; esta preparación también ejecutó las 12 celdas con Qiskit 2.6.1 y completó todas las pruebas.
+The validator executes all cells without Jupyter. The workshop uses Statevector from Qiskit core; it requires no credentials, Aer, or hardware. The English README retains the original credits and records earlier checks with Qiskit 1.4.5 and 2.5.1; this preparation also executed all 12 cells with Qiskit 2.6.1 and completed all tests.
 
-## Animación MOT
+## MOT animation
 
 ```powershell
 python -m pip install -r requirements-video.txt
 python education/mot/render_mot_workshop.py --stills results/mot-preview --times 3 32 72 --width 640 --height 360
 ```
 
-El renderer usa los PNG de ecuaciones incluidos. Prioriza las fuentes de
-Windows originales y busca alternativas comunes en Linux/macOS; como último
-recurso usa la fuente predeterminada de Pillow. La tipografía puede variar por
-sistema. Para regenerar las ecuaciones se requieren además `pdflatex`,
-`pdftocairo` y los paquetes LaTeX utilizados por el script:
+The renderer uses the included equation PNGs. It prioritizes the original Windows fonts and searches for common alternatives on Linux/macOS; Pillow's default font is the final fallback. Typography may vary by system. Regenerating equations additionally requires `pdflatex`, `pdftocairo`, and the LaTeX packages used by the script:
 
 ```powershell
 python education/mot/make_latex_assets.py
 python education/mot/render_mot_workshop.py --output results/MOT_Rb87_workshop_1080p.mp4
 ```
 
-La animación es pedagógica y sus escalas representativas no constituyen una
-medición de una MOT construida por el proyecto.
+The animation is educational, and its representative scales are not measurements of a MOT built by the project.
 
-## Procedencia OQS y límites conocidos
+## OQS provenance and known limitations
 
-Los materiales históricos de reuniones se retiraron del árbol publicado.
-La [implementación Python OQS](open-quantum-systems.md) permanece como modelo
-autónomo y ejecutable con sus pruebas. La referencia histórica de fluorescencia
-invocaba `CorrelationTRG`, función ausente del material recibido; Python incorpora
-una rutina QRT explícita verificada mediante controles analíticos. Las ecuaciones
-y convenciones se documentan sin depender de los archivos retirados.
+Historical meeting materials were removed from the published tree. The [Python OQS implementation](open-quantum-systems.md) remains a standalone, executable model with tests. The historical fluorescence reference called `CorrelationTRG`, a function absent from the supplied materials; Python includes an explicit QRT routine verified using analytical checks. Equations and conventions are documented independently of the removed files.
 
-No se recibió un script que regenere automáticamente todos los CSV procesados
-desde los datos brutos. Los archivos existentes documentan el trabajo recibido;
-no implican trazabilidad completa del procesamiento ni validación experimental.
+No script was supplied to automatically regenerate all processed CSVs from raw data. Existing files document the materials received; they do not imply complete processing traceability or experimental validation.
 
-## Reproducción automática y registro
+## Automated reproduction and records
 
-`python scripts/validate.py --with-notebooks --with-qiskit` ejecuta las comprobaciones estructurales, Voigt, D2, OQS y ambos grupos de notebooks. Las dependencias opcionales deben estar instaladas. Véanse los [resultados y límites registrados](validation.md) y el [procedimiento de publicación](publishing.md).
+`python scripts/validate.py --with-notebooks --with-qiskit` runs structural, Voigt, D2, OQS, and both notebook-group checks. Optional dependencies must be installed. See the [recorded results and limitations](validation.md) and [publishing procedure](publishing.md).

@@ -1,20 +1,20 @@
-name: Propuesta científica
-description: Proponer un modelo, validación o conjunto de datos
-title: "[Investigación] "
+name: Research proposal
+description: Propose a model, validation study, or dataset
+title: "[Research] "
 body:
   - type: textarea
     id: question
     attributes:
-      label: Pregunta científica o computacional y motivación
+      label: Scientific or computational question and motivation
     validations:
       required: true
   - type: textarea
     id: evidence
     attributes:
-      label: Referencias, datos y convención de unidades
+      label: References, data, and unit conventions
   - type: textarea
     id: validation
     attributes:
-      label: Criterio de validación y resultado esperado
+      label: Validation criterion and expected result
     validations:
       required: true

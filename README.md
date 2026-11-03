@@ -2,39 +2,39 @@
 
 **Neutral-atom-based quantum computing in Chile — ATE250066**
 
-QuAntü es un proyecto **Anillo Temático de ANID** que integra los grupos de algoritmos, experimental y teórico.
+QuAntü is an **ANID Thematic Research Ring project** bringing together Algorithms, Experimental, and Theory groups.
 
-## Dirección y grupos de investigación
+## Project leadership and research groups
 
-| Integrante | Cargo en el proyecto | Grupo que lidera |
+| Member | Project role | Group led |
 | --- | --- | --- |
-| [Dardo Goyeneche](https://github.com/dardomg) | Director | Algoritmos |
-| Jerónimo Maze | Director alterno | Experimental |
-| [Ariel Norambuena](https://github.com/Ariel-Norambuena) | Investigador principal | Teórico |
+| [Dardo Goyeneche](https://github.com/dardomg) | Director | Algorithms |
+| Jerónimo Maze | Alternate Director | Experimental |
+| [Ariel Norambuena](https://github.com/Ariel-Norambuena) | Principal Investigator | Theory |
 
-Este repositorio reúne actualmente modelos de absorción de vapor de rubidio, sistemas cuánticos abiertos, datos de referencia, un informe técnico y materiales docentes. Python es la ruta de desarrollo principal; las implementaciones MATLAB originales permiten revisar la procedencia de los modelos.
+This repository currently brings together rubidium vapor absorption models, open quantum systems, reference data, a technical report, and educational materials. Python is the primary development and execution path; the original MATLAB implementations provide a reference for the models' provenance.
 
-> **Estado científico:** investigación en desarrollo. Las cifras de ajuste históricas se reprodujeron ejecutando los tres notebooks. Las nuevas implementaciones Python incluyen comprobaciones numéricas; la calibración absoluta y la validación experimental completa siguen pendientes.
+> **Scientific status:** research in progress. Historical fit metrics were reproduced by executing the three notebooks. The new Python implementations include numerical checks; absolute calibration and complete experimental validation remain pending.
 
-[Informe técnico](reports/technical-progress/main.pdf) · [Fundamentos](docs/science.md) · [Instalación y ejecución](docs/reproducibility.md) · [Trazabilidad](docs/report-traceability.md) · [Datos](docs/data-provenance.md) · [Inventario](docs/inventory.csv) · [Verificaciones](docs/validation.md)
+[Technical report](reports/technical-progress/main.pdf) · [Scientific background](docs/science.md) · [Installation and execution](docs/reproducibility.md) · [Traceability](docs/report-traceability.md) · [Data](docs/data-provenance.md) · [Inventory](docs/inventory.csv) · [Validation](docs/validation.md)
 
-## Qué contiene
+## Contents
 
-| Área | Material | Entrada |
+| Area | Material | Entry point |
 | --- | --- | --- |
-| Absorción D2 | Matriz densidad de ⁸⁵Rb y ⁸⁷Rb, respuesta estacionaria y promedio Doppler | [Modelos](models/density-matrix/) |
-| Modelos progresivos | Gaussiano, mezcla isotópica y susceptibilidad microscópica | [Notebooks](notebooks/absorption/) |
-| Exploración interactiva | Perfiles Voigt, temperatura, anchura y contribuciones isotópicas | [Interfaces Python](models/interactive/) |
-| Sistemas abiertos | Dinámica de dos niveles y espectro de fluorescencia | [Modelo Python](models/open-quantum-systems/) |
-| Datos de literatura | Curvas digitalizadas y versiones procesadas | [Brutos](data/raw/) · [Procesados](data/processed/) |
-| Reporte | Fuentes LaTeX, bibliografía, figuras y PDF | [Informe](reports/technical-progress/) |
-| Formación | Taller Qiskit, animación MOT y clases | [Educación](education/) |
-| Divulgación | Evento QuAntü-STEM | [Materiales del evento](outreach/quantu-stem/) |
-| Fuentes | Artículos, parámetros atómicos y documentación de celdas | [Referencias](references/) |
+| D2 absorption | Density matrices for ⁸⁵Rb and ⁸⁷Rb, steady-state response, and Doppler averaging | [Models](models/density-matrix/) |
+| Progressive models | Gaussian, isotope-mixture, and microscopic susceptibility models | [Notebooks](notebooks/absorption/) |
+| Interactive exploration | Voigt profiles, temperature, linewidth, and isotope contributions | [Python interfaces](models/interactive/) |
+| Open systems | Two-level dynamics and fluorescence spectra | [Python model](models/open-quantum-systems/) |
+| Literature data | Digitized curves and processed versions | [Raw](data/raw/) · [Processed](data/processed/) |
+| Report | LaTeX sources, bibliography, figures, and PDF | [Report](reports/technical-progress/) |
+| Education | Qiskit workshop, MOT animation, and lectures | [Education](education/) |
+| Outreach | QuAntü-STEM event | [Event materials](outreach/quantu-stem/) |
+| Sources | Papers, atomic parameters, and vapor-cell documentation | [References](references/) |
 
-## Inicio rápido
+## Quick start
 
-Python 3.11 o posterior. Desde la raíz del repositorio:
+Use Python 3.11 or later. From the repository root:
 
 ```powershell
 python -m venv .venv
@@ -43,62 +43,64 @@ python -m venv .venv
 .venv\Scripts\python models/density-matrix/run_fast.py --quick
 ```
 
-En Linux y macOS usa `.venv/bin/python` en lugar de `.venv\Scripts\python`.
+On Linux and macOS, use `.venv/bin/python` instead of `.venv\Scripts\python`.
 
-Para explorar el dashboard:
+To explore the dashboard:
 
 ```powershell
 .venv\Scripts\python -m pip install -r requirements-dashboard.txt
 .venv\Scripts\python -m streamlit run models/interactive/dashboard_rb.py
 ```
 
-Los comandos de simulación y sus controles de coste se documentan en la [guía de reproducibilidad](docs/reproducibility.md). Para OQS ejecuta `python models/open-quantum-systems/two_level.py check`; los [ejemplos OQS](docs/open-quantum-systems.md) cubren dinámica y fluorescencia. Las ejecuciones con mallas pequeñas sirven para comprobar el funcionamiento; no sustituyen un estudio de convergencia.
+Simulation commands and computational cost controls are documented in the [reproducibility guide](docs/reproducibility.md). For OQS, run `python models/open-quantum-systems/two_level.py check`; the [OQS examples](docs/open-quantum-systems.md) cover dynamics and fluorescence. Small grids check that the implementation runs; they do not establish convergence.
 
-## Del modelo al espectro
+## From model to spectrum
 
 ```mermaid
 flowchart LR
-    A[Datos atómicos e hiperfinos] --> B[Hamiltoniano y polarización]
-    B --> C[Liouvilliano de Lindblad]
-    C --> D[Matriz densidad estacionaria]
-    D --> E[Coherencia óptica]
-    E --> F[Promedio Doppler]
-    F --> G[Mezcla isotópica]
-    G --> H[Beer–Lambert y comparación]
-    I[Curvas digitalizadas] --> H
+    A[Atomic and hyperfine data] --> B[Hamiltonian and polarization]
+    B --> C[Lindblad Liouvillian]
+    C --> D[Steady-state density matrix]
+    D --> E[Optical coherence]
+    E --> F[Doppler average]
+    F --> G[Isotope mixture]
+    G --> H[Beer-Lambert conversion and comparison]
+    I[Digitized curves] --> H
 ```
 
-El modelo D2 resuelve las bases hiperfinas con subniveles magnéticos: 36 estados para ⁸⁵Rb y 24 para ⁸⁷Rb. La base explícita en `mF` permite representar la polarización, pero el modelo actual no incorpora un Hamiltoniano Zeeman. La escala de absorción y la transformación afín de frecuencia son empíricas; el resultado no constituye una predicción absoluta en unidades SI.
+The D2 model resolves hyperfine bases with magnetic sublevels: 36 states for ⁸⁵Rb and 24 for ⁸⁷Rb. The explicit `mF` basis represents polarization, while the current model has no Zeeman Hamiltonian. The absorption scale and affine frequency transformation are empirical; the result is not an absolute prediction in SI units.
 
-## Resultados documentados
+## Documented results
 
-| Modelo del informe | MSE | MAE | Evidencia |
+| Report model | MSE | MAE | Evidence |
 | --- | ---: | ---: | --- |
-| Gaussiano | 0.006772 | 0.054760 | Salidas guardadas de `Model_1.ipynb` |
-| Gaussiano isotópico | 0.004758 | 0.052138 | Salidas guardadas de `Model_2.ipynb` |
-| Susceptibilidad microscópica | 0.004004 | 0.048501 | Salidas guardadas de `Model_3.ipynb` |
-| Matriz densidad | Pendiente | Pendiente | Comparación común aún no completada |
+| Gaussian | 0.006772 | 0.054760 | Saved outputs in `Model_1.ipynb` |
+| Isotope-aware Gaussian | 0.004758 | 0.052138 | Saved outputs in `Model_2.ipynb` |
+| Microscopic susceptibility | 0.004004 | 0.048501 | Saved outputs in `Model_3.ipynb` |
+| Density matrix | Pending | Pending | Common comparison protocol not yet completed |
 
-![Comparación histórica del modelo de susceptibilidad con la curva de referencia](reports/technical-progress/figure_3.png)
+![Historical comparison of the susceptibility model with the reference curve](reports/technical-progress/figure_3.png)
 
-La [reproducción automática](scripts/run_absorption_notebooks.py) confirmó las cifras dentro del redondeo mostrado. Las métricas anteriores pertenecen al conjunto y al procesamiento usados en los notebooks originales. No son una comparación independiente de generalización. Consulta la [matriz de trazabilidad](docs/report-traceability.md) para relacionar cada afirmación del informe con su evidencia.
+[Automated reproduction](scripts/run_absorption_notebooks.py) confirmed these figures within the displayed rounding. These metrics use the dataset and processing from the original notebooks; they do not independently assess generalization. The [traceability matrix](docs/report-traceability.md) connects report claims with their evidence.
 
-## Organización y conservación
+## Organization and preservation
 
-La colección publicada conserva **126 archivos de trabajo** de la carpeta original (57.21 MiB de archivos inventariados). El [inventario verificable](docs/inventory.csv) conserva la ruta original y los hashes de origen y del archivo incorporado. Los 11 archivos de reuniones se retiraron del árbol y del historial de la rama publicada; sus originales permanecen en la carpeta de trabajo. Los temporales de revisión y los metadatos Git de repositorios anidados se excluyen.
+The published collection preserves **126 working files** from the original folder (57.38 MiB of inventoried files). The [verifiable inventory](docs/inventory.csv) retains original paths and hashes of the source and incorporated files. The 11 meeting files were removed from the tree and history of the published branch; their originals remain in the working folder. Temporary review files and nested Git metadata are excluded.
 
-La copia histórica [theoretical-group](archive/theoretical-group/) conserva variantes de figuras que difieren de las de la carpeta principal. El taller [Qiskit](education/qiskit/) se incorporó como archivos ordinarios desde [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), manteniendo su documentación y cita. El [mapa del repositorio](docs/repository-map.md) explica el origen de cada colección.
+The historical [theoretical-group](archive/theoretical-group/) copy preserves figure variants that differ from the main folder. The [Qiskit workshop](education/qiskit/) was incorporated as ordinary files from [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), retaining its original credits in the English documentation and citation. The [repository map](docs/repository-map.md) explains each collection's origin.
 
-## Informe y referencias
+## Language and provenance
 
-El informe local identifica a **Alexis R. Legón**, Pontificia Universidad Católica de Chile / QuAntü Research Group, y corresponde a mayo–julio de 2026. Esta atribución corresponde al informe; otros materiales conservan sus autores y créditos originales.
+Documentation, editable teaching material, notebook output, interfaces, code comments, and MOT video captions are maintained in English. Personal and institutional names, official logos, bibliographic titles, and exact source identifiers in `original_path` retain their original spelling. Original files outside this checkout remain unchanged.
 
-El proyecto asociado en [Overleaf](https://www.overleaf.com/project/6a679a4b0c07d40f5ac1dd88) requiere acceso. La importación usa los archivos locales y no garantiza que coincidan con la última edición en línea. La [bibliografía BibTeX](reports/technical-progress/references.bib) conserva las referencias científicas del reporte.
+## Report and references
 
-## Contribuciones, derechos y próximos pasos
+The local report identifies **Alexis R. Legón**, Pontificia Universidad Católica de Chile / QuAntü Research Group, and covers May–July 2026. This attribution applies to the report; other materials retain their original authors and credits.
 
-Consulta [CONTRIBUTING.md](CONTRIBUTING.md) antes de añadir resultados y [ROADMAP.md](ROADMAP.md) para los hitos pendientes. Cada nuevo resultado debe indicar parámetros, datos de entrada, entorno y comandos de reproducción.
+The associated [Overleaf project](https://www.overleaf.com/project/6a679a4b0c07d40f5ac1dd88) requires access. This import uses local files and does not guarantee agreement with the latest online revision. The [BibTeX bibliography](reports/technical-progress/references.bib) preserves the report's scientific references.
 
-Este repositorio se publica con acceso **público**. No se ha asignado una licencia abierta global: artículos, digitalizaciones y documentos de terceros conservan sus derechos y atribuciones. Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Las citas del informe y del taller son independientes de las condiciones de reutilización de cada componente.
+## Contributions, rights, and next steps
 
-*English: QuAntü is the ANID Anillo Temático project “Neutral-atom-based quantum computing in Chile” (ATE250066), with algorithm, experimental and theory groups. This repository currently collects rubidium D2 spectroscopy models, open quantum system examples, reference datasets, a technical report and quantum education materials. Python is the primary execution path. Historical fit metrics and pending scientific validation are explicitly separated.*
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before adding results and [ROADMAP.md](ROADMAP.md) for pending milestones. Each new result should identify parameters, input data, environment, and reproduction commands.
+
+This repository is **public**. No collection-wide open license has been assigned: papers, digitized materials, and third-party documents retain their rights and attributions. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Report and workshop citations are separate from each component's reuse conditions.

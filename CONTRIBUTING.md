@@ -1,22 +1,22 @@
-# Contribuir a QuAntü
+# Contributing to QuAntü
 
-Los cambios científicos deben permitir a otra persona reproducir el resultado y evaluar su alcance.
+Scientific changes should let another person reproduce the result and assess its scope.
 
-1. Identifica la línea de trabajo —algoritmos, experimental, teórica o transversal—, explica el objetivo científico o computacional y vincula el cambio con documentación o un asunto concreto.
-2. Usa Python para nuevas implementaciones. Conserva unidades, convenciones de frecuencia y normalizaciones explícitas. Documenta cualquier diferencia con las implementaciones originales.
-3. Separa datos de entrada, parámetros y resultados generados. Escribe las nuevas salidas en `results/generated/` y evita sobrescribir las figuras históricas importadas.
-4. Aporta el comando ejecutado, versiones del entorno y controles numéricos relevantes: traza, hermiticidad, positividad, convergencia o límites analíticos según corresponda.
-5. Ejecuta `python scripts/verify_repository.py` y `python scripts/check_science.py`. Las comprobaciones estructurales no prueban exactitud física.
-6. Cuando cambies intencionalmente un archivo importado, revisa el diff y actualiza su tamaño y hash actual mediante `python scripts/update_inventory.py --write`. El hash de origen se conserva. Adjunta la razón del cambio.
+1. Identify the research area—Algorithms, Experimental, Theory, or cross-cutting—explain the scientific or computational objective, and connect the change to documentation or a specific issue.
+2. Use Python for new implementations. State units, frequency conventions, and normalizations explicitly. Document differences from the original implementations.
+3. Keep input data, parameters, and generated results separate. Write new outputs to `results/generated/` and avoid overwriting imported historical figures.
+4. Provide the command executed, environment versions, and relevant numerical checks: trace, Hermiticity, positivity, convergence, or analytical limits, as appropriate.
+5. Run `python scripts/verify_repository.py` and `python scripts/check_science.py`. Structural checks do not establish physical accuracy.
+6. When intentionally changing an imported file, review its diff and update its current size and hash with `python scripts/update_inventory.py --write`. Preserve the source hash and explain the change.
 
-## Datos y resultados
+## Data and results
 
-Identifica la publicación o el montaje de origen, unidades de ambas columnas, transformaciones aplicadas y responsable. Los datos digitalizados de literatura no se deben etiquetar como mediciones propias. Conserva los brutos y añade un procesamiento reproducible antes de regenerar los archivos procesados.
+Identify the source publication or setup, units of both columns, applied transformations, and the person responsible. Do not label digitized literature data as original measurements. Preserve raw files and add reproducible processing before regenerating processed datasets.
 
-## Notebooks y reportes
+## Notebooks and reports
 
-Evita rutas absolutas de una máquina. Ejecuta los notebooks desde su directorio o usa rutas explícitas a datos. Un resultado guardado sin nueva ejecución debe marcarse como histórico. El reporte LaTeX usa rutas locales dentro de `reports/technical-progress/`; conserva sus fuentes junto con las figuras.
+Avoid machine-specific absolute paths. Run notebooks from their own directories or use explicit data paths. Label a saved result as historical if it has not been rerun. The LaTeX report uses local paths within `reports/technical-progress/`; keep its sources together with its figures.
 
-## Atribución
+## Attribution
 
-Mantén los créditos existentes. No apliques una nueva licencia a los artículos ni al material externo por estar incluidos en este repositorio. La publicación pública y una licencia del código propio requieren una decisión explícita del equipo.
+Preserve existing credits. Inclusion in this repository does not authorize applying a new license to papers or external materials. Public distribution and licensing of original code require an explicit team decision.

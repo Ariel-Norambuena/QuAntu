@@ -1,32 +1,32 @@
-# Verificaciones de esta preparación
+# Validation performed during preparation
 
-Fecha local: **2 de noviembre de 2026**. El [entorno registrado](../validation/environment.json) documenta Python y las dependencias efectivamente usadas. La ejecución local usó Windows y Python 3.13.12 en un entorno virtual que comparte las bibliotecas científicas existentes; no equivale a un entorno aislado congelado.
+Local date: **November 2, 2026**. The [recorded environment](../validation/environment.json) documents the Python version and dependencies actually used. Local execution used Windows and Python 3.13.12 in a virtual environment sharing existing scientific libraries; this is not an isolated, frozen environment.
 
-Actualización estructural del **3 de noviembre de 2026**: se retiraron los 11 archivos de reuniones del árbol publicado y se comprobó el inventario restante de 126 archivos y sus enlaces locales. Esto no modifica los resultados científicos registrados el día anterior.
+Structural update on **November 3, 2026**: the 11 meeting files were removed from the published tree, and the remaining 126-file inventory and local links were checked. This does not change the scientific results recorded the previous day.
 
-## Resultados ejecutados
+## Executed checks
 
-| Componente | Evidencia | Resultado y alcance |
+| Component | Evidence | Result and scope |
 | --- | --- | --- |
-| Inventario, referencias y sintaxis | `python scripts/verify_repository.py` | Integridad de los 126 archivos importados conservados para publicación, rutas locales, recursos LaTeX, fuentes Python y cuatro notebooks. Los 11 materiales de reuniones se retiraron del árbol publicado. |
-| Exploradores Voigt | `python scripts/check_science.py` | 36 combinaciones de temperatura, anchura e isótopos; valores finitos, no negativos, normalizados, acuerdo entre interfaces y escalado térmico. |
-| Matriz densidad Python | [Pruebas](../models/density-matrix/test_rb_d2.py), [registro](../validation/density-matrix-metrics.json) | Dos pruebas automatizadas, con 32 estados físicos, canales de decaimiento, drive cero y comparación rápida/directa en una malla común. |
-| Comparación D2 contra MATLAB | [Fixture independiente](../tests/fixtures/matlab_density_matrix.json) | MATLAB R2025b Update 6 ejecutó funciones originales: 16 matrices y ocho espectros pequeños. Error máximo en rho: `7.79e-16`; en espectros: `9.97e-18`. |
-| Sistemas abiertos | [Nueve pruebas](../models/open-quantum-systems/test_two_level.py) | Liouvilliana frente a ecuación directa, solución de Bloch, equilibrio térmico, decaimiento, dinámica, Doppler, QRT y espectro frente a Lorentziana. |
-| Notebooks de absorción | [Registro de métricas](../validation/notebook-metrics.json) | Se ejecutaron las 15 celdas de código de los tres notebooks. MSE y MAE coinciden con los valores guardados dentro de `5.01e-7`. Sólo se suprimió la presentación de gráficos. |
-| Taller Qiskit | `python education/qiskit/validate_notebook.py` | Las 12 celdas ejecutadas completaron las pruebas con Qiskit 2.6.1; simulación local sin credenciales. |
-| Dashboard | Streamlit `AppTest` | La aplicación cargó sin excepciones y presentó dos controles deslizantes; esta comprobación no cubre toda interacción visual. |
-| Interfaz Matplotlib | Backend Agg | Carga de datos y ejecución sin ventana interactiva; se mantiene pendiente una revisión manual completa de los controles. |
-| Animación MOT | Tres fotogramas de 640 × 360 | Render a 3, 32 y 72 segundos con assets incluidos; no se regeneró el video completo. |
-| Informe técnico | `latexmk -pdf` con shell escape desactivado | Las fuentes y la bibliografía compilaron correctamente en una carpeta de salida separada; el PDF histórico incluido no se reemplazó. |
+| Inventory, references, and syntax | `python scripts/verify_repository.py` | Integrity of the 126 imported files retained for publication, local paths, LaTeX resources, Python sources, and four notebooks. The 11 meeting materials were removed from the published tree. |
+| Voigt explorers | `python scripts/check_science.py` | 36 temperature, linewidth, and isotope combinations; finite, nonnegative, normalized values, interface agreement, and temperature scaling. |
+| Python density matrix | [Tests](../models/density-matrix/test_rb_d2.py), [record](../validation/density-matrix-metrics.json) | Two automated tests covering 32 physical states, decay channels, zero drive, and fast/direct comparison on a common grid. |
+| D2 comparison against MATLAB | [Independent fixture](../tests/fixtures/matlab_density_matrix.json) | MATLAB R2025b Update 6 executed original functions: 16 matrices and eight small spectra. Maximum error in rho: `7.79e-16`; in spectra: `9.97e-18`. |
+| Open systems | [Nine tests](../models/open-quantum-systems/test_two_level.py) | Liouvillian against the direct equation, Bloch solution, thermal equilibrium, decay, dynamics, Doppler averaging, QRT, and spectrum against a Lorentzian. |
+| Absorption notebooks | [Metrics record](../validation/notebook-metrics.json) | All 15 code cells of the three notebooks executed. MSE and MAE agree with saved values within `5.01e-7`. Only plot display was suppressed. |
+| Qiskit workshop | `python education/qiskit/validate_notebook.py` | All 12 executed cells completed their tests with Qiskit 2.6.1; local simulation without credentials. |
+| Dashboard | Streamlit `AppTest` | The application loaded without exceptions and displayed two sliders; this check does not cover every visual interaction. |
+| Matplotlib interface | Agg backend | Data loading and execution without an interactive window; complete manual control review remains pending. |
+| MOT animation | Full English video and review frames | Regenerated all 98 seconds at 1920 × 1080, 30 fps, H.264/AAC. All 63 captions are English; 98 sampled frames were checked for text outside the canvas. |
+| Technical report | `latexmk -pdf` with shell escape disabled | Sources and bibliography compiled successfully in a separate output directory; the included historical PDF was not replaced. |
 
-La comprobación estacionaria D2 obtuvo error máximo de traza `5.6e-16`, hermiticidad `7.9e-16`, autovalor mínimo `-2.1e-17` y residuo `3.5e-15`. El autovalor negativo indicado es compatible con redondeo. Los valores completos y el alcance están en el registro JSON.
+The D2 steady-state check produced maximum trace error `5.6e-16`, Hermiticity error `7.9e-16`, minimum eigenvalue `-2.1e-17`, and residual `3.5e-15`. The negative eigenvalue is consistent with rounding. Full values and scope appear in the JSON record.
 
-La prueba adicional independiente incluyó las cuatro polarizaciones de ambos isótopos con dephasing adicional, y controles térmicos y de suma del espectro OQS. La suite versionada cubre los casos enumerados en sus archivos de prueba; los controles exploratorios adicionales no se presentan como una nueva certificación general.
+An additional independent check covered all four polarizations of both isotopes with additional dephasing, plus OQS thermal and spectral-sum checks. The versioned suite covers the cases listed in its test files; additional exploratory checks are not presented as a new general certification.
 
-## Repetir las comprobaciones
+## Repeating the checks
 
-Desde la raíz del repositorio:
+From the repository root:
 
 ```sh
 python -m pip install -r requirements.txt
@@ -35,12 +35,29 @@ python -m pip install -r education/qiskit/requirements.txt
 python scripts/validate.py --with-qiskit
 ```
 
-El comando sin opciones requiere sólo `requirements-core.txt`. Las opciones añaden la ejecución de notebooks y del taller; la validación siempre se detiene con código no cero ante un fallo. La configuración de [GitHub Actions](../.github/workflows/validate.yml) repite los controles principales en Python 3.11 y 3.13 y ejecuta el taller por separado. Su ejecución remota debe comprobarse después del primer push.
+The command without options requires only `requirements-core.txt`. Options add notebook and workshop execution; validation always exits with a nonzero code on failure. The [GitHub Actions configuration](../.github/workflows/validate.yml) repeats the main checks on Python 3.11 and 3.13 and runs the workshop separately. Check its remote execution after the first push.
 
-## Límites prácticos
+## Practical limitations
 
-La paridad D2 usa muestras y mallas pequeñas; no verifica convergencia de las mallas de producción. La reproducción de notebooks conserva los datos y calibraciones originales y no mide generalización ni adquisición propia. La regresión cuántica OQS reemplaza una rutina ausente y tiene controles analíticos, sin comparación completa con esa función histórica.
+D2 parity uses small samples and grids; it does not verify production-grid convergence. Notebook reproduction preserves the original data and calibrations and does not assess generalization or original data acquisition. OQS quantum regression replaces a missing routine and has analytical checks, without a complete comparison against that historical function.
 
-La versión en línea de Overleaf no pudo verificarse. No existe todavía un pipeline documentado para regenerar todos los CSV procesados desde los brutos. La calibración absoluta, las incertidumbres experimentales y la extensión Zeeman figuran en la [hoja de ruta](../ROADMAP.md).
+The online Overleaf version could not be verified. A documented pipeline to regenerate every processed CSV from raw data is still unavailable. Absolute calibration, experimental uncertainties, and the Zeeman extension appear in the [roadmap](../ROADMAP.md).
 
-Durante la ejecución de los notebooks apareció una advertencia de ajuste de layout de Matplotlib; no afectó las métricas. Streamlit emitió una advertencia de obsolescencia de `use_container_width`; la aplicación pasó la prueba en la versión registrada. Estos puntos no se interpretan como fallos numéricos.
+Notebook execution produced a Matplotlib layout warning that did not affect metrics. Streamlit emitted a deprecation warning for `use_container_width`; the application passed its test with the recorded version. These are not treated as numerical failures.
+
+## English edition checked on November 3, 2026
+
+The English edition includes repository documentation and templates, source comments,
+notebook teaching text and displayed output, both absorption interfaces, editable
+Office text, and all MOT captions. Proper names, official logos, original citation
+titles, and historical `original_path` identifiers retain their original spelling.
+The original files outside the checkout are unchanged.
+
+All 51 final slides were rendered. The six slides with visible changes and both
+event-document pages were visually reviewed; the other 45 slides were pixel-identical
+to their source renders. The reference PDFs and report were already in English.
+The complete 98-second MOT video was regenerated, and review images cover every scene.
+Numerical checks, all three absorption notebooks and all 12 Qiskit code cells passed
+again with unchanged scientific results. The [English-edition record](../validation/english-localization.json)
+records the scope and renamed paths. Current and original source hashes remain in
+the inventory.

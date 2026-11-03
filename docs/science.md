@@ -1,99 +1,101 @@
-# Alcance científico
+# Scientific scope
 
-QuAntü es el proyecto «Neutral-atom-based quantum computing in Chile», Anillo Temático de ANID ATE250066, organizado en los grupos de algoritmos, experimental y teórico. Esta página documenta el componente de espectroscopia: modelos progresivos de absorción D2 de vapor térmico de rubidio natural y ejemplos de sistemas cuánticos abiertos disponibles en el repositorio. Esta descripción se basa en la copia local del [reporte técnico](../reports/technical-progress/main.pdf), sus [fuentes LaTeX](../reports/technical-progress/main.tex) y el [desarrollo de matriz densidad](../reports/technical-progress/density_matrix_model.tex). El reporte declara como autor a Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, y cubre mayo–julio de 2026. Esa atribución corresponde al reporte; no establece por sí sola la autoría de todos los materiales del repositorio.
+QuAntü is the ANID Thematic Research Ring project “Neutral-atom-based quantum computing in Chile” (ATE250066), organized into Algorithms, Experimental, and Theory groups. This page documents the spectroscopy component: progressive D2 absorption models for natural-abundance thermal rubidium vapor and open quantum system examples available in the repository. The description is based on the local [technical report](../reports/technical-progress/main.pdf), its [LaTeX sources](../reports/technical-progress/main.tex), and its [density-matrix derivation](../reports/technical-progress/density_matrix_model.tex). The report identifies Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, as its author and covers May–July 2026. That attribution applies to the report and does not establish authorship of every repository component.
 
-## Modelos progresivos
+## Progressive models
 
-| Etapa | Descripción | Implementación |
+| Stage | Description | Implementation |
 | --- | --- | --- |
-| 1 | Suma de perfiles gaussianos con anchura Doppler común y centros y amplitudes efectivos. | [Model_1.ipynb](../notebooks/absorption/Model_1.ipynb) |
-| 2 | Modelo gaussiano con contribuciones de los dos isótopos y abundancia natural. Conserva correcciones efectivas de posiciones y pesos. | [Model_2.ipynb](../notebooks/absorption/Model_2.ipynb) |
-| 3 | Respuesta de susceptibilidad óptica con ensanchamiento homogéneo y promedio térmico Doppler. El notebook conserva parámetros y normalizaciones efectivos. | [Model_3.ipynb](../notebooks/absorption/Model_3.ipynb) |
-| 4 | Matriz densidad estacionaria con estructura hiperfina, subniveles magnéticos, acoplamiento coherente y relajación Lindblad. | [Módulo Python](../models/density-matrix/rb_d2.py), [ejecución rápida](../models/density-matrix/run_fast.py) y [ejecución directa](../models/density-matrix/run_direct.py) |
+| 1 | Sum of Gaussian profiles with a common Doppler width and effective centers and amplitudes. | [Model_1.ipynb](../notebooks/absorption/Model_1.ipynb) |
+| 2 | Gaussian model with contributions from both isotopes at natural abundance. Retains effective position and weight corrections. | [Model_2.ipynb](../notebooks/absorption/Model_2.ipynb) |
+| 3 | Optical susceptibility response with homogeneous broadening and thermal Doppler averaging. The notebook retains effective parameters and normalizations. | [Model_3.ipynb](../notebooks/absorption/Model_3.ipynb) |
+| 4 | Steady-state density matrix with hyperfine structure, magnetic sublevels, coherent coupling, and Lindblad relaxation. | [Python module](../models/density-matrix/rb_d2.py), [fast execution](../models/density-matrix/run_fast.py), and [direct execution](../models/density-matrix/run_direct.py) |
 
-Las etapas ayudan a identificar qué mecanismos explican la envolvente Doppler, los cuatro grupos de resonancias, las coherencias y el bombeo óptico. Una mayor complejidad física no implica automáticamente menor error: el modelo de matriz densidad todavía no tiene métricas obtenidas bajo el mismo protocolo residual que las primeras tres etapas.
+These stages identify mechanisms behind the Doppler envelope, four resonance groups, coherences, and optical pumping. Greater physical complexity does not automatically imply smaller error: the density-matrix model still lacks metrics obtained with the same residual protocol as the first three stages.
 
-## Resultados históricos conservados
+## Preserved historical results
 
-Las siguientes cifras se encuentran en las salidas guardadas de los notebooks y corresponden, con redondeo, a la tabla del reporte. Durante la preparación se ejecutaron de nuevo todas las celdas de los tres notebooks y se reprodujeron estas cifras dentro de su precisión de redondeo; el [registro numérico](../validation/notebook-metrics.json) conserva las versiones y huellas de los archivos. La reproducción usa los mismos datos y no constituye una validación experimental independiente.
+The following values appear in the notebooks' saved outputs and agree, after rounding, with the report table. During preparation, all cells of the three notebooks were rerun and reproduced these values within their rounding precision; the [numerical record](../validation/notebook-metrics.json) preserves versions and file hashes. This reproduction uses the same data and is not independent experimental validation.
 
-| Modelo | MSE guardado | MAE guardado |
+| Model | Saved MSE | Saved MAE |
 | --- | ---: | ---: |
-| Gaussiano | 0.006772 | 0.054760 |
-| Gaussiano isotópico | 0.004758 | 0.052138 |
-| Susceptibilidad | 0.004004 | 0.048501 |
-| Matriz densidad | Pendiente | Pendiente |
+| Gaussian | 0.006772 | 0.054760 |
+| Isotope-aware Gaussian | 0.004758 | 0.052138 |
+| Susceptibility | 0.004004 | 0.048501 |
+| Density matrix | Pending | Pending |
 
-Los notebooks calculan los residuos después de interpolar la curva teórica en la grilla experimental. Algunas figuras multiplican el residuo por 100 para visualizarlo; ese factor gráfico no se aplica a MSE y MAE. Las métricas usan las escalas y calibraciones de cada notebook y no representan una medición absoluta del coeficiente de absorción.
+The notebooks compute residuals after interpolating the theoretical curve onto the experimental grid. Some figures multiply residuals by 100 for display; that plotting factor is not applied to MSE or MAE. The metrics use each notebook's scales and calibrations and do not represent an absolute absorption-coefficient measurement.
 
-## Cadena del modelo de matriz densidad
+## Density-matrix modeling chain
 
 ```mermaid
 flowchart LR
-    A[Datos atomicos e hiperfinos] --> B[Base F y mF]
-    B --> C[Hamiltoniano y dipolos]
-    C --> D[Lindblad estacionario]
-    D --> E[Coherencia optica]
-    E --> F[Promedio Doppler]
-    F --> G[Mezcla isotopica]
-    G --> H[Escala optica y Beer-Lambert]
+    A[Atomic and hyperfine data] --> B[F and mF basis]
+    B --> C[Hamiltonian and dipoles]
+    C --> D[Steady-state Lindblad equation]
+    D --> E[Optical coherence]
+    E --> F[Doppler average]
+    F --> G[Isotope mixture]
+    G --> H[Optical scale and Beer-Lambert conversion]
 ```
 
-La transición retenida es $5^2S_{1/2}\rightarrow5^2P_{3/2}$, cerca de 780 nm. Cada isótopo se resuelve por separado.
+The retained transition is $5^2S_{1/2}\rightarrow5^2P_{3/2}$, near 780 nm. Each isotope is solved separately.
 
-| Isótopo | Espín nuclear | Estados fundamentales | Estados excitados | Dimensión de Hilbert | Dimensión de Liouville |
+| Isotope | Nuclear spin | Ground states | Excited states | Hilbert dimension | Liouville dimension |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | $^{85}\mathrm{Rb}$ | $5/2$ | 12 | 24 | 36 | 1296 |
 | $^{87}\mathrm{Rb}$ | $3/2$ | 8 | 16 | 24 | 576 |
 
-La base contiene todos los $m_F$ de los manifolds D2 para calcular reglas de selección, bombeo y branching de emisión espontánea. El Hamiltoniano actual no incorpora energía Zeeman: los subniveles de un mismo $F$ permanecen degenerados. Resolver explícitamente $m_F$ no equivale a modelar un campo magnético aplicado.
+The basis includes all $m_F$ states of the D2 manifolds to calculate selection rules, pumping, and spontaneous-emission branching. The current Hamiltonian has no Zeeman energy: sublevels of a given $F$ remain degenerate. Explicitly resolving $m_F$ does not itself model an applied magnetic field.
 
-La matriz estacionaria satisface $\mathcal{L}(x)\rho_{\mathrm{ss}}(x)=0$ y $\operatorname{Tr}\rho_{\mathrm{ss}}=1$. La observable de absorción procede de la parte imaginaria de las coherencias ópticas ponderadas por los dipolos, no de la población excitada total. Algunos comentarios históricos del código mencionan población excitada; la implementación y la derivación detallada usan coherencia óptica.
+The steady-state matrix satisfies $\mathcal{L}(x)\rho_{\mathrm{ss}}(x)=0$ and $\operatorname{Tr}\rho_{\mathrm{ss}}=1$. The absorption observable comes from the imaginary part of dipole-weighted optical coherences, rather than the total excited-state population. Some historical code comments refer to excited-state population; the implementation and detailed derivation use optical coherence.
 
-El solver rápido aprovecha la dependencia afín de la Liouvilliana con el detuning: calcula una respuesta estacionaria en una grilla, interpola y realiza el promedio Doppler. El solver directo conserva una formulación alternativa para comparar la solución sobre detuning y velocidad. Las implementaciones Python constituyen la vía de ejecución del repositorio. Los originales [MATLAB rápido](../models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) y [MATLAB directo](../models/density-matrix/Rb_D2_density_matrix_slow_direct.m) se preservan como respaldo y referencia de la derivación histórica del reporte.
+The fast solver exploits the Liouvillian's affine detuning dependence: it computes a steady-state response grid, interpolates, and performs the Doppler average. The direct solver provides an alternative formulation over detuning and velocity. Python implementations are the repository's execution path. The original [fast MATLAB](../models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) and [direct MATLAB](../models/density-matrix/Rb_D2_density_matrix_slow_direct.m) scripts are preserved as backups and references for the report's historical derivation.
 
-## Parámetros predeterminados y calibraciones
+## Default parameters and calibrations
 
-Estos valores describen el script rápido histórico que fundamenta el reporte; no son parámetros medidos de un montaje completo. Consulte las opciones del ejecutable Python para su grilla de ejecución y sus parámetros efectivos.
+These values describe the historical fast script underlying the report; they are not measured parameters of a complete apparatus. Consult the Python executable's options for its execution grid and effective parameters.
 
-| Parámetro | Valor |
+| Parameter | Value |
 | --- | --- |
-| Temperatura | 293 K |
-| Fracciones $^{85}\mathrm{Rb}$ / $^{87}\mathrm{Rb}$ | 0.72 / 0.28 |
-| Anchura natural FWHM | 6.0666 MHz, común a ambos isótopos |
-| Escala efectiva de Rabi | 10.0 MHz antes de factores angulares |
-| Mezcla del estado fundamental | 0.05 MHz |
-| Dephasing óptico adicional | 0 MHz |
-| Polarización | $\pi$ |
-| Grilla del láser | 1001 puntos entre −6 y +6 GHz |
-| Grilla de velocidades | 1001 puntos; truncamiento de $\pm4\sigma_D$ |
-| Espaciado de respuesta estacionaria | 0.5 MHz |
-| Absorción máxima objetivo | 0.42 |
-| Transformación de eje para comparación | $\Omega_{\mathrm{plot}}=1.0434\,\Omega_{\mathrm{theory}}+0.0781\,\mathrm{GHz}$ |
+| Temperature | 293 K |
+| $^{85}\mathrm{Rb}$ / $^{87}\mathrm{Rb}$ fractions | 0.72 / 0.28 |
+| Natural linewidth FWHM | 6.0666 MHz, common to both isotopes |
+| Effective Rabi scale | 10.0 MHz before angular factors |
+| Ground-state mixing | 0.05 MHz |
+| Additional optical dephasing | 0 MHz |
+| Polarization | $\pi$ |
+| Laser grid | 1001 points from −6 to +6 GHz |
+| Velocity grid | 1001 points; truncation at $\pm4\sigma_D$ |
+| Steady-state response spacing | 0.5 MHz |
+| Target maximum absorption | 0.42 |
+| Comparison-axis transformation | $\Omega_{\mathrm{plot}}=1.0434\,\Omega_{\mathrm{theory}}+0.0781\,\mathrm{GHz}$ |
 
-La convención teórica es $\Omega=\nu_{85,\mathrm{D2\,cog}}-\nu_L$, en frecuencias ordinarias. Aumentar la frecuencia del láser desplaza $\Omega$ en sentido negativo. El origen atómico y la transformación empírica del eje deben tratarse por separado.
+The theoretical convention is $\Omega=\nu_{85,\mathrm{D2\,cog}}-\nu_L$, using ordinary frequencies. Increasing the laser frequency moves $\Omega$ in the negative direction. The atomic origin and empirical axis transformation must be treated separately.
 
-La mezcla se realiza a nivel de profundidad óptica y la absorción se construye mediante $A=1-\exp(-\mathrm{OD})$. Un factor global fija la absorción máxima en 0.42. Las curvas isotópicas dibujadas son una descomposición aditiva de la absorción total; no representan dos pérdidas de transmisión independientes que puedan sumarse físicamente.
+Mixing takes place at the optical-depth level, and absorption is constructed as $A=1-\exp(-\mathrm{OD})$. A global factor fixes the maximum absorption at 0.42. The plotted isotope curves are an additive decomposition of total absorption; they are not two independent transmission losses that can physically be added.
 
-El modelo no predice todavía un coeficiente absoluto en unidades SI: la magnitud reducida del dipolo, la densidad de vapor, la longitud de celda y la división por el campo necesaria para una susceptibilidad absoluta no están incorporadas en esa normalización. La escala de Rabi predeterminada puede producir saturación y bombeo óptico; no debe describirse automáticamente como el límite de sonda débil.
+The model does not yet predict an absolute coefficient in SI units: the reduced dipole magnitude, vapor density, cell length, and division by the field required for an absolute susceptibility are not incorporated into that normalization. The default Rabi scale can produce saturation and optical pumping; it should not automatically be described as the weak-probe limit.
 
-## Validación pendiente y extensiones
+## Pending validation and extensions
 
-El repositorio conserva implementaciones y figuras existentes. La disponibilidad de ambos solvers no demuestra por sí sola una comparación numérica completa. El resumen del reporte alude a verificaciones frente a la formulación directa, mientras que la sección de trabajo futuro todavía propone benchmarking y convergencia; faltan resultados sistemáticos documentados que cierren ese alcance.
+The repository preserves existing implementations and figures. Having both solvers does not by itself demonstrate a complete numerical comparison. The report summary refers to checks against the direct formulation, while its future-work section still proposes benchmarking and convergence studies; systematic documented results are needed to close that scope.
 
-1. Comprobar traza, hermiticidad, positividad y residuo de la ecuación estacionaria en detunings representativos.
-2. Verificar branching normalizado, reglas de selección y centros de transición antes de calibrar el eje.
-3. Comparar solvers rápido y directo con parámetros y grillas comunes.
-4. Cuantificar convergencia respecto a espaciado de respuesta, grilla de velocidades y truncamiento Doppler.
-5. Explorar drive cero y convergencia a respuesta lineal, separando saturación y bombeo.
-6. Calcular MSE y MAE de matriz densidad con el mismo dataset y protocolo que los demás modelos.
-7. Reemplazar escalas y relajaciones efectivas por intensidad, geometría, densidad, longitud y tasas medidas.
-8. Incorporar términos Zeeman, ensanchamiento colisional e incertidumbres cuando existan parámetros experimentales suficientes.
+The following checks should be extended beyond the small-grid cases already recorded in [validation](validation.md).
 
-El cálculo D2 es estacionario, monomodo y Markoviano; considera sólo D2 y clases de velocidad unidimensionales independientes. No simula escaneos temporales, pulsos, difusión, retroceso ni colisiones que cambien la velocidad. El [ejemplo Python de dos niveles](open-quantum-systems.md) cubre por separado dinámica temporal y fluorescencia de un sistema idealizado; no sustituye un modelo temporal completo de rubidio. Los materiales de [MOT](../education/mot/README.md), [Qiskit](../education/qiskit/README.md), reuniones y divulgación amplían el contexto formativo; su presencia no acredita una MOT experimental operativa ni experimentos de computación cuántica realizados en hardware.
+1. Check trace, Hermiticity, positivity, and steady-state residuals at representative detunings.
+2. Verify normalized branching, selection rules, and transition centers before calibrating the axis.
+3. Compare fast and direct solvers using common parameters and grids.
+4. Quantify convergence in response spacing, velocity grid, and Doppler truncation.
+5. Explore zero drive and convergence to linear response, separating saturation from pumping.
+6. Compute density-matrix MSE and MAE using the same dataset and protocol as the other models.
+7. Replace effective scales and relaxation rates with measured intensity, geometry, density, length, and rates.
+8. Incorporate Zeeman terms, collisional broadening, and uncertainties when sufficient experimental parameters are available.
 
-Consulte la [trazabilidad del reporte](report-traceability.md), la [procedencia de datos](data-provenance.md) y la [bibliografía del reporte](../reports/technical-progress/references.bib).
+The D2 calculation is stationary, single-mode, and Markovian; it includes only D2 and independent one-dimensional velocity classes. It does not simulate time-dependent scans, pulses, diffusion, recoil, or velocity-changing collisions. The [Python two-level example](open-quantum-systems.md) separately covers temporal dynamics and fluorescence in an idealized system; it does not replace a complete time-dependent rubidium model. [MOT](../education/mot/README.md), [Qiskit](../education/qiskit/README.md), and outreach materials provide educational context; their presence does not establish an operational experimental MOT or quantum-computing experiments performed on hardware.
 
-## Convención de anchuras en los exploradores Voigt
+See [report traceability](report-traceability.md), [data provenance](data-provenance.md), and the [report bibliography](../reports/technical-progress/references.bib).
 
-En las interfaces históricas, `gamma_MHz` entra en el perfil Voigt como semiancho Lorentziano a media altura (HWHM); su FWHM es `2*gamma_MHz`. Se conserva el valor inicial histórico de 6 MHz para reproducir las curvas. En el modelo de matriz densidad, `linewidth=6.0666 MHz` representa FWHM: los parámetros no se deben igualar numéricamente sin convertir la convención. Los controles de las interfaces identifican explícitamente HWHM.
+## Linewidth convention in the Voigt explorers
+
+In the historical interfaces, `gamma_MHz` enters the Voigt profile as the Lorentzian half width at half maximum (HWHM); its FWHM is `2*gamma_MHz`. The historical initial value of 6 MHz is retained to reproduce the curves. In the density-matrix model, `linewidth=6.0666 MHz` represents FWHM: the parameters should not be equated numerically without converting conventions. The interface controls explicitly identify HWHM.

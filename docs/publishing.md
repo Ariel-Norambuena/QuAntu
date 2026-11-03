@@ -1,16 +1,16 @@
-# Publicación del repositorio
+# Publishing the repository
 
-Destino autorizado: **Ariel-Norambuena/QuAntu**, con visibilidad pública. La raíz del checkout es la carpeta que contiene el README principal, `models/`, `reports/` y `.github/`.
+Authorized destination: **Ariel-Norambuena/QuAntu**, with public visibility. The checkout root is the directory containing the main README, `models/`, `reports/`, and `.github/`.
 
-El publicador [publish_repository.py](../scripts/publish_repository.py) usa Git y GitHub CLI. Comprueba los 126 archivos importados conservados, la cuenta autenticada, la rama `main`, la ausencia de cambios pendientes y la visibilidad pública antes de subir. Crea un repositorio público si todavía no existe; no fuerza el historial ni cambia automáticamente la visibilidad de uno existente.
+The [publish_repository.py](../scripts/publish_repository.py) publisher uses Git and GitHub CLI. It checks the 126 preserved imported files, authenticated account, `main` branch, clean working tree, and public visibility before pushing. It creates a public repository if none exists; it does not force history or automatically change an existing repository's visibility.
 
 ```sh
 gh auth login --hostname github.com --git-protocol https --web
 python scripts/publish_repository.py
 ```
 
-Si un remoto existente todavía es privado, el publicador se detiene sin cambiarlo. El cambio de visibilidad se realiza por separado con la cuenta autorizada; después puede repetirse la publicación.
+If an existing remote is still private, the publisher stops without changing it. Visibility is changed separately using the authorized account; publishing can then be retried.
 
-La carpeta `meetings/` se retiró del árbol y del historial de la rama publicada. Se verificaron todos los árboles de commits y la ausencia de sus 11 archivos como objetos alcanzables. El historial anterior se conserva en un respaldo local fuera del repositorio; los archivos originales permanecen en la carpeta de trabajo. Los modelos Python OQS siguen disponibles y son independientes de esos archivos.
+The `meetings/` folder was removed from the tree and history of the published branch. All commit trees and the absence of its 11 files as reachable objects were checked. Earlier history is preserved in a local backup outside the repository; original files remain in the working folder. The Python OQS models remain available and independent of those files.
 
-Después de publicar, revisar [GitHub Actions](https://github.com/Ariel-Norambuena/QuAntu/actions) para comprobar la ejecución en Linux. La publicación conserva las atribuciones de cada componente y no asigna una licencia nueva a los materiales de terceros.
+After publishing, check [GitHub Actions](https://github.com/Ariel-Norambuena/QuAntu/actions) to verify execution on Linux. Publishing preserves each component's attributions and does not assign a new license to third-party materials.

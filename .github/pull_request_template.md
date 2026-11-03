@@ -1,11 +1,11 @@
-## Cambio y motivo
+## Change and motivation
 
-Describe el comportamiento o resultado que cambia y la evidencia que lo respalda.
+Describe the behavior or result that changes and the supporting evidence.
 
-## Validación
+## Validation
 
-Incluye comandos, entorno, parámetros y resultados. Distingue comprobación numérica y validación física.
+Include commands, environment, parameters, and results. Distinguish numerical checks from physical validation.
 
-## Datos y atribución
+## Data and attribution
 
-Indica procedencia de nuevos datos o materiales y diferencias con el informe, si corresponden.
+Identify the provenance of new data or materials and any differences from the report.

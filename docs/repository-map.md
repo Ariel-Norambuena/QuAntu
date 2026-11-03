@@ -1,85 +1,49 @@
-# Mapa de la colección QuAntü
+# QuAntü collection map
 
-La colección publicada conserva **126 archivos** de la carpeta de trabajo. El
-[inventario](inventory.csv) registra cada ruta original, su ruta en el repositorio,
-el tamaño actual, el SHA256 actual y el SHA256 de origen. La columna
-`modified_for_portability` identifica los cambios realizados para ejecutar los
-materiales desde su nueva ubicación. Los documentos y herramientas de organización
-añadidos al repositorio se suman a estos 126 archivos.
+The published collection preserves **126 files** from the working folder. The [inventory](inventory.csv) records each original path, repository path, current size, current SHA256, and source SHA256. The `modified_for_portability` column marks any difference from the imported source, including portability adjustments and English translation. Documentation and organizational tools added to the repository are additional to these 126 files. Historical source paths remain unchanged in the inventory's `original_path` field.
 
-| Ruta | Archivos importados | Contenido y procedencia |
-|---|---:|---|
-| [models/density-matrix](../models/density-matrix/) | 12 | `Codes Absorption Spectrum Rb Vapor`: modelos MATLAB, tablas y espectros guardados. |
-| [models/interactive](../models/interactive/) | 3 | `Experimental spectrum DATA/Modelo interactivo`: modelo Python, dashboard y tabla de transiciones. |
-| [archive/theoretical-group](../archive/theoretical-group/) | 12 | `Codes Thoretical Group`: copia histórica y variantes de resultados. |
-| [data/raw](../data/raw/) | 16 | `Data_BRUTA`: imágenes y CSV de referencia de la literatura. |
-| [data/processed](../data/processed/) | 10 | `DATA_PROCESADA`: tablas procesadas de absorción. |
-| [notebooks/absorption](../notebooks/absorption/) | 6 | `Codigo del Paper J. Ma 2017 Scientific Reports`: tres notebooks, tabla y presentación en dos formatos. |
-| [references/papers](../references/papers/) | 8 | Artículos y datos atómicos consultados. |
-| [references/atomic-data](../references/atomic-data/) | 2 | `Steck Notes`: tablas de datos de rubidio. |
-| [references/hardware](../references/hardware/) | 2 | `Rb Cell Thorlabs`: documentación Thorlabs y SCHOTT. |
-| [references/rubidium-theory](../references/rubidium-theory/) | 2 | `Theory of Rubidium atoms`: documentos teóricos de ambos isótopos. |
-| [reports/technical-progress](../reports/technical-progress/) | 7 | `Technical_Progress_Report`: LaTeX, bibliografía, tres figuras y PDF existente. |
-| [education/qiskit](../education/qiskit/) | 7 | Snapshot del taller Qiskit, incluido su archivo `.gitignore`. |
-| [education/mot](../education/mot/) | 36 | Fuentes y video MOT, ecuaciones renderizadas y fotogramas de control. |
-| [education/lectures](../education/lectures/) | 1 | Presentación de modelado dinámico de Ariel Norambuena. |
-| [outreach/quantu-stem](../outreach/quantu-stem/) | 2 | Documento del evento y presentación de Alonso Recabarren. |
+| Path | Imported files | Content and provenance |
+| --- | ---: | --- |
+| [models/density-matrix](../models/density-matrix/) | 12 | Original rubidium-vapor absorption collection: MATLAB models, tables, and saved spectra. |
+| [models/interactive](../models/interactive/) | 3 | Original interactive-model collection: Python model, dashboard, and transition table. |
+| [archive/theoretical-group](../archive/theoretical-group/) | 12 | Original theory-group collection: historical copy and result variants. |
+| [data/raw](../data/raw/) | 16 | Original raw-data collection: literature reference images and CSVs. |
+| [data/processed](../data/processed/) | 10 | Original processed-data collection: processed absorption tables. |
+| [notebooks/absorption](../notebooks/absorption/) | 6 | Collection associated with J. Ma's 2017 Scientific Reports paper: three notebooks, a table, and a presentation in two formats. |
+| [references/papers](../references/papers/) | 8 | Consulted papers and atomic data. |
+| [references/atomic-data](../references/atomic-data/) | 2 | Steck notes: rubidium data tables. |
+| [references/hardware](../references/hardware/) | 2 | Rubidium-cell documentation from Thorlabs and SCHOTT. |
+| [references/rubidium-theory](../references/rubidium-theory/) | 2 | Theoretical documents about both rubidium isotopes. |
+| [reports/technical-progress](../reports/technical-progress/) | 7 | Technical progress report: LaTeX, bibliography, three figures, and existing PDF. |
+| [education/qiskit](../education/qiskit/) | 7 | Qiskit workshop snapshot, including its `.gitignore`. |
+| [education/mot](../education/mot/) | 36 | MOT sources and video, rendered equations, and review frames. |
+| [education/lectures](../education/lectures/) | 1 | Dynamical-modeling presentation by Ariel Norambuena. |
+| [outreach/quantu-stem](../outreach/quantu-stem/) | 2 | Event document and Alonso Recabarren's presentation. |
 
-## Duplicados y versiones preservadas
+## Preserved duplicates and versions
 
-En la colección de origen, ocho de los doce archivos de las dos carpetas de
-espectros eran idénticos por SHA256: los dos programas MATLAB, los dos CSV y las
-cuatro exportaciones de `Rb_absorption_spectrum_slow_direct`. Las cuatro
-exportaciones de `Rb_absorption_spectrum` difieren entre carpetas y se conservan
-como versiones distintas. `models/density-matrix/` es la entrada principal;
-`archive/theoretical-group/` conserva la segunda colección para trazabilidad.
+In the original collection, eight of the twelve files in the two spectrum folders were identical by SHA256: both MATLAB programs, both CSVs, and all four `Rb_absorption_spectrum_slow_direct` exports. The four `Rb_absorption_spectrum` exports differ between folders and are preserved as distinct versions. `models/density-matrix/` is the primary entry point; `archive/theoretical-group/` preserves the second collection for traceability.
 
-`Data_Rb_Gas.csv` tenía el mismo contenido en las dos carpetas MATLAB, los
-notebooks de absorción y el modelo interactivo. Las copias se conservan junto a
-sus consumidores. Los PDF Steck de `references/papers/` también tienen copias
-idénticas en `references/atomic-data/`. No se eliminaron materiales por compartir
-nombre; el inventario permite comparar los hashes de origen y actuales.
+`Data_Rb_Gas.csv` had identical content in both MATLAB folders, the absorption notebooks, and the interactive model. Copies are preserved alongside their consumers. Steck PDFs in `references/papers/` also have identical copies in `references/atomic-data/`. Materials were not removed merely because they shared a name; the inventory supports comparing source and current hashes.
 
-## Taller Qiskit e historia Git
+## Qiskit workshop and Git history
 
-El taller provenía de un repositorio Git anidado con origen
-[Ariel-Norambuena/neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop).
-Se importa como **snapshot de archivos ordinarios** en `education/qiskit/`, con
-su README y su cita originales. Este repositorio no contiene su directorio
-`.git`, no registra un submódulo y no incorpora su historial de commits. El
-repositorio y los archivos originales permanecen en la carpeta de trabajo.
+The workshop came from a nested Git repository with origin [Ariel-Norambuena/neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop). It is imported as a **snapshot of ordinary files** in `education/qiskit/`, with an English README and citation that preserve the original authorship credits. This repository does not contain the workshop's `.git` directory, register a submodule, or import its commit history. The original repository and files remain in the working folder.
 
-## Exclusiones
+## Exclusions
 
-La carpeta `meetings/`, con 11 archivos de reuniones y ejemplos históricos,
-se retiró del árbol y del historial de la rama publicada por solicitud del responsable del proyecto.
-Los archivos originales permanecen fuera de este checkout, en la carpeta
-de trabajo. El [modelo Python de dos niveles](../models/open-quantum-systems/)
-se mantiene como implementación autónoma con sus pruebas y documentación.
+The `meetings/` folder, containing 11 meeting files and historical examples, was removed from the tree and history of the published branch at the project owner's request. The original files remain outside this checkout, in the working folder. The [Python two-level model](../models/open-quantum-systems/) remains a standalone implementation with its tests and documentation.
 
-La carpeta original `tmp/` contenía 91 imágenes renderizadas y extracciones de
-texto usadas para revisar PDF, con 21,029,968 bytes. No forma parte de la
-importación y no se borró de la carpeta de trabajo. También se excluyeron los
-34 archivos internos del Git anidado, con 47,315 bytes. Las figuras científicas,
-el PDF del reporte, los fotogramas de control y los recursos de la animación
-sí están incluidos.
+The original `tmp/` folder contained 91 rendered images and text extractions used for PDF review, totaling 21,029,968 bytes. It was not imported and was not deleted from the working folder. The nested Git repository's 34 internal files, totaling 47,315 bytes, were also excluded. Scientific figures, the report PDF, review frames, and animation resources are included.
 
-Los resultados de nuevas ejecuciones se guardan bajo `results/` (D2 y controles), `outputs/oqs/` (dos niveles) o una carpeta explícita; ambas raíces de salida se excluyen de Git. Las evidencias seleccionadas se conservan en `validation/`;
-esa ubicación, los entornos y las cachés están excluidos mediante `.gitignore`.
-El alcance de la atribución y los materiales externos se documentan en
-[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+New execution results are stored under `results/` (D2 and checks), `outputs/oqs/` (two-level examples), or an explicit directory; both output roots are excluded from Git. Selected evidence is versioned in `validation/`. Output locations, environments, and caches are excluded through `.gitignore`. Attribution scope and external materials are documented in [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
-## Comprobar la importación
+## Checking the import
 
-Desde la raíz del repositorio:
+From the repository root:
 
 ```sh
 python scripts/verify_repository.py
 ```
 
-La herramienta usa sólo la biblioteca estándar de Python. Verifica los 126
-registros, tamaños y hashes actuales, unicidad y seguridad de rutas, recursos
-LaTeX, enlaces locales Markdown, sintaxis Python y las celdas de código de los
-notebooks. No ejecuta los modelos, no recompila el PDF ni consulta enlaces
-externos. `source_sha256` conserva la huella registrada en la importación; la
-comprobación portable no necesita acceso a la carpeta original.
+The tool uses only the Python standard library. It checks the 126 records, current sizes and hashes, path uniqueness and safety, LaTeX resources, local Markdown links, Python syntax, and notebook code cells. It does not execute models, recompile the PDF, or fetch external links. `source_sha256` preserves the hash recorded at import; the portable check does not require access to the original folder.

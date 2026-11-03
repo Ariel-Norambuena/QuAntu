@@ -13,5 +13,6 @@
     "imageio-ffmpeg": "0.6.0",
     "ipython": "9.18.1"
   },
-  "note": "Local virtual environment with system-site-packages; this records observed versions and is not a fully isolated dependency lock."
+  "note": "Local virtual environment with system-site-packages; this records observed versions and is not a fully isolated dependency lock.",
+  "english_edition_validation_date": "2026-11-03"
 }

@@ -1,51 +1,51 @@
-# Trazabilidad del reporte y los materiales
+# Report and material traceability
 
-Este documento relaciona el reporte de espectroscopia de rubidio y sus materiales de apoyo con los archivos disponibles de QuAntü, proyecto «Neutral-atom-based quantum computing in Chile» (Anillo Temático ANID ATE250066).
+This document connects the rubidium spectroscopy report and its supporting materials to available files in QuAntü, the ANID Thematic Research Ring project “Neutral-atom-based quantum computing in Chile” (ATE250066).
 
-La referencia documental de esta versión es la copia local de [Technical Progress Report](../reports/technical-progress/main.pdf), titulada *Development of Progressive Theoretical Models for the Rubidium Absorption Spectrum*, junto con [main.tex](../reports/technical-progress/main.tex), [density_matrix_model.tex](../reports/technical-progress/density_matrix_model.tex) y [references.bib](../reports/technical-progress/references.bib).
+The documentary reference for this version is the local [Technical Progress Report](../reports/technical-progress/main.pdf), titled *Development of Progressive Theoretical Models for the Rubidium Absorption Spectrum*, together with [main.tex](../reports/technical-progress/main.tex), [density_matrix_model.tex](../reports/technical-progress/density_matrix_model.tex), and [references.bib](../reports/technical-progress/references.bib).
 
-El reporte declara a Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, y un período de mayo–julio de 2026. El [proyecto Overleaf proporcionado](https://www.overleaf.com/project/6a679a4b0c07d40f5ac1dd88) no pudo leerse durante la preparación. Por ello, esta versión conserva la copia local y no afirma que esté sincronizada con Overleaf ni que refleje su revisión más reciente.
+The report identifies Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, and a reporting period of May–July 2026. The supplied [Overleaf project](https://www.overleaf.com/project/6a679a4b0c07d40f5ac1dd88) could not be read during preparation. This version therefore preserves the local copy without asserting that it is synchronized with Overleaf or reflects its latest revision.
 
-## Correspondencia científica
+## Scientific correspondence
 
-| Declaración o componente | Archivos del repositorio | Evidencia y límite |
+| Claim or component | Repository files | Evidence and limitation |
 | --- | --- | --- |
-| Objetivos y evolución de modelos | [Fuente principal del reporte](../reports/technical-progress/main.tex) | Describe objetivos, actividades, resultados y trabajo futuro. |
-| Gaussiano fenomenológico | [Model_1.ipynb](../notebooks/absorption/Model_1.ipynb), [figura 1](../reports/technical-progress/figure_1.png) | Código y salidas históricas; MSE 0.006772, MAE 0.054760. |
-| Gaussiano con mezcla isotópica | [Model_2.ipynb](../notebooks/absorption/Model_2.ipynb), [figura 2](../reports/technical-progress/figure_2.png) | Código y salidas históricas; MSE 0.004758, MAE 0.052138. |
-| Susceptibilidad con promedio Doppler | [Model_3.ipynb](../notebooks/absorption/Model_3.ipynb), [figura 3](../reports/technical-progress/figure_3.png) | Código y salidas históricas; MSE 0.004004, MAE 0.048501. |
-| Datos reconstruidos para notebooks | [Data_Rb_Gas.csv](../notebooks/absorption/Data_Rb_Gas.csv) | El reporte atribuye el benchmark a Ma et al. (2017); no equivale a adquisición propia. |
-| Derivación de matriz densidad | [Desarrollo LaTeX](../reports/technical-progress/density_matrix_model.tex) | Detalla estados, dipolos, Lindblad, observable, calibraciones y supuestos. |
-| Solver estacionario rápido | [Ejecutable Python](../models/density-matrix/run_fast.py), [módulo común](../models/density-matrix/rb_d2.py) y [original MATLAB](../models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) | Versión Python para ejecutar; el original y las figuras históricas se conservan en [su directorio](../models/density-matrix/). |
-| Solver directo alternativo | [Ejecutable Python](../models/density-matrix/run_direct.py) y [original MATLAB](../models/density-matrix/Rb_D2_density_matrix_slow_direct.m) | Formulación alternativa para evaluar diferencias de interpolación y convergencia. |
-| Overlay experimental MATLAB | [DATA_ABS_Rb.csv](../models/density-matrix/DATA_ABS_Rb.csv) | Input de dos columnas; su origen exacto y transformaciones no están registrados en un manifiesto individual. No es idéntico a Data_Rb_Gas.csv. |
-| Comparación rápida/directa y métricas comunes | [Pruebas propuestas en la derivación](../reports/technical-progress/density_matrix_model.tex) y [trabajo futuro](../reports/technical-progress/main.tex) | Validación sistemática y MSE/MAE comparables de matriz densidad pendientes. |
-| Otros espectros bibliográficos | [Extracciones conservadas](../data/raw/), [tablas procesadas](../data/processed/) y [artículos locales](../references/papers/) | Disponibilidad de archivos; no acredita que cada dataset se haya validado con el solver. |
-| Datos atómicos | [Compilaciones de Steck](../references/atomic-data/), [bibliografía](../reports/technical-progress/references.bib) | Fuentes de constantes y formalismo angular; se conservan distintas revisiones locales. |
-| Escala absoluta y extensiones experimentales | [Trabajo futuro del reporte](../reports/technical-progress/main.tex) | Densidad, geometría, intensidad y relajaciones medidas, incertidumbres y término Zeeman son tareas pendientes. |
+| Objectives and model progression | [Main report source](../reports/technical-progress/main.tex) | Describes objectives, activities, results, and future work. |
+| Phenomenological Gaussian | [Model_1.ipynb](../notebooks/absorption/Model_1.ipynb), [figure 1](../reports/technical-progress/figure_1.png) | Code and historical outputs; MSE 0.006772, MAE 0.054760. |
+| Gaussian with isotope mixture | [Model_2.ipynb](../notebooks/absorption/Model_2.ipynb), [figure 2](../reports/technical-progress/figure_2.png) | Code and historical outputs; MSE 0.004758, MAE 0.052138. |
+| Susceptibility with Doppler averaging | [Model_3.ipynb](../notebooks/absorption/Model_3.ipynb), [figure 3](../reports/technical-progress/figure_3.png) | Code and historical outputs; MSE 0.004004, MAE 0.048501. |
+| Reconstructed notebook data | [Data_Rb_Gas.csv](../notebooks/absorption/Data_Rb_Gas.csv) | The report attributes the benchmark to Ma et al. (2017); it is not original data acquisition. |
+| Density-matrix derivation | [LaTeX derivation](../reports/technical-progress/density_matrix_model.tex) | Details states, dipoles, Lindblad dynamics, the observable, calibrations, and assumptions. |
+| Fast steady-state solver | [Python executable](../models/density-matrix/run_fast.py), [shared module](../models/density-matrix/rb_d2.py), and [MATLAB original](../models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) | Python execution path; the original and historical figures remain in [its directory](../models/density-matrix/). |
+| Alternative direct solver | [Python executable](../models/density-matrix/run_direct.py) and [MATLAB original](../models/density-matrix/Rb_D2_density_matrix_slow_direct.m) | Alternative formulation for assessing interpolation differences and convergence. |
+| MATLAB experimental overlay | [DATA_ABS_Rb.csv](../models/density-matrix/DATA_ABS_Rb.csv) | Two-column input; exact origin and transformations are not recorded in an individual manifest. It differs from Data_Rb_Gas.csv. |
+| Fast/direct comparison and common metrics | [Proposed derivation checks](../reports/technical-progress/density_matrix_model.tex) and [future work](../reports/technical-progress/main.tex) | Systematic validation and comparable density-matrix MSE/MAE remain pending. |
+| Other literature spectra | [Preserved extractions](../data/raw/), [processed tables](../data/processed/), and [local papers](../references/papers/) | File availability does not establish solver validation against every dataset. |
+| Atomic data | [Steck compilations](../references/atomic-data/), [bibliography](../reports/technical-progress/references.bib) | Sources for constants and angular-momentum formalism; different local revisions are preserved. |
+| Absolute scale and experimental extensions | [Report future work](../reports/technical-progress/main.tex) | Measured density, geometry, intensity and relaxation, uncertainties, and a Zeeman term remain pending. |
 
-Las cifras de los tres primeros modelos se conservaron de las salidas históricas y además se reprodujeron ejecutando los notebooks durante esta preparación; véase el [registro de reproducción](../validation/notebook-metrics.json). La sección de resultados del reporte evita asignar métricas a la matriz densidad hasta disponer de un protocolo común. Véanse los [supuestos científicos](science.md) y la [procedencia de los datos](data-provenance.md).
+The first three models' values were preserved from historical outputs and also reproduced by executing the notebooks during preparation; see the [reproduction record](../validation/notebook-metrics.json). The report results section leaves density-matrix metrics unassigned until a common protocol is available. See the [scientific assumptions](science.md) and [data provenance](data-provenance.md).
 
-## Materiales adicionales de QuAntü
+## Additional QuAntü materials
 
-Estos elementos forman parte de la carpeta de trabajo, aunque no son resultados de espectroscopia cuantitativa establecidos por el reporte.
+These items belong to the working collection, although the report does not establish them as quantitative spectroscopy results.
 
-| Área | Ubicación | Función documental |
+| Area | Location | Documentary role |
 | --- | --- | --- |
-| Exploración interactiva | [models/interactive](../models/interactive/) | Scripts Python y datos locales para visualizar modelos. |
-| Copia histórica del grupo teórico | [archive/theoretical-group](../archive/theoretical-group/) | Preserva la carpeta original separada de los puntos de entrada principales en Python. |
-| Taller Qiskit | [education/qiskit](../education/qiskit/README.md) | Notebook, requisitos, constructor y validador del taller. Conserva su propia información de citación. |
-| Material MOT | [education/mot](../education/mot/README.md) | Video, generador, ecuaciones y vistas previas educativas. |
-| Clases | [education/lectures](../education/lectures/) | Presentación de modelamiento dinámico. |
-| Sistemas cuánticos abiertos | [Modelo Python](../models/open-quantum-systems/two_level.py) | Implementación autónoma de dos niveles; la [documentación OQS](open-quantum-systems.md) explica su procedencia y la rutina QRT nueva. Los materiales originales de reuniones se retiraron del árbol publicado. |
-| Divulgación STEM | [outreach/quantu-stem](../outreach/quantu-stem/) | Documento del evento y presentación de Alonso Recabarren. |
-| Teoría atómica de consulta | [references/rubidium-theory](../references/rubidium-theory/) | Documentos sobre ambos isótopos. |
-| Celda y materiales | [references/hardware](../references/hardware/) | Documentación de celda Thorlabs y vidrio Borofloat; no acredita adquisición ni caracterización del montaje. |
+| Interactive exploration | [models/interactive](../models/interactive/) | Python scripts and local data for model visualization. |
+| Historical theory-group copy | [archive/theoretical-group](../archive/theoretical-group/) | Preserves the original folder separately from the primary Python entry points. |
+| Qiskit workshop | [education/qiskit](../education/qiskit/README.md) | Notebook, requirements, builder, and validator. Retains its own citation information. |
+| MOT materials | [education/mot](../education/mot/README.md) | Video, generator, equations, and educational previews. |
+| Lectures | [education/lectures](../education/lectures/) | Dynamical-modeling presentation. |
+| Open quantum systems | [Python model](../models/open-quantum-systems/two_level.py) | Standalone two-level implementation; [OQS documentation](open-quantum-systems.md) explains provenance and the new QRT routine. Original meeting materials were removed from the published tree. |
+| STEM outreach | [outreach/quantu-stem](../outreach/quantu-stem/) | Event document and Alonso Recabarren's presentation. |
+| Atomic theory references | [references/rubidium-theory](../references/rubidium-theory/) | Documents about both isotopes. |
+| Cell and materials | [references/hardware](../references/hardware/) | Thorlabs cell and Borofloat glass documentation; does not establish setup acquisition or characterization. |
 
-## Conservación y revisión
+## Preservation and review
 
-El [inventario](inventory.csv) relaciona rutas originales con rutas del repositorio e incluye tamaños y hashes. Los cambios de portabilidad, si los hay, deben reflejarse en sus campos correspondientes. Este mapa permite revisar la incorporación de materiales sin confundir su organización con una validación física nueva.
+The [inventory](inventory.csv) connects original paths with repository paths and includes sizes and hashes. Portability changes, if any, should be reflected in the corresponding fields. This mapping supports incorporation review without confusing organization with new physical validation.
 
-Los 11 materiales de reuniones se retiraron del árbol publicado por solicitud del responsable del proyecto; sus originales permanecen en la carpeta de trabajo. La colección mantiene 126 archivos importados en su inventario.
+The 11 meeting materials were removed from the published tree at the project owner's request; their originals remain in the working folder. The inventory retains 126 imported files.
 
-La publicación pública no atribuye una licencia abierta global a artículos, figuras, documentos de fabricantes ni presentaciones de terceros. Se conservan las atribuciones y condiciones de sus respectivos titulares.
+Public access does not assign a collection-wide open license to papers, figures, manufacturer documents, or third-party presentations. Their respective holders' attributions and conditions are preserved.

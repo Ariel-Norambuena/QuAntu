@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-OUTPUT = ROOT / "Taller_Qiskit_Atomos_Neutros_1h.ipynb"
+OUTPUT = ROOT / "Neutral_Atom_Qiskit_Workshop_1h.ipynb"
 
 
 def markdown(source: str) -> dict:
@@ -32,66 +32,66 @@ def code(source: str) -> dict:
 CELLS = [
     markdown(
         r"""
-# Del átomo atrapado al algoritmo cuántico
+# From a trapped atom to a quantum algorithm
 
-## Taller práctico de Qiskit — 60 minutos
+## Hands-on Qiskit workshop — 60 minutes
 
-**Idea central:** *Shor como la promesa que captura la imaginación; Grover como la experiencia práctica que permite entenderla.*
+**Main idea:** *Shor provides the motivating promise; Grover provides a hands-on way to understand quantum algorithms.*
 
-**Evento:** Workshop Astro Physics  
-**Autor y relator:** Prof. Ariel Norambuena — Universidad Técnica Federico Santa María · QSTATE · QuAntü
+**Event:** Workshop Astro Physics<br>
+**Author and instructor:** Prof. Ariel Norambuena — Universidad Técnica Federico Santa María · QSTATE · QuAntü
 
-En la primera parte vimos cómo una MOT captura átomos de rubidio, cómo los estados internos pueden representar qubits y cómo las interacciones controladas producen compuertas. Ahora recorreremos el último puente:
+In the first part, we saw how a MOT captures rubidium atoms, how internal states can represent qubits, and how controlled interactions implement gates. We will now follow the final connection:
 
 $$
-\text{átomo controlado}\longrightarrow\text{qubit}\longrightarrow
-\text{interferencia}\longrightarrow\text{algoritmo}.
+\text{controlled atom}\longrightarrow\text{qubit}\longrightarrow
+\text{interference}\longrightarrow\text{algorithm}.
 $$
 
-Este notebook funciona **localmente y sin conexión a internet**. No utiliza IBM Runtime, `qiskit-aer`, `qiskit_algorithms`, widgets ni servicios externos.
+This notebook runs **locally and offline**. It does not use IBM Runtime, `qiskit-aer`, `qiskit_algorithms`, widgets, or external services.
 """
     ),
     markdown(
         r"""
-## Objetivos y ruta
+## Learning objectives and outline
 
-Al terminar podremos:
+By the end, we will be able to:
 
-1. Interpretar superposición y medición en un circuito.
-2. Construir un estado entrelazado de Bell.
-3. Explicar qué parte de Shor es verdaderamente cuántica.
-4. Construir manualmente una búsqueda de Grover de dos qubits.
-5. Verificar que el algoritmo encuentra cualquiera de cuatro respuestas posibles.
+1. Interpret superposition and measurement in a circuit.
+2. Construct an entangled Bell state.
+3. Explain which part of Shor's algorithm is quantum.
+4. Build a two-qubit Grover search manually.
+5. Verify that the algorithm finds any of the four possible answers.
 
-### Distribución sugerida
+### Suggested timing
 
-- **3 min:** Shor, factorización y criptografía.
-- **5 min:** un qubit, Hadamard y medición.
-- **5 min:** entrelazamiento de Bell.
-- **15 min:** oráculo, fase e interferencia en Grover.
-- **7 min:** reto de programación y discusión.
+- **3 min:** Shor, factorization, and cryptography.
+- **5 min:** one qubit, Hadamard, and measurement.
+- **5 min:** Bell entanglement.
+- **15 min:** the oracle, phase, and interference in Grover.
+- **7 min:** programming challenge and discussion.
 
-> El resto de la hora corresponde a la motivación física, la MOT y los qubits de átomos neutros.
+> The remaining workshop time covers the physical motivation, the MOT, and neutral-atom qubits.
 """
     ),
     markdown(
         r"""
-## Antes de comenzar
+## Before you begin
 
-1. Seleccionar un kernel de Python que tenga Qiskit instalado.
-2. Ejecutar **Restart Kernel and Run All**.
-3. Si la primera celda informa que Qiskit no está instalado, ejecutar en una terminal asociada al mismo Python:
+1. Select a Python kernel with Qiskit installed.
+2. Run **Restart Kernel and Run All**.
+3. If the first cell reports that Qiskit is missing, run this command in a terminal using the same Python environment:
 
 ```text
 python -m pip install "qiskit>=1.4,<3"
 ```
 
-No es necesario instalar Aer, Matplotlib, pylatexenc ni configurar una cuenta de IBM Quantum. El notebook fue validado con Qiskit 1.4.5 y 2.5.1.
+Aer, Matplotlib, pylatexenc, and an IBM Quantum account are not required. Earlier versions were validated with Qiskit 1.4.5 and 2.5.1; this repository was also validated with Qiskit 2.6.1.
 """
     ),
     code(
         r'''
-# Diagnóstico mínimo del entorno. Esta celda falla temprano y con un mensaje claro.
+# Minimal environment check: fail early with a clear message.
 import sys
 from importlib.metadata import PackageNotFoundError, version
 
@@ -100,36 +100,36 @@ try:
     from qiskit.quantum_info import Statevector
 except ImportError as exc:
     raise RuntimeError(
-        "Qiskit no está disponible en este kernel. Abra una terminal del mismo "
-        "entorno y ejecute: python -m pip install qiskit"
+        "Qiskit is unavailable in this kernel. Open a terminal in the same "
+        "environment and run: python -m pip install qiskit"
     ) from exc
 
 try:
     QISKIT_VERSION = version("qiskit")
 except PackageNotFoundError:
-    QISKIT_VERSION = "desconocida"
+    QISKIT_VERSION = "unknown"
 
 print(f"Python : {sys.version.split()[0]}")
 print(f"Qiskit : {QISKIT_VERSION}")
-print("Entorno listo: sólo se usará el núcleo de Qiskit.")
+print("Environment ready: only the Qiskit core will be used.")
 '''
     ),
     code(
         r'''
-# Herramientas autocontenidas para simular y mostrar resultados.
-# Se usan barras HTML cuando el notebook lo permite y texto como alternativa.
+# Self-contained tools for simulation and displaying results.
+# Use HTML bars when supported, with text as a fallback.
 from collections import Counter
 from html import escape
 import random
 
 
 def statevector_of(circuit):
-    """Devuelve el estado exacto producido por un circuito sin mediciones."""
+    """Return the exact state of a circuit without measurement instructions."""
     return Statevector.from_instruction(circuit)
 
 
 def probabilities_of(circuit, cutoff=1e-12):
-    """Probabilidades exactas en la base computacional."""
+    """Exact computational-basis probabilities."""
     probabilities = statevector_of(circuit).probabilities_dict()
     return {
         str(label): float(probability)
@@ -139,7 +139,7 @@ def probabilities_of(circuit, cutoff=1e-12):
 
 
 def simulate_counts(circuit, shots=1024, seed=2026):
-    """Muestreo local reproducible, sin Aer ni acceso a hardware."""
+    """Reproducible local sampling without Aer or hardware access."""
     probabilities = probabilities_of(circuit)
     labels = list(probabilities)
     weights = [probabilities[label] for label in labels]
@@ -148,8 +148,8 @@ def simulate_counts(circuit, shots=1024, seed=2026):
     return dict(Counter(samples))
 
 
-def show_counts(counts, title="Resultados", color="#36d9ff"):
-    """Histograma robusto: HTML en Jupyter y ASCII como respaldo."""
+def show_counts(counts, title="Results", color="#36d9ff"):
+    """Display an HTML histogram in Jupyter, with an ASCII fallback."""
     total = sum(counts.values())
     ordered = sorted(counts.items())
     try:
@@ -179,7 +179,7 @@ def show_counts(counts, title="Resultados", color="#36d9ff"):
 
 
 def show_amplitudes(circuit, title="Amplitudes"):
-    """Muestra signo y fase, información invisible en un histograma."""
+    """Show signs and phases, which are invisible in a histogram."""
     state = statevector_of(circuit)
     width = circuit.num_qubits
     print(title)
@@ -189,57 +189,57 @@ def show_amplitudes(circuit, title="Amplitudes"):
             print(f"  |{label}> : {amplitude.real:+.3f}{amplitude.imag:+.3f}j")
 
 
-def show_circuit(circuit, title="Circuito"):
+def show_circuit(circuit, title="Circuit"):
     print(title)
     print(circuit.draw(output="text"))
 '''
     ),
     code(
         r'''
-# Prueba de humo: si aparece OK, las celdas centrales del taller pueden ejecutarse.
+# Smoke test: OK means the main workshop cells can run.
 _smoke = QuantumCircuit(1)
 _smoke.h(0)
 _p = probabilities_of(_smoke)
 assert abs(_p["0"] - 0.5) < 1e-10
 assert abs(_p["1"] - 0.5) < 1e-10
-print("OK — Qiskit y el simulador de estado funcionan correctamente.")
+print("OK — Qiskit and the statevector simulator work correctly.")
 '''
     ),
     markdown(
         r"""
-# 1. Shor: la promesa
+# 1. Shor: the promise
 
-La factorización pregunta por los primos cuyo producto forma un número:
+Factorization asks which primes multiply to give a number:
 
 $$N=pq.$$
 
-Para (N=15), la respuesta (15=3\times5) es evidente. Para una clave RSA real, (N) contiene cientos o miles de bits y recuperar (p) y (q) es extremadamente difícil.
+For (N=15), the answer (15=3\times5) is obvious. A real RSA key uses an (N) with hundreds or thousands of bits, making recovery of (p) and (q) extremely difficult.
 
-La intuición de Shor fue transformar la factorización en una **búsqueda de período**. Elegimos un entero (a) coprimo con (N) y estudiamos
+Shor's insight was to transform factorization into **period finding**. Choose an integer (a) coprime to (N) and study
 
 $$f(x)=a^x\bmod N.$$
 
-Como sólo existen (N) residuos posibles, la secuencia eventualmente se repite. El computador cuántico se utiliza para estimar eficientemente ese período (r); convertir (r) en factores mediante máximos comunes divisores es nuevamente un cálculo clásico.
+There are only (N) possible remainders, so the sequence eventually repeats. The quantum computer estimates this period (r) efficiently; converting (r) into factors through greatest common divisors is a classical calculation.
 
-> **Mensaje honesto:** aquí no implementaremos un circuito compilado para factorizar 15. Entenderemos el corazón matemático y reservaremos el tiempo práctico para un algoritmo cuántico completo y transparente: Grover.
+> **Scope:** we will not implement a compiled circuit that factors 15. We will examine the mathematical idea and use the hands-on session to build a complete, transparent quantum algorithm: Grover.
 """
     ),
     code(
         r'''
-# El esqueleto de Shor para N=15. Esta celda usa únicamente Python estándar.
+# The outline of Shor for N=15, using only the Python standard library.
 from math import gcd
 
 
 def multiplicative_order(a, N):
-    """Menor r>0 tal que a**r = 1 (mod N), si gcd(a,N)=1."""
+    """Smallest r>0 such that a**r = 1 (mod N), assuming gcd(a,N)=1."""
     if gcd(a, N) != 1:
-        raise ValueError("a y N deben ser coprimos")
+        raise ValueError("a and N must be coprime")
     value = 1
     for r in range(1, N + 1):
         value = (value * a) % N
         if value == 1:
             return r
-    raise RuntimeError("No se encontró el período; revise las entradas.")
+    raise RuntimeError("Period not found; check the inputs.")
 
 
 N = 15
@@ -247,11 +247,11 @@ a = 2
 r = multiplicative_order(a, N)
 sequence = [pow(a, x, N) for x in range(r + 1)]
 
-print(f"Secuencia a^x mod N: {sequence}")
-print(f"Período encontrado: r = {r}")
+print(f"Sequence a^x mod N: {sequence}")
+print(f"Period found: r = {r}")
 
 if r % 2 != 0:
-    raise RuntimeError("Este valor de a produjo un período impar; pruebe otro a.")
+    raise RuntimeError("This value of a produced an odd period; try another a.")
 
 x = pow(a, r // 2, N)
 factor_1 = gcd(x - 1, N)
@@ -259,63 +259,63 @@ factor_2 = gcd(x + 1, N)
 
 print(f"gcd(a^(r/2)-1, N) = {factor_1}")
 print(f"gcd(a^(r/2)+1, N) = {factor_2}")
-print(f"Resultado: {N} = {factor_1} × {factor_2}")
+print(f"Result: {N} = {factor_1} × {factor_2}")
 
 assert {factor_1, factor_2} == {3, 5}
 '''
     ),
     markdown(
         r"""
-## ¿Dónde estuvo la parte cuántica?
+## Where was the quantum part?
 
-En la celda anterior calculamos (r) clásicamente para poder ver toda la lógica. En Shor, la parte difícil —estimar el período— se resuelve mediante:
+The previous cell calculated (r) classically so that we could follow the entire logic. In Shor's algorithm, the difficult step—estimating the period—uses:
 
-1. Superposición de muchos valores de (x).
-2. Exponenciación modular reversible.
-3. Estimación de fase y transformada cuántica de Fourier.
-4. Medición y postprocesamiento clásico.
+1. A superposition of many values of (x).
+2. Reversible modular exponentiation.
+3. Phase estimation and the quantum Fourier transform.
+4. Measurement and classical postprocessing.
 
-Esto convierte a Shor en una motivación excelente, pero en una primera práctica de 20 minutos ocultaría demasiados ingredientes. Ahora construiremos un algoritmo cuya interferencia pueda seguirse puerta por puerta.
+Shor is a useful motivation, but implementing it in a first 20-minute exercise would hide too many ingredients. We will now build an algorithm whose interference can be followed gate by gate.
 """
     ),
     markdown(
         r"""
-# 2. Un qubit: superposición y medición
+# 2. One qubit: superposition and measurement
 
-Identificamos dos niveles internos del átomo con
+We identify two internal atomic levels with
 
-$$|0\rangle\quad\text{y}\quad |1\rangle.$$
+$$|0\rangle\quad\text{and}\quad |1\rangle.$$
 
-Una compuerta Hadamard prepara
+A Hadamard gate prepares
 
 $$H|0\rangle=|+\rangle=\frac{|0\rangle+|1\rangle}{\sqrt2}.$$
 
-El estado contiene amplitudes; la medición entrega resultados clásicos aleatorios.
+The state contains amplitudes; measurement produces random classical outcomes.
 """
     ),
     code(
         r'''
-one_qubit = QuantumCircuit(1, name="superposición")
+one_qubit = QuantumCircuit(1, name="superposition")
 one_qubit.h(0)
 
-show_circuit(one_qubit, "Circuito de un qubit")
+show_circuit(one_qubit, "One-qubit circuit")
 show_amplitudes(one_qubit)
 counts_one = simulate_counts(one_qubit, shots=1000, seed=7)
-show_counts(counts_one, "1000 mediciones simuladas")
+show_counts(counts_one, "1000 simulated measurements")
 '''
     ),
     markdown(
         r"""
-La superposición **no** significa que veremos simultáneamente 0 y 1 en una ejecución. Cada medición produce un bit; la distribución aparece al repetir el experimento.
+Superposition does **not** mean that we see both 0 and 1 in a single run. Each measurement produces one bit; the distribution emerges after repeating the experiment.
 
-El algoritmo cuántico debe organizar las amplitudes antes de medir. Ésa será la función de la interferencia en Grover.
+A quantum algorithm organizes the amplitudes before measurement. Interference will perform this task in Grover's algorithm.
 """
     ),
     markdown(
         r"""
-# 3. Dos qubits: entrelazamiento
+# 3. Two qubits: entanglement
 
-Aplicamos (H) al primer qubit y después una compuerta controlada (CX):
+Apply (H) to the first qubit and then a controlled (CX) gate:
 
 $$
 |00\rangle\longrightarrow
@@ -324,7 +324,7 @@ $$
 |\Phi^+\rangle=\frac{|00\rangle+|11\rangle}{\sqrt2}.
 $$
 
-Las mediciones están correlacionadas: aparecen 00 y 11, pero no 01 ni 10.
+The measurements are correlated: 00 and 11 appear, while 01 and 10 do not.
 """
     ),
     code(
@@ -333,44 +333,44 @@ bell = QuantumCircuit(2, name="Bell")
 bell.h(0)
 bell.cx(0, 1)
 
-show_circuit(bell, "Preparación de |Φ+>")
+show_circuit(bell, "Preparation of |Φ+>")
 show_amplitudes(bell)
 counts_bell = simulate_counts(bell, shots=1000, seed=11)
-show_counts(counts_bell, "Mediciones del estado de Bell", color="#a85cff")
+show_counts(counts_bell, "Bell-state measurements", color="#a85cff")
 '''
     ),
     markdown(
         r"""
-# 4. Grover: encontrar una respuesta mediante interferencia
+# 4. Grover: finding an answer through interference
 
-Imaginemos cuatro configuraciones posibles de un experimento, codificadas como
+Imagine four possible experimental configurations, encoded as
 
 $$|00\rangle,\ |01\rangle,\ |10\rangle,\ |11\rangle.$$
 
-Una única configuración satisface la condición buscada. Clásicamente podemos consultar las opciones una a una. Grover utiliza:
+Exactly one configuration satisfies the desired condition. A classical search can check the candidates one at a time. Grover uses:
 
-1. **Superposición:** prepara todas las candidatas con igual amplitud.
-2. **Oráculo:** marca la respuesta cambiando sólo su fase.
-3. **Difusor:** convierte la diferencia de fase en amplificación de probabilidad.
-4. **Medición:** revela la respuesta amplificada.
+1. **Superposition:** prepare all candidates with equal amplitude.
+2. **Oracle:** mark the answer by changing only its phase.
+3. **Diffuser:** convert the phase difference into probability amplification.
+4. **Measurement:** reveal the amplified answer.
 
-Con cuatro opciones y una solución, una iteración ideal es suficiente.
+With four candidates and one solution, one ideal iteration is sufficient.
 
-> La configuración experimental es una analogía pedagógica. El oráculo representa una función coherente capaz de reconocer la respuesta, no una medición clásica de la MOT.
+> The experimental configuration is a teaching analogy. The oracle is a coherent function that recognizes the answer, rather than a classical measurement of the MOT.
 """
     ),
     code(
         r'''
 def phase_oracle_2q(target):
-    """Oráculo de fase para target en {'00','01','10','11'}.
+    """Phase oracle for target in {'00','01','10','11'}.
 
-    La cadena se escribe en el orden convencional de medición |q1 q0>.
+    The bit string uses the conventional measurement order |q1 q0>.
     """
     if target not in {"00", "01", "10", "11"}:
-        raise ValueError("target debe ser '00', '01', '10' o '11'")
+        raise ValueError("target must be '00', '01', '10', or '11'")
 
     oracle = QuantumCircuit(2, name=f"O_{target}")
-    # Convertimos temporalmente target en |11>, aplicamos CZ y deshacemos X.
+    # Temporarily map target to |11>, apply CZ, then undo the X gates.
     for qubit, bit in enumerate(reversed(target)):
         if bit == "0":
             oracle.x(qubit)
@@ -381,24 +381,24 @@ def phase_oracle_2q(target):
     return oracle
 
 
-TARGET = "10"  # Cambiar por 00, 01, 10 o 11.
+TARGET = "10"  # Change to 00, 01, 10, or 11.
 oracle = phase_oracle_2q(TARGET)
-show_circuit(oracle, f"Oráculo que marca |{TARGET}>")
+show_circuit(oracle, f"Oracle marking |{TARGET}>")
 '''
     ),
     markdown(
         r"""
-El oráculo no aumenta todavía la probabilidad de la respuesta. Cambia
+The oracle does not yet increase the probability of the answer. It changes
 
 $$|x_*\rangle\longrightarrow-|x_*\rangle.$$
 
-Ese signo es invisible si medimos inmediatamente, pero cambia cómo las amplitudes interfieren en el siguiente paso.
+This sign is invisible if we measure immediately, but it changes how the amplitudes interfere in the next step.
 """
     ),
     code(
         r'''
 def diffuser_2q():
-    """Inversión respecto del promedio, salvo una fase global irrelevante."""
+    """Inversion about the mean, up to an irrelevant global phase."""
     diffuser = QuantumCircuit(2, name="D")
     for qubit in range(2):
         diffuser.h(qubit)
@@ -411,13 +411,13 @@ def diffuser_2q():
 
 
 diffuser = diffuser_2q()
-show_circuit(diffuser, "Difusor de dos qubits")
+show_circuit(diffuser, "Two-qubit diffuser")
 '''
     ),
     code(
         r'''
 def grover_search_2q(target):
-    """Circuito completo de una iteración de Grover para cuatro opciones."""
+    """Complete one-iteration Grover circuit for four candidates."""
     circuit = QuantumCircuit(2, name=f"Grover_{target}")
     for qubit in range(2):
         circuit.h(qubit)
@@ -426,7 +426,7 @@ def grover_search_2q(target):
     return circuit
 
 
-# Guardamos las tres etapas para observar lo que cambia.
+# Keep all three stages to observe what changes.
 initial = QuantumCircuit(2)
 for qubit in range(2):
     initial.h(qubit)
@@ -436,94 +436,94 @@ after_oracle.compose(phase_oracle_2q(TARGET), inplace=True)
 
 grover = grover_search_2q(TARGET)
 
-show_circuit(grover, f"Grover completo: buscar |{TARGET}>")
+show_circuit(grover, f"Complete Grover circuit: search for |{TARGET}>")
 '''
     ),
     code(
         r'''
-show_amplitudes(initial, "1) Superposición uniforme")
+show_amplitudes(initial, "1) Uniform superposition")
 print()
-show_amplitudes(after_oracle, "2) Después del oráculo: una fase cambió")
+show_amplitudes(after_oracle, "2) After the oracle: one phase changed")
 print()
-show_amplitudes(grover, "3) Después del difusor: la respuesta fue amplificada")
+show_amplitudes(grover, "3) After the diffuser: the answer was amplified")
 
 counts_grover = simulate_counts(grover, shots=1000, seed=19)
-show_counts(counts_grover, f"Grover: estado marcado |{TARGET}>", color="#57e7a6")
+show_counts(counts_grover, f"Grover: marked state |{TARGET}>", color="#57e7a6")
 '''
     ),
     markdown(
         r"""
-## El momento conceptual importante
+## The key conceptual step
 
-- Antes del oráculo: cuatro amplitudes iguales.
-- Después del oráculo: cuatro probabilidades iguales, pero una amplitud tiene signo opuesto.
-- Después del difusor: la interferencia destructiva cancela las respuestas incorrectas y la interferencia constructiva amplifica la correcta.
+- Before the oracle: four equal amplitudes.
+- After the oracle: four equal probabilities, but one amplitude has the opposite sign.
+- After the diffuser: destructive interference cancels incorrect answers, while constructive interference amplifies the correct answer.
 
-La aceleración de Grover no proviene de “probar todas las respuestas y leerlas”. Proviene de diseñar una evolución que **cancele lo incorrecto antes de medir**.
+Grover's speedup comes from designing an evolution that **cancels incorrect answers before measurement**.
 """
     ),
     markdown(
         r"""
-## Reto para estudiantes
+## Student challenge
 
-Cambiar solamente `MI_RESPUESTA` y volver a ejecutar la celda. Antes de mirar el resultado, predecir qué barra dominará.
+Change only `MY_ANSWER` and run the cell again. Before looking at the result, predict which bar will dominate.
 """
     ),
     code(
         r'''
-MI_RESPUESTA = "01"  # Pruebe 00, 01, 10 o 11.
+MY_ANSWER = "01"  # Try 00, 01, 10, or 11.
 
-mi_circuito = grover_search_2q(MI_RESPUESTA)
-mis_resultados = simulate_counts(mi_circuito, shots=1000, seed=23)
+my_circuit = grover_search_2q(MY_ANSWER)
+my_results = simulate_counts(my_circuit, shots=1000, seed=23)
 
-show_circuit(mi_circuito, f"Mi búsqueda: |{MI_RESPUESTA}>")
-show_counts(mis_resultados, "Resultado del reto", color="#ffcc5c")
+show_circuit(my_circuit, f"My search: |{MY_ANSWER}>")
+show_counts(my_results, "Challenge result", color="#ffcc5c")
 '''
     ),
     markdown(
         r"""
-## De cuatro opciones a (N) opciones
+## From four candidates to (N) candidates
 
-Para una única solución entre (N=2^n) candidatas:
+For one solution among (N=2^n) candidates:
 
 $$
-\text{consultas clásicas}=O(N),
+\text{classical queries}=O(N),
 \qquad
-\text{consultas de Grover}=O(\sqrt N).
+\text{Grover queries}=O(\sqrt N).
 $$
 
-En cuatro opciones, la diferencia es pequeña; el objetivo es ver el mecanismo completo. La ventaja aparece al escalar, aunque los oráculos y las compuertas multicontroladas son costosos en computadores ruidosos actuales.
+The difference is small for four candidates; our goal is to see the complete mechanism. The advantage appears at larger sizes, although oracles and multicontrolled gates are costly on current noisy computers.
 
-Grover es independiente de la plataforma física: el mismo circuito lógico puede compilarse para superconductores, iones o átomos neutros. Lo que cambia es cómo se implementan físicamente las compuertas, por ejemplo mediante interacciones de Rydberg.
+Grover is independent of the physical platform: the same logical circuit can be compiled for superconducting devices, ions, or neutral atoms. The physical implementation of the gates changes, for example through Rydberg interactions.
 """
     ),
     markdown(
         r"""
-# 5. Validación automática
+# 5. Automated validation
 
-Esta celda prueba los cuatro oráculos y las propiedades usadas durante el taller. Debe terminar con `TODAS LAS PRUEBAS PASARON`.
+This cell tests all four oracles and the properties used throughout the workshop. It must finish with `ALL TESTS PASSED`.
 """
     ),
     code(
         r'''
 def validate_workshop():
-    # Superposición de un qubit.
+    # One-qubit superposition.
     p_one = probabilities_of(one_qubit)
     assert abs(p_one["0"] - 0.5) < 1e-10
     assert abs(p_one["1"] - 0.5) < 1e-10
 
-    # Bell: sólo 00 y 11.
+    # Bell: only 00 and 11.
     p_bell = probabilities_of(bell)
     assert set(p_bell) == {"00", "11"}
     assert all(abs(value - 0.5) < 1e-10 for value in p_bell.values())
 
-    # Grover debe amplificar exactamente cada objetivo de dos qubits.
+    # Grover must amplify each two-qubit target exactly.
     for target in ("00", "01", "10", "11"):
         probabilities = probabilities_of(grover_search_2q(target))
         assert set(probabilities) == {target}
         assert abs(probabilities[target] - 1.0) < 1e-10
 
-    # Ejemplo de Shor usado en la introducción.
+    # Shor example used in the introduction.
     assert multiplicative_order(2, 15) == 4
     assert {gcd(2**2 - 1, 15), gcd(2**2 + 1, 15)} == {3, 5}
 
@@ -531,33 +531,33 @@ def validate_workshop():
 
 
 assert validate_workshop()
-print("TODAS LAS PRUEBAS PASARON ✓")
+print("ALL TESTS PASSED ✓")
 '''
     ),
     markdown(
         r"""
-# Cierre
+# Closing discussion
 
-1. **La MOT entrega átomos fríos y controlables.**
-2. **Los niveles atómicos codifican qubits y las interacciones producen compuertas.**
-3. **Shor muestra el impacto potencial sobre problemas como la factorización.**
-4. **Grover permite observar directamente cómo fase e interferencia realizan un cálculo.**
+1. **The MOT supplies cold, controllable atoms.**
+2. **Atomic levels encode qubits, and interactions implement gates.**
+3. **Shor illustrates the potential impact on problems such as factorization.**
+4. **Grover lets us see directly how phase and interference carry out a computation.**
 
-La lección más importante no es memorizar un circuito:
+The main lesson is more than memorizing a circuit:
 
-> Un algoritmo cuántico programa amplitudes y fases para que, al medir, la respuesta deseada sea la más probable.
+> A quantum algorithm programs amplitudes and phases so that the desired answer is the most likely measurement outcome.
 
-## Si algo falla
+## Troubleshooting
 
-- Ejecutar las celdas desde el principio; las funciones se definen progresivamente.
-- Confirmar que el notebook usa el mismo Python donde está instalado Qiskit.
-- No instalar `qiskit-aer` para este taller: no es necesario.
-- No reemplazar el simulador local por hardware durante la sesión principal.
-- Si el histograma gráfico no aparece, la versión textual contiene exactamente la misma información.
+- Run the cells from the beginning; functions are defined progressively.
+- Confirm that the notebook uses the Python environment where Qiskit is installed.
+- `qiskit-aer` is not required for this workshop.
+- Use the local simulator during the main session.
+- If the graphical histogram does not appear, its text fallback contains exactly the same information.
 
 ---
 
-*Autor: Prof. Ariel Norambuena. Material preparado para Workshop Astro Physics.*
+*Author: Prof. Ariel Norambuena. Material prepared for Workshop Astro Physics.*
 """
     ),
 ]
@@ -577,7 +577,7 @@ NOTEBOOK = {
             "name": "python",
             "pygments_lexer": "ipython3",
         },
-        "title": "Del átomo atrapado al algoritmo cuántico",
+        "title": "From a trapped atom to a quantum algorithm",
     },
     "nbformat": 4,
     "nbformat_minor": 5,
@@ -589,6 +589,7 @@ def main() -> None:
     OUTPUT.write_text(
         json.dumps(NOTEBOOK, ensure_ascii=False, indent=1) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     print(OUTPUT)
     print(f"Cells: {len(CELLS)}")

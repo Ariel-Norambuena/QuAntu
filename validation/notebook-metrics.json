@@ -20,7 +20,7 @@
         "MAE": 0.05476
       },
       "absolute_tolerance": 5.01e-07,
-      "notebook_sha256": "0d7f93508bb99040bbaa6bb0c8b2bcf0a0616667cfa488aa497b99e7905c97ca"
+      "notebook_sha256": "344ffcb24c407f3b7ff0e6ee77883b9b48f00c092cdf971321bd3114df403241"
     },
     "Model_2.ipynb": {
       "code_cells_executed": 5,
@@ -33,7 +33,7 @@
         "MAE": 0.052138
       },
       "absolute_tolerance": 5.01e-07,
-      "notebook_sha256": "2b628af6a79ea489dd533660918cea08f8b68d981bfdf65f56f954c932851c3b"
+      "notebook_sha256": "a0dc852b6d110aded0699170c5dbb073eb69984713cb643d51a2f6557423a3b5"
     },
     "Model_3.ipynb": {
       "code_cells_executed": 5,
@@ -46,7 +46,7 @@
         "MAE": 0.048501
       },
       "absolute_tolerance": 5.01e-07,
-      "notebook_sha256": "00d7cd6e6989f6a2a682b7d75dcda561f3fd1fbbbd54a94673d9c6be64084d42"
+      "notebook_sha256": "9934815050df059dae55e541fe0fc6605d91e8ceddab1602ba77b17e8d1a98d1"
     }
   }
 }

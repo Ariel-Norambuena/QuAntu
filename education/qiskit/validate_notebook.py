@@ -8,7 +8,7 @@ import traceback
 from pathlib import Path
 
 
-NOTEBOOK = Path(__file__).resolve().parent / "Taller_Qiskit_Atomos_Neutros_1h.ipynb"
+NOTEBOOK = Path(__file__).resolve().parent / "Neutral_Atom_Qiskit_Workshop_1h.ipynb"
 
 
 def main() -> None:

@@ -523,7 +523,7 @@ Dip = build_dipole_operator(rb, states, polMode);
 Gamma_rad   = 2*pi*Gamma_MHz;
 gamma_g_rad = 2*pi*gamma_g_MHz;
 
-GammaExtraFWHM_MHz = 0;   % probar 0, 20, 40, 63 MHz
+GammaExtraFWHM_MHz = 0;   % try 0, 20, 40, 63 MHz
 Ldiss = build_dissipator(rb, states, Gamma_rad, gamma_g_rad, GammaExtraFWHM_MHz);
 
 % Doppler grid

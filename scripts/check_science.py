@@ -25,7 +25,7 @@ CONSTANTS = {
 def check_syntax() -> tuple[int, int]:
     python_files = [
         path for path in ROOT.rglob("*.py")
-        if not any(part in {".venv", "venv", ".git", "__pycache__"} for part in path.parts)
+        if not any(part in {".venv", "venv", ".git", "__pycache__", ".cache", "build", "outputs", "results", "tmp"} for part in path.parts)
     ]
     for path in python_files:
         ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
@@ -51,16 +51,16 @@ def scientific_function(path: Path):
                      if isinstance(item, ast.Name)}
             if names and names <= CONSTANTS:
                 nodes.append(node)
-        elif isinstance(node, ast.FunctionDef) and node.name == "calcular_absorcion":
+        elif isinstance(node, ast.FunctionDef) and node.name == "calculate_absorption":
             nodes.append(node)
     namespace = {"np": np, "wofz": wofz, "Omega": np.linspace(-7, 5, 3000)}
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), "exec"), namespace)
-    return namespace["calcular_absorcion"]
+    return namespace["calculate_absorption"]
 
 
 def check_voigt() -> int:
     folder = ROOT / "models" / "interactive"
-    local_model = scientific_function(folder / "mod_interactivo.py")
+    local_model = scientific_function(folder / "interactive_model.py")
     dashboard_model = scientific_function(folder / "dashboard_rb.py")
     cases = 0
     for temperature in (10.0, 293.0, 3000.0):

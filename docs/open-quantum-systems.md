@@ -1,16 +1,16 @@
-# Ejemplos de sistemas cuánticos abiertos en Python
+# Open quantum system examples in Python
 
-El módulo autónomo [two_level.py](../models/open-quantum-systems/two_level.py) implementa un sistema de dos niveles. Incluye Liouvilliana, estado estacionario, dinámica, barrido de detuning con promedio Doppler y espectro de fluorescencia por regresión cuántica. Usa NumPy, SciPy y Matplotlib; no requiere MATLAB ni QuTiP. Su desarrollo tomó como referencia ejemplos de la reunión del 10 de abril de 2026, cuyos archivos originales se retiraron del árbol publicado.
+The standalone [two_level.py](../models/open-quantum-systems/two_level.py) module implements a two-level system. It includes a Liouvillian, steady state, dynamics, detuning scans with Doppler averaging, and a quantum-regression fluorescence spectrum. It uses NumPy, SciPy, and Matplotlib; MATLAB and QuTiP are not required. Its development used examples from the April 10, 2026 meeting, whose original files were removed from the published tree.
 
-## Convenciones y correspondencia
+## Conventions and correspondence
 
-La base es `(excitado, fundamental)`, $\hbar=1$, $\sigma_+=|e\rangle\langle g|$ y $\sigma_-=|g\rangle\langle e|$. El Hamiltoniano conserva la convención original:
+The basis is `(excited, ground)`, $\hbar=1$, $\sigma_+=|e\rangle\langle g|$, and $\sigma_-=|g\rangle\langle e|$. The Hamiltonian retains the original convention:
 
 $$
 H=-\frac{\delta}{2}\sigma_z-\frac{\Omega}{2}\sigma_x.
 $$
 
-La ecuación maestra es
+The master equation is
 
 $$
 \dot\rho=-i[H,\rho]+\gamma(n_{\mathrm{th}}+1)\mathcal{D}[\sigma_-]\rho
@@ -19,22 +19,22 @@ $$
 \mathcal{D}[c]\rho=c\rho c^\dagger-\frac12\{c^\dagger c,\rho\}.
 $$
 
-Las frecuencias de este ejemplo están en unidades angulares consistentes con el tiempo; no son el detuning en GHz de los CSV de rubidio. La API admite ocupación térmica mediante `nth`; los ejemplos CLI usan `nth=0`.
+Frequencies in this example use angular units consistent with time; they are not the GHz detunings in the rubidium CSVs. The API supports thermal occupation through `nth`; CLI examples use `nth=0`.
 
-| Original histórico | Implementación Python | Observación |
+| Historical original | Python implementation | Notes |
 | --- | --- | --- |
-| `BuildLiouvillianTLS.m` | `build_liouvillian`, `tls_liouvillian` | Conserva vectorización por columnas y productos de Kronecker. |
-| `SteadyStateLiouvillian.m` | `steady_state` | Sustituye una fila por la restricción de traza y simetriza al final; no recorta autovalores. |
-| `SolvesMasterEquation.m` | `propagate` | Resuelve el mismo generador constante mediante exponenciales matriciales en lugar de `ode45`. No renormaliza estados durante la propagación. |
-| `MainSpectrumTLS.m` | CLI `dynamics` y `scan` | Reproduce las cantidades calculadas: poblaciones, coherencias y su promedio Doppler. |
-| `FlurescenceSpectrumOnResonanceTLS.m` | CLI `fluorescence`, `correlation`, `fluorescence_spectrum` | Conserva parámetros de drive y desarrolla explícitamente la regresión cuántica antes ausente. |
-| `rgb.m` | Colores por nombre de Matplotlib | Sustituye la función auxiliar de color; no pretende reproducir su redondeo RGB histórico. |
+| `BuildLiouvillianTLS.m` | `build_liouvillian`, `tls_liouvillian` | Retains column-major vectorization and Kronecker products. |
+| `SteadyStateLiouvillian.m` | `steady_state` | Replaces one row with the trace constraint and symmetrizes at the end; does not clip eigenvalues. |
+| `SolvesMasterEquation.m` | `propagate` | Solves the same constant generator using matrix exponentials rather than `ode45`. Does not renormalize states during propagation. |
+| `MainSpectrumTLS.m` | CLI `dynamics` and `scan` | Reproduces the computed quantities: populations, coherences, and their Doppler averages. |
+| `FlurescenceSpectrumOnResonanceTLS.m` | CLI `fluorescence`, `correlation`, `fluorescence_spectrum` | Retains drive parameters and explicitly implements the previously absent quantum-regression routine. |
+| `rgb.m` | Matplotlib named colors | Replaces the color helper without attempting to reproduce its historical RGB rounding. |
 
-Los originales citados en esta tabla no forman parte de la publicación actual y permanecen en la carpeta de trabajo del proyecto. El módulo Python y sus pruebas no dependen de ellos. La comparación OQS se apoya en ecuaciones y soluciones analíticas; no se ejecutó MATLAB para certificar equivalencia numérica de extremo a extremo de este ejemplo.
+The originals listed in this table are not part of the current publication and remain in the project's working folder. The Python module and its tests do not depend on them. The OQS comparison relies on equations and analytical solutions; MATLAB was not executed to certify end-to-end numerical equivalence of this example.
 
-## Ejecución
+## Execution
 
-Desde la raíz del repositorio, con las dependencias instaladas:
+From the repository root, with dependencies installed:
 
 ```sh
 python models/open-quantum-systems/two_level.py check
@@ -43,13 +43,13 @@ python models/open-quantum-systems/two_level.py scan
 python models/open-quantum-systems/two_level.py fluorescence
 ```
 
-Los comandos guardan CSV, PNG y un JSON de parámetros en `outputs/oqs/`. `--output` permite elegir otro directorio. Los nombres de archivo de cada comando son distintos; repetir el mismo comando en el mismo directorio reemplaza sus resultados anteriores.
+Commands save CSVs, PNGs, and a parameter JSON under `outputs/oqs/`. Use `--output` to select another directory. Each command uses distinct filenames; repeating the same command in the same directory replaces its previous results.
 
-- `dynamics`: $\Omega=1$, $\delta=1$, $\gamma=0.5$, estado inicial fundamental, 2000 puntos entre $t=0$ y 50. Exporta `dynamics.csv`, `dynamics.png` y `dynamics_parameters.json`.
-- `scan`: 500 detunings entre $-7\Omega$ y $+7\Omega$, $\Omega=1$, $\gamma=0.5$, anchura Doppler $\sigma_D=1$ y 161 clases entre $-5\sigma_D$ y $+5\sigma_D$. Exporta `scan.csv`, `scan.png` y `scan_parameters.json`.
-- `fluorescence`: resonancia exacta, $\gamma=1$, $4\Omega/\gamma=2,8,16$, 60000 retardos hasta $100/\gamma$. Exporta un CSV de correlación y uno de espectro por drive, además de una figura común y parámetros JSON. `--points 4096` permite una ejecución exploratoria con menor resolución temporal; debe revisarse el ancho de banda antes de interpretar frecuencias altas.
+- `dynamics`: $\Omega=1$, $\delta=1$, $\gamma=0.5$, initial ground state, and 2000 points from $t=0$ to 50. Exports `dynamics.csv`, `dynamics.png`, and `dynamics_parameters.json`.
+- `scan`: 500 detunings between $-7\Omega$ and $+7\Omega$, $\Omega=1$, $\gamma=0.5$, Doppler width $\sigma_D=1$, and 161 classes between $-5\sigma_D$ and $+5\sigma_D$. Exports `scan.csv`, `scan.png`, and `scan_parameters.json`.
+- `fluorescence`: exact resonance, $\gamma=1$, $4\Omega/\gamma=2,8,16$, and 60000 delays up to $100/\gamma$. Exports a correlation CSV and spectrum CSV per drive, plus a shared figure and parameter JSON. `--points 4096` provides an exploratory run with lower temporal resolution; check the bandwidth before interpreting high frequencies.
 
-Ejemplos con parámetros explícitos:
+Examples with explicit parameters:
 
 ```sh
 python models/open-quantum-systems/two_level.py dynamics --omega 1 --delta 0 --gamma 0.5 --tmax 40 --output outputs/oqs-resonant
@@ -57,40 +57,40 @@ python models/open-quantum-systems/two_level.py scan --sigma-d 0.5 --velocity-po
 python models/open-quantum-systems/two_level.py fluorescence --ratios 2 8 16 --total --output outputs/oqs-total
 ```
 
-El barrido sin Doppler resuelve numéricamente cada Liouvilliana. Para acelerar la integral Doppler usa la solución analítica estacionaria equivalente a temperatura del baño cero; las pruebas contrastan esa integral con soluciones numéricas independientes de la Liouvilliana. La distribución térmica se normaliza dentro del intervalo truncado.
+The scan without Doppler broadening solves each Liouvillian numerically. To accelerate the Doppler integral, it uses the equivalent analytical steady state at zero bath temperature; tests compare that integral with independent numerical Liouvillian solutions. The thermal distribution is normalized within the truncated interval.
 
-## Regresión cuántica y espectro
+## Quantum regression and spectrum
 
-El original de fluorescencia invoca `CorrelationTRG`, pero esa rutina no estaba en los archivos recibidos. Por tanto, `correlation` es una implementación nueva y explícita del teorema de regresión cuántica; no se presenta como copia verificada de una función original ausente.
+The original fluorescence example calls `CorrelationTRG`, but that routine was absent from the supplied files. Therefore, `correlation` is a new explicit implementation of the quantum regression theorem; it is not presented as a verified copy of an unavailable original function.
 
-Se define
+The definition is
 
 $$
 C(\tau)=\operatorname{Tr}\!\left[\sigma_+e^{\mathcal{L}\tau}(\sigma_-\rho_{\mathrm{ss}})\right].
 $$
 
-Para la componente incoherente se resta
+For the incoherent component, subtract
 $\operatorname{Tr}(\sigma_+\rho_{\mathrm{ss}})\operatorname{Tr}(\sigma_-\rho_{\mathrm{ss}})$.
-El operador inicial $\sigma_-\rho_{\mathrm{ss}}$ no es una matriz densidad y no debe normalizarse ni simetrizarse durante la propagación.
+The initial operator $\sigma_-\rho_{\mathrm{ss}}$ is not a density matrix and must not be normalized or symmetrized during propagation.
 
-El espectro implementa
+The spectrum implements
 
 $$
 S(\nu)=\frac{1}{\pi}\operatorname{Re}\int_0^T C(\tau)e^{-i\nu\tau}\,d\tau,
 $$
 
-mediante FFT sobre una grilla uniforme. $\nu$ es frecuencia angular respecto al bombeo. Se usan pesos trapezoidales en los extremos, a diferencia de la suma rectangular del ejemplo MATLAB. No se recortan valores negativos del espectro; la ventana finita y el muestreo pueden producir errores o pequeñas oscilaciones que requieren un estudio de convergencia.
+using an FFT on a uniform grid. $\nu$ is angular frequency relative to the pump. Endpoints use trapezoidal weights, unlike the MATLAB example's rectangular sum. Negative spectral values are not clipped; the finite window and sampling can produce errors or small oscillations requiring a convergence study.
 
-El modo predeterminado devuelve la componente incoherente. Con `--total`, el componente elástico se representa con el ancho impuesto por el intervalo finito de observación; esa anchura no es una predicción física de la línea elástica ideal. El CSV mantiene la normalización de la integral, sin normalizar cada espectro a su máximo.
+The default mode returns the incoherent component. With `--total`, the elastic component is represented with the width imposed by the finite observation interval; that width is not a physical prediction for the ideal elastic line. CSV values retain the integral normalization without normalizing each spectrum to its maximum.
 
-## Verificación y límites
+## Verification and limitations
 
-La suite [test_two_level.py](../models/open-quantum-systems/test_two_level.py) contiene nueve pruebas y puede ejecutarse también con:
+The [test_two_level.py](../models/open-quantum-systems/test_two_level.py) suite contains nine tests and can also be run with:
 
 ```sh
 python -m unittest discover -s models/open-quantum-systems -p "test_*.py" -v
 ```
 
-Las pruebas verifican la Liouvilliana contra la ecuación matricial directa; la solución de Bloch estacionaria en varios drives, detunings y tasas; traza, positividad y residuo; equilibrio térmico sin drive; decaimiento exponencial de población; dinámica forzada y convergencia; propagación en tiempos irregulares; promedio Doppler frente a soluciones numéricas; límites inicial y asintótico de QRT; y FFT frente a una Lorentziana analítica. Durante la preparación pasaron las nueve pruebas y se ejecutaron los tres comandos con sus parámetros predeterminados.
+Tests check the Liouvillian against the direct matrix equation; the steady-state Bloch solution over several drives, detunings, and rates; trace, positivity, and residuals; thermal equilibrium at zero drive; exponential population decay; driven dynamics and convergence; propagation at irregular times; Doppler averaging against numerical solutions; initial and asymptotic QRT limits; and FFT output against an analytical Lorentzian. During preparation, all nine tests passed and all three commands ran with their default parameters.
 
-`MainSpectrumTLS.m` reserva matrices llamadas `ChiMap`, `AbsMap`, `DispMap` y mapas de fluorescencia, pero su código recibido no las calcula. Este port reproduce sus observables efectivamente calculadas y añade la fluorescencia explícita del ejemplo resonante; no afirma implementar un mapa completo de susceptibilidad retardada, absorción/ganancia o respuesta de una sonda adicional. La fluorescencia de dos niveles y la absorción D2 multihiperfina son observables y modelos distintos.
+`MainSpectrumTLS.m` allocates matrices named `ChiMap`, `AbsMap`, `DispMap`, and fluorescence maps, but the supplied code does not compute them. This port reproduces its actually computed observables and adds the resonant example's explicit fluorescence; it does not claim to implement a full retarded susceptibility, absorption/gain, or additional-probe response map. Two-level fluorescence and multihyperfine D2 absorption are distinct observables and models.
