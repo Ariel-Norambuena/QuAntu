@@ -1,5 +1,7 @@
 # Trazabilidad del reporte y los materiales
 
+Este documento relaciona el reporte de espectroscopia de rubidio y sus materiales de apoyo con los archivos disponibles de QuAntü, proyecto «Neutral-atom-based quantum computing in Chile» (Anillo Temático ANID ATE250066).
+
 La referencia documental de esta versión es la copia local de [Technical Progress Report](../reports/technical-progress/main.pdf), titulada *Development of Progressive Theoretical Models for the Rubidium Absorption Spectrum*, junto con [main.tex](../reports/technical-progress/main.tex), [density_matrix_model.tex](../reports/technical-progress/density_matrix_model.tex) y [references.bib](../reports/technical-progress/references.bib).
 
 El reporte declara a Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, y un período de mayo–julio de 2026. El [proyecto Overleaf proporcionado](https://www.overleaf.com/project/6a679a4b0c07d40f5ac1dd88) no pudo leerse durante la preparación. Por ello, esta versión conserva la copia local y no afirma que esté sincronizada con Overleaf ni que refleje su revisión más reciente.

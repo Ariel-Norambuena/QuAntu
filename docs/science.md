@@ -1,6 +1,6 @@
 # Alcance científico
 
-QuAntü desarrolla modelos progresivos del espectro de absorción D2 de vapor térmico de rubidio natural. Esta descripción se basa en la copia local del [reporte técnico](../reports/technical-progress/main.pdf), sus [fuentes LaTeX](../reports/technical-progress/main.tex) y el [desarrollo de matriz densidad](../reports/technical-progress/density_matrix_model.tex). El reporte declara como autor a Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, y cubre mayo–julio de 2026. Esa atribución corresponde al reporte; no establece por sí sola la autoría de todos los materiales del repositorio.
+QuAntü es el proyecto «Neutral-atom-based quantum computing in Chile», Anillo Temático de ANID ATE250066, organizado en los grupos de algoritmos, experimental y teórico. Esta página documenta el componente de espectroscopia: modelos progresivos de absorción D2 de vapor térmico de rubidio natural y ejemplos de sistemas cuánticos abiertos disponibles en el repositorio. Esta descripción se basa en la copia local del [reporte técnico](../reports/technical-progress/main.pdf), sus [fuentes LaTeX](../reports/technical-progress/main.tex) y el [desarrollo de matriz densidad](../reports/technical-progress/density_matrix_model.tex). El reporte declara como autor a Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, y cubre mayo–julio de 2026. Esa atribución corresponde al reporte; no establece por sí sola la autoría de todos los materiales del repositorio.
 
 ## Modelos progresivos
 

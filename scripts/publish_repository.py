@@ -42,7 +42,7 @@ def main() -> int:
             raise SystemExit("The existing remote is private. Publication stopped; visibility was not changed.")
     else:
         run("gh", "repo", "create", REPOSITORY, "--public", "--description",
-            "Rubidium D2 spectroscopy, open quantum systems and quantum education — QuAntü")
+            "QuAntü | Neutral-atom-based quantum computing in Chile — Proyecto Anillo Temático de ANID ATE250066. Algoritmos, experimentación y teoría.")
     if remote.returncode != 0:
         run("git", "remote", "add", "origin", URL)
     run("git", "push", "--set-upstream", "origin", "main")

@@ -5,7 +5,7 @@ body:
   - type: textarea
     id: question
     attributes:
-      label: Pregunta física y motivación
+      label: Pregunta científica o computacional y motivación
     validations:
       required: true
   - type: textarea

@@ -1,8 +1,18 @@
 # QuAntü
 
-**Espectroscopia de rubidio, sistemas cuánticos abiertos y formación en tecnologías cuánticas.**
+**Neutral-atom-based quantum computing in Chile — ATE250066**
 
-Repositorio de investigación del proyecto QuAntü: modelos de absorción de vapor de rubidio, datos de referencia, informe técnico, presentaciones y materiales docentes. Python es la ruta de desarrollo principal; las implementaciones MATLAB originales permiten revisar la procedencia de los modelos.
+QuAntü es un proyecto **Anillo Temático de ANID** que integra los grupos de algoritmos, experimental y teórico.
+
+## Dirección y grupos de investigación
+
+| Integrante | Cargo en el proyecto | Grupo que lidera |
+| --- | --- | --- |
+| [Dardo Goyeneche](https://github.com/dardomg) | Director | Algoritmos |
+| Jerónimo Maze | Director alterno | Experimental |
+| [Ariel Norambuena](https://github.com/Ariel-Norambuena) | Investigador principal | Teórico |
+
+Este repositorio reúne actualmente modelos de absorción de vapor de rubidio, sistemas cuánticos abiertos, datos de referencia, un informe técnico y materiales docentes. Python es la ruta de desarrollo principal; las implementaciones MATLAB originales permiten revisar la procedencia de los modelos.
 
 > **Estado científico:** investigación en desarrollo. Las cifras de ajuste históricas se reprodujeron ejecutando los tres notebooks. Las nuevas implementaciones Python incluyen comprobaciones numéricas; la calibración absoluta y la validación experimental completa siguen pendientes.
 
@@ -91,4 +101,4 @@ Consulta [CONTRIBUTING.md](CONTRIBUTING.md) antes de añadir resultados y [ROADM
 
 Este repositorio se publica con acceso **público**. No se ha asignado una licencia abierta global: artículos, digitalizaciones y documentos de terceros conservan sus derechos y atribuciones. Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Las citas del informe y del taller son independientes de las condiciones de reutilización de cada componente.
 
-*English: QuAntü collects rubidium D2 spectroscopy models, open quantum system examples, reference datasets, a technical report and quantum education materials. Python is the primary execution path. Historical fit metrics and pending scientific validation are explicitly separated.*
+*English: QuAntü is the ANID Anillo Temático project “Neutral-atom-based quantum computing in Chile” (ATE250066), with algorithm, experimental and theory groups. This repository currently collects rubidium D2 spectroscopy models, open quantum system examples, reference datasets, a technical report and quantum education materials. Python is the primary execution path. Historical fit metrics and pending scientific validation are explicitly separated.*

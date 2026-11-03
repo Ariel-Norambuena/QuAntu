@@ -1,6 +1,6 @@
 # Hoja de ruta científica
 
-Las siguientes tareas proceden de la revisión del informe y de los archivos disponibles. Son trabajo pendiente, salvo que se indique evidencia de ejecución en la documentación de validación.
+Esta hoja de ruta reúne hitos de los componentes actualmente versionados de QuAntü (ATE250066). El proyecto integra los grupos de algoritmos, experimental y teórico; las tareas siguientes proceden de la revisión del informe y de los modelos y datos disponibles. Son trabajo pendiente, salvo que se indique evidencia de ejecución en la documentación de validación.
 
 | Prioridad | Hito | Criterio de término |
 | --- | --- | --- |

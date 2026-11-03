@@ -2,13 +2,15 @@ cff-version: 1.2.0
 message: >-
   Cite the specific component and its original authors. This entry identifies
   the QuAntu collection; the report and Qiskit workshop have separate credits.
-title: "QuAntü: rubidium spectroscopy and quantum education collection"
+title: "QuAntü — Neutral-atom-based quantum computing in Chile (ATE250066)"
 type: software
 authors:
   - name: "QuAntü Research Group"
 repository-code: "https://github.com/Ariel-Norambuena/QuAntu"
 abstract: >-
-  Research and educational collection for rubidium D2 absorption spectroscopy,
+  Research and educational collection of the ANID Anillo Temático project
+  Neutral-atom-based quantum computing in Chile (ATE250066), organized into
+  algorithm, experimental, and theory groups. Includes rubidium D2 absorption spectroscopy,
   open quantum systems, magneto-optical trapping, and quantum computing.
   Historical numerical results and pending scientific validation are documented.
 keywords:

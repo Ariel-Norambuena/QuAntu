@@ -2,7 +2,7 @@
 
 Los cambios científicos deben permitir a otra persona reproducir el resultado y evaluar su alcance.
 
-1. Describe el objetivo físico y vincula el cambio con una sección del informe o un asunto concreto.
+1. Identifica la línea de trabajo —algoritmos, experimental, teórica o transversal—, explica el objetivo científico o computacional y vincula el cambio con documentación o un asunto concreto.
 2. Usa Python para nuevas implementaciones. Conserva unidades, convenciones de frecuencia y normalizaciones explícitas. Documenta cualquier diferencia con las implementaciones originales.
 3. Separa datos de entrada, parámetros y resultados generados. Escribe las nuevas salidas en `results/generated/` y evita sobrescribir las figuras históricas importadas.
 4. Aporta el comando ejecutado, versiones del entorno y controles numéricos relevantes: traza, hermiticidad, positividad, convergencia o límites analíticos según corresponda.
