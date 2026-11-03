@@ -1,6 +1,6 @@
 # Scientific roadmap
 
-This roadmap covers the components currently versioned in QuAntü (ATE250066). The project brings together Algorithms, Experimental, and Theory groups; the tasks below come from reviewing the report and available models and data. They remain pending unless the validation documentation records evidence of execution.
+This roadmap covers the components currently versioned in QuAntü (ATE250066). The project brings together [Algorithms](algorithms/README.md), [Experimental](experimental/README.md), and [Theory](theory/README.md) groups. Each group README describes its objectives and available materials; the tasks below come from reviewing the spectroscopy report and available models and data. They remain pending unless the validation documentation records evidence of execution.
 
 | Priority | Milestone | Completion criterion |
 | --- | --- | --- |

@@ -16,13 +16,13 @@ def main() -> int:
     commands = [
         ["scripts/verify_repository.py"],
         ["scripts/check_science.py"],
-        ["-m", "unittest", "discover", "-s", "models/density-matrix", "-p", "test_*.py", "-v"],
-        ["-m", "unittest", "discover", "-s", "models/open-quantum-systems", "-p", "test_*.py", "-v"],
+        ["-m", "unittest", "discover", "-s", "theory/models/density-matrix", "-p", "test_*.py", "-v"],
+        ["-m", "unittest", "discover", "-s", "theory/models/open-quantum-systems", "-p", "test_*.py", "-v"],
     ]
     if args.with_notebooks:
         commands.append(["scripts/run_absorption_notebooks.py"])
     if args.with_qiskit:
-        commands.append(["education/qiskit/validate_notebook.py"])
+        commands.append(["algorithms/education/qiskit/validate_notebook.py"])
     for command in commands:
         print("Running: python " + " ".join(command), flush=True)
         result = subprocess.run([sys.executable, *command], cwd=ROOT)

@@ -26,7 +26,7 @@ from scipy import sparse
 from scipy.sparse.linalg import MatrixRankWarning, spsolve
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 AMU = 1.66053906660e-27
 KB = 1.380649e-23
 POLARIZATIONS = ("pi", "sigma_plus", "sigma_minus", "linear_x")

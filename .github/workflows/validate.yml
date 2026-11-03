@@ -23,9 +23,9 @@ jobs:
       - name: Check numerical integrity
         run: python scripts/check_science.py
       - name: Validate density matrix model
-        run: python -m unittest discover -s models/density-matrix -p 'test_*.py' -v
+        run: python -m unittest discover -s theory/models/density-matrix -p 'test_*.py' -v
       - name: Validate open quantum systems
-        run: python -m unittest discover -s models/open-quantum-systems -p 'test_*.py' -v
+        run: python -m unittest discover -s theory/models/open-quantum-systems -p 'test_*.py' -v
       - name: Reproduce absorption notebook metrics
         env:
           MPLBACKEND: Agg
@@ -37,5 +37,5 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
-      - run: python -m pip install -r education/qiskit/requirements.txt
-      - run: python education/qiskit/validate_notebook.py
+      - run: python -m pip install -r algorithms/education/qiskit/requirements.txt
+      - run: python algorithms/education/qiskit/validate_notebook.py

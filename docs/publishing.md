@@ -1,6 +1,6 @@
 # Publishing the repository
 
-Authorized destination: **Ariel-Norambuena/QuAntu**, with public visibility. The checkout root is the directory containing the main README, `models/`, `reports/`, and `.github/`.
+Authorized destination: **Ariel-Norambuena/QuAntu**, with public visibility. The checkout root is the directory containing the main README, `algorithms/`, `experimental/`, `theory/`, and the shared `docs/`, `scripts/`, and `.github/` directories. Run publishing commands from this root.
 
 The [publish_repository.py](../scripts/publish_repository.py) publisher uses Git and GitHub CLI. It checks the 126 preserved imported files, authenticated account, `main` branch, clean working tree, and public visibility before pushing. It creates a public repository if none exists; it does not force history or automatically change an existing repository's visibility.
 

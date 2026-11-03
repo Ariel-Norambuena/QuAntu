@@ -32,8 +32,8 @@ htmlcov/
 # Temporary QA artifacts and results from future executions
 /tmp/
 /results/generated/
-/education/mot/preview.mp4
-/education/mot/preview.png
+/experimental/education/mot/preview.mp4
+/experimental/education/mot/preview.png
 
 # LaTeX intermediates; the report PDF and useful figures are versioned
 *.aux

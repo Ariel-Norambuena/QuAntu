@@ -6,7 +6,7 @@ import sys
 import unittest
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts"))
 from check_density_matrix import check_matlab, check_physics  # noqa: E402
 

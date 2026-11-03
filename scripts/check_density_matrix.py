@@ -11,7 +11,7 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "models" / "density-matrix"))
+sys.path.insert(0, str(ROOT / "theory" / "models" / "density-matrix"))
 import rb_d2 as rb  # noqa: E402
 
 

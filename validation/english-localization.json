@@ -16,11 +16,11 @@
     "inventory.source_sha256"
   ],
   "renamed_paths": {
-    "models/interactive/mod_interactivo.py": "models/interactive/interactive_model.py",
-    "education/qiskit/Taller_Qiskit_Atomos_Neutros_1h.ipynb": "education/qiskit/Neutral_Atom_Qiskit_Workshop_1h.ipynb",
+    "models/interactive/mod_interactivo.py": "theory/models/interactive/interactive_model.py",
+    "education/qiskit/Taller_Qiskit_Atomos_Neutros_1h.ipynb": "algorithms/education/qiskit/Neutral_Atom_Qiskit_Workshop_1h.ipynb",
     "outreach/quantu-stem/Presentación Alonso Recabarren/Presentación Alonso Recabarren.pptx": "outreach/quantu-stem/Alonso Recabarren Presentation/Alonso Recabarren Presentation.pptx",
     "outreach/quantu-stem/Evento QuAntü-STEM.docx": "outreach/quantu-stem/QuAntu-STEM Event.docx",
-    "references/hardware/Thorlabs Celda Rb.pdf": "references/hardware/Thorlabs_Rb_Cell.pdf"
+    "references/hardware/Thorlabs Celda Rb.pdf": "experimental/references/hardware/Thorlabs_Rb_Cell.pdf"
   },
   "numerical_checks": {
     "voigt_cases": 36,
@@ -50,5 +50,10 @@
     "audio_codec": "aac"
   },
   "reference_documents": "Reference PDFs and the technical report already have English content; proper names are preserved.",
-  "original_files_outside_checkout": "Unchanged"
+  "original_files_outside_checkout": "Unchanged",
+  "current_group_layout": [
+    "algorithms",
+    "experimental",
+    "theory"
+  ]
 }

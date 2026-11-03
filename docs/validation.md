@@ -10,11 +10,11 @@ Structural update on **November 3, 2026**: the 11 meeting files were removed fro
 | --- | --- | --- |
 | Inventory, references, and syntax | `python scripts/verify_repository.py` | Integrity of the 126 imported files retained for publication, local paths, LaTeX resources, Python sources, and four notebooks. The 11 meeting materials were removed from the published tree. |
 | Voigt explorers | `python scripts/check_science.py` | 36 temperature, linewidth, and isotope combinations; finite, nonnegative, normalized values, interface agreement, and temperature scaling. |
-| Python density matrix | [Tests](../models/density-matrix/test_rb_d2.py), [record](../validation/density-matrix-metrics.json) | Two automated tests covering 32 physical states, decay channels, zero drive, and fast/direct comparison on a common grid. |
+| Python density matrix | [Tests](../theory/models/density-matrix/test_rb_d2.py), [record](../validation/density-matrix-metrics.json) | Two automated tests covering 32 physical states, decay channels, zero drive, and fast/direct comparison on a common grid. |
 | D2 comparison against MATLAB | [Independent fixture](../tests/fixtures/matlab_density_matrix.json) | MATLAB R2025b Update 6 executed original functions: 16 matrices and eight small spectra. Maximum error in rho: `7.79e-16`; in spectra: `9.97e-18`. |
-| Open systems | [Nine tests](../models/open-quantum-systems/test_two_level.py) | Liouvillian against the direct equation, Bloch solution, thermal equilibrium, decay, dynamics, Doppler averaging, QRT, and spectrum against a Lorentzian. |
+| Open systems | [Nine tests](../theory/models/open-quantum-systems/test_two_level.py) | Liouvillian against the direct equation, Bloch solution, thermal equilibrium, decay, dynamics, Doppler averaging, QRT, and spectrum against a Lorentzian. |
 | Absorption notebooks | [Metrics record](../validation/notebook-metrics.json) | All 15 code cells of the three notebooks executed. MSE and MAE agree with saved values within `5.01e-7`. Only plot display was suppressed. |
-| Qiskit workshop | `python education/qiskit/validate_notebook.py` | All 12 executed cells completed their tests with Qiskit 2.6.1; local simulation without credentials. |
+| Qiskit workshop | `python algorithms/education/qiskit/validate_notebook.py` | All 12 executed cells completed their tests with Qiskit 2.6.1; local simulation without credentials. |
 | Dashboard | Streamlit `AppTest` | The application loaded without exceptions and displayed two sliders; this check does not cover every visual interaction. |
 | Matplotlib interface | Agg backend | Data loading and execution without an interactive window; complete manual control review remains pending. |
 | MOT animation | Full English video and review frames | Regenerated all 98 seconds at 1920 × 1080, 30 fps, H.264/AAC. All 63 captions are English; 98 sampled frames were checked for text outside the canvas. |
@@ -31,7 +31,7 @@ From the repository root:
 ```sh
 python -m pip install -r requirements.txt
 python scripts/validate.py --with-notebooks
-python -m pip install -r education/qiskit/requirements.txt
+python -m pip install -r algorithms/education/qiskit/requirements.txt
 python scripts/validate.py --with-qiskit
 ```
 
@@ -61,3 +61,9 @@ Numerical checks, all three absorption notebooks and all 12 Qiskit code cells pa
 again with unchanged scientific results. The [English-edition record](../validation/english-localization.json)
 records the scope and renamed paths. Current and original source hashes remain in
 the inventory.
+
+## Group organization checked on November 3, 2026
+
+The collection is organized under `algorithms/`, `experimental/`, and `theory/`, each with its own English README. The inventory places 7 imported files in Algorithms, 64 in Experimental, and 53 in Theory; 2 shared outreach imports remain at the root. Shared validation tools, fixtures, requirements, and evidence remain at the root.
+
+After relocation, the full validation command passed again, including all numerical tests, three absorption notebooks, and the Qiskit workshop. Model entry points and GitHub Actions use the new paths. Imported documents, data, notebooks, and media retain their bytes; imported changes are limited to active MATLAB output paths and the Qiskit guide commands. Original source files outside this checkout remain unchanged.

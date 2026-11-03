@@ -13,6 +13,8 @@ from pathlib import Path
 import numpy as np
 from scipy.linalg import expm
 
+ROOT = Path(__file__).resolve().parents[3]
+
 SP = np.array([[0, 1], [0, 0]], dtype=complex)
 SM = SP.conj().T
 SZ = np.diag([1.0, -1.0]).astype(complex)
@@ -199,7 +201,7 @@ def main(argv=None):
     scan = subparsers.add_parser("scan", help="Stationary detuning scan with Doppler average")
     fluorescence = subparsers.add_parser("fluorescence", help="QRT fluorescence at resonance")
     for command in (dynamics, scan, fluorescence):
-        command.add_argument("--output", type=Path, default=Path("outputs/oqs"))
+        command.add_argument("--output", type=Path, default=ROOT / "outputs" / "oqs")
         command.add_argument("--points", type=int, default=60000 if command is fluorescence else 2000 if command is dynamics else 500)
     for command in (dynamics, scan):
         command.add_argument("--omega", type=float, default=1.0)

@@ -1,6 +1,6 @@
 # Open quantum system examples in Python
 
-The standalone [two_level.py](../models/open-quantum-systems/two_level.py) module implements a two-level system. It includes a Liouvillian, steady state, dynamics, detuning scans with Doppler averaging, and a quantum-regression fluorescence spectrum. It uses NumPy, SciPy, and Matplotlib; MATLAB and QuTiP are not required. Its development used examples from the April 10, 2026 meeting, whose original files were removed from the published tree.
+The standalone [two_level.py](../theory/models/open-quantum-systems/two_level.py) module implements a two-level system. It includes a Liouvillian, steady state, dynamics, detuning scans with Doppler averaging, and a quantum-regression fluorescence spectrum. It uses NumPy, SciPy, and Matplotlib; MATLAB and QuTiP are not required. Its development used examples from the April 10, 2026 meeting, whose original files were removed from the published tree.
 
 ## Conventions and correspondence
 
@@ -37,10 +37,10 @@ The originals listed in this table are not part of the current publication and r
 From the repository root, with dependencies installed:
 
 ```sh
-python models/open-quantum-systems/two_level.py check
-python models/open-quantum-systems/two_level.py dynamics
-python models/open-quantum-systems/two_level.py scan
-python models/open-quantum-systems/two_level.py fluorescence
+python theory/models/open-quantum-systems/two_level.py check
+python theory/models/open-quantum-systems/two_level.py dynamics
+python theory/models/open-quantum-systems/two_level.py scan
+python theory/models/open-quantum-systems/two_level.py fluorescence
 ```
 
 Commands save CSVs, PNGs, and a parameter JSON under `outputs/oqs/`. Use `--output` to select another directory. Each command uses distinct filenames; repeating the same command in the same directory replaces its previous results.
@@ -52,9 +52,9 @@ Commands save CSVs, PNGs, and a parameter JSON under `outputs/oqs/`. Use `--outp
 Examples with explicit parameters:
 
 ```sh
-python models/open-quantum-systems/two_level.py dynamics --omega 1 --delta 0 --gamma 0.5 --tmax 40 --output outputs/oqs-resonant
-python models/open-quantum-systems/two_level.py scan --sigma-d 0.5 --velocity-points 321 --output outputs/oqs-doppler
-python models/open-quantum-systems/two_level.py fluorescence --ratios 2 8 16 --total --output outputs/oqs-total
+python theory/models/open-quantum-systems/two_level.py dynamics --omega 1 --delta 0 --gamma 0.5 --tmax 40 --output outputs/oqs-resonant
+python theory/models/open-quantum-systems/two_level.py scan --sigma-d 0.5 --velocity-points 321 --output outputs/oqs-doppler
+python theory/models/open-quantum-systems/two_level.py fluorescence --ratios 2 8 16 --total --output outputs/oqs-total
 ```
 
 The scan without Doppler broadening solves each Liouvillian numerically. To accelerate the Doppler integral, it uses the equivalent analytical steady state at zero bath temperature; tests compare that integral with independent numerical Liouvillian solutions. The thermal distribution is normalized within the truncated interval.
@@ -85,10 +85,10 @@ The default mode returns the incoherent component. With `--total`, the elastic c
 
 ## Verification and limitations
 
-The [test_two_level.py](../models/open-quantum-systems/test_two_level.py) suite contains nine tests and can also be run with:
+The [test_two_level.py](../theory/models/open-quantum-systems/test_two_level.py) suite contains nine tests and can also be run with:
 
 ```sh
-python -m unittest discover -s models/open-quantum-systems -p "test_*.py" -v
+python -m unittest discover -s theory/models/open-quantum-systems -p "test_*.py" -v
 ```
 
 Tests check the Liouvillian against the direct matrix equation; the steady-state Bloch solution over several drives, detunings, and rates; trace, positivity, and residuals; thermal equilibrium at zero drive; exponential population decay; driven dynamics and convergence; propagation at irregular times; Doppler averaging against numerical solutions; initial and asymptotic QRT limits; and FFT output against an analytical Lorentzian. During preparation, all nine tests passed and all three commands ran with their default parameters.

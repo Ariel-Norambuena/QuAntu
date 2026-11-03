@@ -29,8 +29,8 @@ def check_syntax() -> tuple[int, int]:
     ]
     for path in python_files:
         ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
-    notebooks = list((ROOT / "notebooks").rglob("*.ipynb"))
-    notebooks += list((ROOT / "education" / "qiskit").glob("*.ipynb"))
+    notebooks = list((ROOT / "theory" / "notebooks").rglob("*.ipynb"))
+    notebooks += list((ROOT / "algorithms" / "education" / "qiskit").glob("*.ipynb"))
     for path in notebooks:
         document = json.loads(path.read_text(encoding="utf-8-sig"))
         if document.get("nbformat") != 4:
@@ -59,7 +59,7 @@ def scientific_function(path: Path):
 
 
 def check_voigt() -> int:
-    folder = ROOT / "models" / "interactive"
+    folder = ROOT / "theory" / "models" / "interactive"
     local_model = scientific_function(folder / "interactive_model.py")
     dashboard_model = scientific_function(folder / "dashboard_rb.py")
     cases = 0
@@ -87,8 +87,8 @@ def check_voigt() -> int:
 
 
 def check_data() -> int:
-    files = list((ROOT / "models").rglob("*.csv"))
-    files += list((ROOT / "notebooks" / "absorption").glob("*.csv"))
+    files = list((ROOT / "theory" / "models").rglob("*.csv"))
+    files += list((ROOT / "theory" / "notebooks" / "absorption").glob("*.csv"))
     for path in files:
         data = np.loadtxt(path, delimiter=",", skiprows=1)
         if data.ndim != 2 or data.shape[1] != 2 or data.shape[0] < 2:

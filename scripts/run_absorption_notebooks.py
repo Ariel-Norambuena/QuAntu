@@ -40,7 +40,7 @@ def main() -> int:
     results = {}
     try:
         for name, expected in EXPECTED.items():
-            path = ROOT / "notebooks" / "absorption" / name
+            path = ROOT / "theory" / "notebooks" / "absorption" / name
             document = json.loads(path.read_text(encoding="utf-8"))
             namespace = {"__name__": "__notebook_validation__"}
             os.chdir(path.parent)
@@ -74,7 +74,7 @@ def main() -> int:
         "environment": {"python": platform.python_version(), "numpy": np.__version__,
                         "scipy": scipy.__version__, "matplotlib": matplotlib.__version__,
                         "plotly": plotly.__version__},
-        "data_sha256": hashlib.sha256((ROOT / "notebooks/absorption/Data_Rb_Gas.csv").read_bytes()).hexdigest(),
+        "data_sha256": hashlib.sha256((ROOT / "theory/notebooks/absorption/Data_Rb_Gas.csv").read_bytes()).hexdigest(),
         "results": results,
     }
     if args.output:

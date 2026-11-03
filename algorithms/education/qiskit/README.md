@@ -52,8 +52,8 @@ precomputed results.
 From the repository root:
 
 ```text
-python education/qiskit/build_workshop_notebook.py
-python education/qiskit/validate_notebook.py
+python algorithms/education/qiskit/build_workshop_notebook.py
+python algorithms/education/qiskit/validate_notebook.py
 ```
 
 Generation is deterministic. Validation executes all 12 code cells without

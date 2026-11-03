@@ -6,7 +6,7 @@ No general license applies to the entire collection. Respect the notices, author
 
 ## Papers and atomic data
 
-The PDFs in [references/papers](references/papers/) and [references/atomic-data](references/atomic-data/) are reference documents by their respective authors and publishers. The report bibliography is preserved in [references.bib](reports/technical-progress/references.bib):
+The PDFs in [theory/references/papers](theory/references/papers/) and [theory/references/atomic-data](theory/references/atomic-data/) are reference documents by their respective authors and publishers. The report bibliography is preserved in [references.bib](theory/reports/technical-progress/references.bib):
 
 | Reference | Bibliographic identifier |
 | --- | --- |
@@ -22,17 +22,17 @@ Dates, titles, and identifiers in this table are transcribed from the report's l
 
 ## Images and tables derived from literature
 
-[data/raw](data/raw/) and [data/processed](data/processed/) contain images, digitized tables, and processed data associated with Agnew, Bala, Horn, Jacques, and Siddons. Cite their sources when reusing them. These materials must not be presented as original QuAntü laboratory measurements. Consult the data documentation for file-level provenance and reconstruction limitations; including a CSV does not certify its license or digitization accuracy.
+[experimental/data/raw](experimental/data/raw/) and [experimental/data/processed](experimental/data/processed/) contain images, digitized tables, and processed data associated with Agnew, Bala, Horn, Jacques, and Siddons. Cite their sources when reusing them. These materials must not be presented as original QuAntü laboratory measurements. Consult the data documentation for file-level provenance and reconstruction limitations; including a CSV does not certify its license or digitization accuracy.
 
-[notebooks/absorption](notebooks/absorption/) originated in a folder named for code associated with J. Ma's 2017 Scientific Reports paper. That folder name connects the material with a scientific reference; it does not by itself establish that the notebooks were published by the paper's authors. The inventory preserves the exact historical source path without assigning unsupported authorship or licensing.
+[theory/notebooks/absorption](theory/notebooks/absorption/) originated in a folder named for code associated with J. Ma's 2017 Scientific Reports paper. That folder name connects the material with a scientific reference; it does not by itself establish that the notebooks were published by the paper's authors. The inventory preserves the exact historical source path without assigning unsupported authorship or licensing.
 
 ## Manufacturer documentation and theoretical materials
 
-[references/hardware](references/hardware/) contains Thorlabs and SCHOTT/BOROFLOAT documents. Their trade names and content belong to their respective holders. [references/rubidium-theory](references/rubidium-theory/) preserves other rubidium reference documents; their inclusion does not establish QuAntü team authorship or a redistribution license.
+[experimental/references/hardware](experimental/references/hardware/) contains Thorlabs and SCHOTT/BOROFLOAT documents. Their trade names and content belong to their respective holders. [theory/references/rubidium-theory](theory/references/rubidium-theory/) preserves other rubidium reference documents; their inclusion does not establish QuAntü team authorship or a redistribution license.
 
 ## Qiskit workshop and other educational materials
 
-[education/qiskit](education/qiskit/) preserves an English adaptation of the imported snapshot of [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), attributed to Ariel Norambuena by its README and [CITATION.cff](education/qiskit/CITATION.cff). Those notices are preserved. No independent license allowing a collection-wide license to be applied to the workshop was identified in the imported files.
+[algorithms/education/qiskit](algorithms/education/qiskit/) preserves an English adaptation of the imported snapshot of [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), attributed to Ariel Norambuena by its README and [CITATION.cff](algorithms/education/qiskit/CITATION.cff). Those notices are preserved. No independent license allowing a collection-wide license to be applied to the workshop was identified in the imported files.
 
 Lecture and outreach presentations preserve the names and credits in their originals, including Ariel Norambuena and Alonso Recabarren. Their inclusion does not authorize relicensing their images, brands, or other external components.
 

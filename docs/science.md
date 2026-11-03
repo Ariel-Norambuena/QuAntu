@@ -1,15 +1,15 @@
 # Scientific scope
 
-QuAntü is the ANID Thematic Research Ring project “Neutral-atom-based quantum computing in Chile” (ATE250066), organized into Algorithms, Experimental, and Theory groups. This page documents the spectroscopy component: progressive D2 absorption models for natural-abundance thermal rubidium vapor and open quantum system examples available in the repository. The description is based on the local [technical report](../reports/technical-progress/main.pdf), its [LaTeX sources](../reports/technical-progress/main.tex), and its [density-matrix derivation](../reports/technical-progress/density_matrix_model.tex). The report identifies Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, as its author and covers May–July 2026. That attribution applies to the report and does not establish authorship of every repository component.
+QuAntü is the ANID Thematic Research Ring project “Neutral-atom-based quantum computing in Chile” (ATE250066), organized into Algorithms, Experimental, and Theory groups. This page documents the spectroscopy component: progressive D2 absorption models for natural-abundance thermal rubidium vapor and open quantum system examples available in the repository. The description is based on the local [technical report](../theory/reports/technical-progress/main.pdf), its [LaTeX sources](../theory/reports/technical-progress/main.tex), and its [density-matrix derivation](../theory/reports/technical-progress/density_matrix_model.tex). The report identifies Alexis R. Legón, Pontificia Universidad Católica de Chile, QuAntü Research Group, as its author and covers May–July 2026. That attribution applies to the report and does not establish authorship of every repository component.
 
 ## Progressive models
 
 | Stage | Description | Implementation |
 | --- | --- | --- |
-| 1 | Sum of Gaussian profiles with a common Doppler width and effective centers and amplitudes. | [Model_1.ipynb](../notebooks/absorption/Model_1.ipynb) |
-| 2 | Gaussian model with contributions from both isotopes at natural abundance. Retains effective position and weight corrections. | [Model_2.ipynb](../notebooks/absorption/Model_2.ipynb) |
-| 3 | Optical susceptibility response with homogeneous broadening and thermal Doppler averaging. The notebook retains effective parameters and normalizations. | [Model_3.ipynb](../notebooks/absorption/Model_3.ipynb) |
-| 4 | Steady-state density matrix with hyperfine structure, magnetic sublevels, coherent coupling, and Lindblad relaxation. | [Python module](../models/density-matrix/rb_d2.py), [fast execution](../models/density-matrix/run_fast.py), and [direct execution](../models/density-matrix/run_direct.py) |
+| 1 | Sum of Gaussian profiles with a common Doppler width and effective centers and amplitudes. | [Model_1.ipynb](../theory/notebooks/absorption/Model_1.ipynb) |
+| 2 | Gaussian model with contributions from both isotopes at natural abundance. Retains effective position and weight corrections. | [Model_2.ipynb](../theory/notebooks/absorption/Model_2.ipynb) |
+| 3 | Optical susceptibility response with homogeneous broadening and thermal Doppler averaging. The notebook retains effective parameters and normalizations. | [Model_3.ipynb](../theory/notebooks/absorption/Model_3.ipynb) |
+| 4 | Steady-state density matrix with hyperfine structure, magnetic sublevels, coherent coupling, and Lindblad relaxation. | [Python module](../theory/models/density-matrix/rb_d2.py), [fast execution](../theory/models/density-matrix/run_fast.py), and [direct execution](../theory/models/density-matrix/run_direct.py) |
 
 These stages identify mechanisms behind the Doppler envelope, four resonance groups, coherences, and optical pumping. Greater physical complexity does not automatically imply smaller error: the density-matrix model still lacks metrics obtained with the same residual protocol as the first three stages.
 
@@ -50,7 +50,7 @@ The basis includes all $m_F$ states of the D2 manifolds to calculate selection r
 
 The steady-state matrix satisfies $\mathcal{L}(x)\rho_{\mathrm{ss}}(x)=0$ and $\operatorname{Tr}\rho_{\mathrm{ss}}=1$. The absorption observable comes from the imaginary part of dipole-weighted optical coherences, rather than the total excited-state population. Some historical code comments refer to excited-state population; the implementation and detailed derivation use optical coherence.
 
-The fast solver exploits the Liouvillian's affine detuning dependence: it computes a steady-state response grid, interpolates, and performs the Doppler average. The direct solver provides an alternative formulation over detuning and velocity. Python implementations are the repository's execution path. The original [fast MATLAB](../models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) and [direct MATLAB](../models/density-matrix/Rb_D2_density_matrix_slow_direct.m) scripts are preserved as backups and references for the report's historical derivation.
+The fast solver exploits the Liouvillian's affine detuning dependence: it computes a steady-state response grid, interpolates, and performs the Doppler average. The direct solver provides an alternative formulation over detuning and velocity. Python implementations are the repository's execution path. The original [fast MATLAB](../theory/models/density-matrix/Rb_D2_density_matrix_fast_COHERENCE_ABS.m) and [direct MATLAB](../theory/models/density-matrix/Rb_D2_density_matrix_slow_direct.m) scripts are preserved as backups and references for the report's historical derivation.
 
 ## Default parameters and calibrations
 
@@ -92,9 +92,9 @@ The following checks should be extended beyond the small-grid cases already reco
 7. Replace effective scales and relaxation rates with measured intensity, geometry, density, length, and rates.
 8. Incorporate Zeeman terms, collisional broadening, and uncertainties when sufficient experimental parameters are available.
 
-The D2 calculation is stationary, single-mode, and Markovian; it includes only D2 and independent one-dimensional velocity classes. It does not simulate time-dependent scans, pulses, diffusion, recoil, or velocity-changing collisions. The [Python two-level example](open-quantum-systems.md) separately covers temporal dynamics and fluorescence in an idealized system; it does not replace a complete time-dependent rubidium model. [MOT](../education/mot/README.md), [Qiskit](../education/qiskit/README.md), and outreach materials provide educational context; their presence does not establish an operational experimental MOT or quantum-computing experiments performed on hardware.
+The D2 calculation is stationary, single-mode, and Markovian; it includes only D2 and independent one-dimensional velocity classes. It does not simulate time-dependent scans, pulses, diffusion, recoil, or velocity-changing collisions. The [Python two-level example](open-quantum-systems.md) separately covers temporal dynamics and fluorescence in an idealized system; it does not replace a complete time-dependent rubidium model. [MOT](../experimental/education/mot/README.md), [Qiskit](../algorithms/education/qiskit/README.md), and outreach materials provide educational context; their presence does not establish an operational experimental MOT or quantum-computing experiments performed on hardware.
 
-See [report traceability](report-traceability.md), [data provenance](data-provenance.md), and the [report bibliography](../reports/technical-progress/references.bib).
+See [report traceability](report-traceability.md), [data provenance](data-provenance.md), and the [report bibliography](../theory/reports/technical-progress/references.bib).
 
 ## Linewidth convention in the Voigt explorers
 

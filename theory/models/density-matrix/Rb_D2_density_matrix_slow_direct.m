@@ -5,61 +5,73 @@ clear; clc; close all;
 scriptDir = fileparts(mfilename('fullpath'));
 outputRoot = getenv('QUANTU_OUTPUT_DIR');
 if isempty(outputRoot)
-    outputRoot = fullfile(scriptDir, '..', '..', 'results', 'density-matrix');
+    outputRoot = fullfile(scriptDir, '..', '..', '..', 'results', 'density-matrix');
 end
-outputDir = fullfile(outputRoot, ['fast_' datestr(now, 'yyyymmddTHHMMSSFFF')]);
+outputDir = fullfile(outputRoot, ['direct_' datestr(now, 'yyyymmddTHHMMSSFFF')]);
 
 %% ============================================================
-%  Fast full density-matrix steady-state model for Rb D2 absorption
+%  SLOW / DIRECT density-matrix steady-state model for Rb D2 absorption
 %  85Rb + 87Rb, hyperfine + Zeeman sublevels F,mF
 %
+%  Purpose:
+%      Diagnostic version to validate the fast Doppler interpolation code.
+%
 %  Model:
-%       d rho/dt = -i[H,rho] + L_sp[rho] + L_grel[rho]
+%      d rho/dt = -i[H(Omega,v_z),rho] + L_sp[rho] + L_grel[rho]
 %
-%  For each isotope and effective detuning x = Omega - Doppler,
-%  we solve:
+%  For every pair (Omega_i, Doppler_j), we solve explicitly:
 %
-%       L(x) rho_ss = 0,  Tr(rho_ss)=1
+%      L(Omega_i,Doppler_j) rho_ss(Omega_i,Doppler_j) = 0,
+%      Tr(rho_ss) = 1.
 %
-%  Then the Doppler average is computed by interpolation:
+%  Then we Doppler-average the absorptive optical coherence:
 %
-%       alpha(Omega) = int dD P(D) Pe_ss(Omega - D)
-%
-%  This avoids solving the steady state for every pair (Omega,D).
+%      alpha(Omega_i) =
+%          int dD P(D) Im[ sum_{g,e} d_eg^* rho_ge^ss(Omega_i,D) ].
 %
 %  Frequency convention:
-%       Omega = nu_85_D2_center - nu_L
+%      Omega = nu_85_D2_center - nu_L
 %
-%  This convention reproduces the horizontal axis of the paper:
-%  the four Doppler groups appear approximately near
+%  Single travelling-wave Doppler convention:
+%      x = Omega - Doppler,
+%      Doppler = v_z/lambda in MHz.
 %
-%       -4.17, -1.78, +1.32, +2.5 GHz.
-% =============================================================
+%  Important:
+%      This version intentionally avoids the response-grid/interp1
+%      acceleration. It still uses the affine Liouvillian
+%
+%          L(Omega,D) = L0 + (Omega-D)Ldet
+%
+%      but solves the steady state independently for each pair
+%      (Omega_i,D_j).
+%
+%  Recommended first test:
+%      NOmega = 301, Nv = 301.
+%
+%  Full high-resolution runs:
+%      NOmega = 1001, Nv = 2001
+%      are very expensive.
+% ============================================================
 
 %% ---------------- Numerical controls ----------------
-NOmega = 1001;          % number of detuning points
-Nv     = 1000+1;      % number of Doppler velocity classes
+NOmega = 301;          % diagnostic default. Increase after validation.
+Nv     = 301;          % diagnostic default. Increase after validation.
 
 Omega_MHz = linspace(-6000, 6000, NOmega);
 
-% Effective response-grid spacing.
-% Smaller dxResponse_MHz = more accurate but slower.
-dxResponse_MHz = 0.5;
-
-% Parallel / GPU options
-useParallel = true;     % recommended; falls back to serial if unavailable
+% Parallel option
+useParallel = true;     % falls back to serial if unavailable
 if useParallel && ~license('test', 'Distrib_Computing_Toolbox')
     warning('QuAntu:SerialFallback', 'Parallel Computing Toolbox unavailable; using serial CPU.');
     useParallel = false;
 end
-useGPU      = false;    % try true only after CPU/parfor benchmark
 
 % Polarization mode:
 %   'pi'          : Delta m = 0
 %   'sigma_plus'  : Delta m = +1
 %   'sigma_minus' : Delta m = -1
 %   'linear_x'    : coherent sigma+ + sigma-
-polMode = 'pi';
+polMode = 'linear_x';
 
 % Base resonant Rabi frequency in MHz.
 % Small Omega0_MHz -> almost linear absorption.
@@ -77,6 +89,16 @@ Gamma_MHz = 6.0666;
 % Global optical-depth scale for plotting absorption as 1-exp(-OD)
 maxAbsPaper = 0.42;
 
+% Use Beer-Lambert conversion A = 1-exp(-OD)
+useBeerLambert = true;
+
+% For this diagnostic, keep false first.
+% If true, this only changes the plotted horizontal axis;
+% it is NOT inserted into the Hamiltonian.
+useAxisCalibration = false;
+aCal = 1.0434;
+bCal = 0.0781;   % GHz
+
 %% ---------------- Physical constants ----------------
 kB  = 1.380649e-23;                 % J/K
 amu = 1.66053906660e-27;            % kg
@@ -84,7 +106,7 @@ T   = 293;                          % K
 
 %% ---------------- Natural abundances ----------------
 eta85 = 0.72;
-eta87 = 1-eta85;
+eta87 = 1 - eta85;
 
 etaTot = eta85 + eta87;
 eta85 = eta85 / etaTot;
@@ -118,7 +140,7 @@ sigmaD_85 = sigma_v_85 / rb85.lambda / 1e6;      % MHz
 sigmaD_87 = sigma_v_87 / rb87.lambda / 1e6;      % MHz
 
 fprintf('============================================================\n');
-fprintf('Fast density-matrix Rb D2 absorption model\n');
+fprintf('SLOW direct density-matrix Rb D2 absorption model\n');
 fprintf('============================================================\n');
 fprintf('T = %.1f K\n', T);
 fprintf('sigma_D(85Rb) = %.2f MHz\n', sigmaD_85);
@@ -126,21 +148,14 @@ fprintf('sigma_D(87Rb) = %.2f MHz\n', sigmaD_87);
 fprintf('Omega0 effective = %.2f MHz\n', Omega0_MHz);
 fprintf('Ground relaxation = %.3f MHz\n', gamma_g_MHz);
 fprintf('Natural abundance ratio 85Rb/87Rb = %.3f\n', eta85/eta87);
-fprintf('NOmega = %d, Nv = %d, dxResponse = %.2f MHz\n', ...
-    NOmega, Nv, dxResponse_MHz);
-fprintf('useParallel = %d, useGPU = %d\n', useParallel, useGPU);
+fprintf('NOmega = %d, Nv = %d\n', NOmega, Nv);
+fprintf('useParallel = %d\n', useParallel);
+fprintf('useAxisCalibration = %d\n', useAxisCalibration);
+fprintf('useBeerLambert = %d\n', useBeerLambert);
 
-%% ---------------- Full density-matrix spectra ----------------
-% We average over the three spherical polarization components:
-%
-%   pi          : Delta m = 0
-%   sigma_plus  : Delta m = +1
-%   sigma_minus : Delta m = -1
-%
-% This is a more robust approximation when the experiment does not define
-% a perfect quantization axis or when the observed absorption is effectively
-% averaged over Zeeman sublevels and light polarizations.
-
+%% ---------------- Direct density-matrix spectra ----------------
+% Optional polarization average.
+% For the first diagnostic, use false and one controlled polarization.
 usePolarizationAverage = false;
 
 if usePolarizationAverage
@@ -158,57 +173,51 @@ if usePolarizationAverage
         fprintf('Computing polarization component: %s\n', polModeNow);
         fprintf('============================================================\n');
 
-        fprintf('\nComputing 85Rb fast density-matrix spectrum...\n');
-        alpha85_all(ip,:) = density_matrix_spectrum_fast( ...
+        fprintf('\nComputing 85Rb direct pair-by-pair spectrum...\n');
+        alpha85_all(ip,:) = density_matrix_spectrum_direct_pairs( ...
             rb85, Omega_MHz, sigmaD_85, Nv, Gamma_MHz, ...
-            Omega0_MHz, gamma_g_MHz, polModeNow, ...
-            dxResponse_MHz, useParallel, useGPU);
+            Omega0_MHz, gamma_g_MHz, polModeNow, useParallel);
 
-        fprintf('\nComputing 87Rb fast density-matrix spectrum...\n');
-        alpha87_all(ip,:) = density_matrix_spectrum_fast( ...
+        fprintf('\nComputing 87Rb direct pair-by-pair spectrum...\n');
+        alpha87_all(ip,:) = density_matrix_spectrum_direct_pairs( ...
             rb87, Omega_MHz, sigmaD_87, Nv, Gamma_MHz, ...
-            Omega0_MHz, gamma_g_MHz, polModeNow, ...
-            dxResponse_MHz, useParallel, useGPU);
+            Omega0_MHz, gamma_g_MHz, polModeNow, useParallel);
     end
 
-    % Isotropic effective average
     alpha85 = mean(alpha85_all, 1);
     alpha87 = mean(alpha87_all, 1);
 
 else
 
-    fprintf('\nComputing 85Rb fast density-matrix spectrum...\n');
-    alpha85 = density_matrix_spectrum_fast( ...
+    fprintf('\nComputing 85Rb direct pair-by-pair spectrum...\n');
+    alpha85 = density_matrix_spectrum_direct_pairs( ...
         rb85, Omega_MHz, sigmaD_85, Nv, Gamma_MHz, ...
-        Omega0_MHz, gamma_g_MHz, polMode, ...
-        dxResponse_MHz, useParallel, useGPU);
+        Omega0_MHz, gamma_g_MHz, polMode, useParallel);
 
-    fprintf('\nComputing 87Rb fast density-matrix spectrum...\n');
-    alpha87 = density_matrix_spectrum_fast( ...
+    fprintf('\nComputing 87Rb direct pair-by-pair spectrum...\n');
+    alpha87 = density_matrix_spectrum_direct_pairs( ...
         rb87, Omega_MHz, sigmaD_87, Nv, Gamma_MHz, ...
-        Omega0_MHz, gamma_g_MHz, polMode, ...
-        dxResponse_MHz, useParallel, useGPU);
+        Omega0_MHz, gamma_g_MHz, polMode, useParallel);
 
 end
 
 %% ---------------- Natural mixture ----------------
-
-%% ---------------- Natural mixture ----------------
-
 OD85_raw = eta85 * alpha85;
 OD87_raw = eta87 * alpha87;
 
 OD_raw = OD85_raw + OD87_raw;
 
-% Choose whether to plot linear absorption or Beer-Lambert absorption
-useBeerLambert = true;
+if max(OD_raw) <= 0
+    error('OD_raw has non-positive maximum. Check sign conventions or alpha calculation.');
+end
 
 if useBeerLambert
 
-    % Target maximum absorption for comparison with experiment
+    % Target maximum absorption for comparison with experiment.
+    % This fixes only the vertical scale.
     ODmax = -log(1 - maxAbsPaper);
 
-    % Global optical-depth scale
+    % Global optical-depth scale.
     scaleOD = ODmax / max(OD_raw);
 
     OD85 = scaleOD * OD85_raw;
@@ -217,8 +226,8 @@ if useBeerLambert
 
     Abs_total = 1 - exp(-OD_total);
 
-    % Optional: additive visual decomposition of the total absorption
-    % This is not an independent Beer-Lambert absorption of each isotope.
+    % Additive plotting decomposition:
+    % these are not independent Beer-Lambert absorptions.
     Abs85 = zeros(size(Abs_total));
     Abs87 = zeros(size(Abs_total));
 
@@ -228,7 +237,7 @@ if useBeerLambert
 
 else
 
-    % Linear response approximation: A approximately proportional to OD
+    % Linear response approximation: A approximately proportional to OD.
     scaleAbs = maxAbsPaper / max(OD_raw);
 
     Abs85 = scaleAbs * OD85_raw;
@@ -238,42 +247,32 @@ else
 end
 
 %% ---------------- Experimental data ----------------
-% File 1: DATA_ABS_Rb.csv
-% File 2: Data_Rb_Gas.csv
+% File examples:
+%   DATA_ABS_Rb.csv
+%   Data_Rb_Gas.csv
+%
+% Expected format:
+%   column 1: experimental detuning [GHz]
+%   column 2: absorption [arb. units]
 expFile = fullfile(scriptDir, 'DATA_ABS_Rb.csv');
 haveExp = isfile(expFile);
 
 if haveExp
     data_exp = readmatrix(expFile);
 
-    delta_exp_GHz = data_exp(:,1);    % experimental detuning [GHz]
-    signal_exp    = data_exp(:,2);    % experimental absorption [arb. units]
+    delta_exp_GHz = data_exp(:,1);
+    signal_exp    = data_exp(:,2);
 else
     warning('Experimental file "%s" not found. Plotting only theory.', expFile);
 end
 
-%% ---------------- Plot ----------------
-
-%% ---------------- Frequency-axis calibration ----------------
-% The article reports spectra as a function of laser detuning Omega,
-% but it does not explicitly state the absolute frequency calibration
-% or the exact zero-frequency convention used for Fig. 2(c).
-%
-% We therefore include an empirical affine calibration:
-%
-%   Omega_exp = aCal * Omega_th + bCal
-%
-% where bCal ~ 0.0781 GHz is close to the 87Rb-85Rb D2 isotope shift.
-
-useAxisCalibration = true;
-
-aCal = 1.0434;
-bCal = 0.0781;   % GHz
-
-Omega_plot_GHz = Omega_MHz*1e-3;
+%% ---------------- Frequency axis for plotting ----------------
+Omega_theory_GHz = Omega_MHz * 1e-3;
 
 if useAxisCalibration
-    Omega_plot_GHz = aCal*Omega_plot_GHz + bCal;
+    Omega_plot_GHz = aCal * Omega_theory_GHz + bCal;
+else
+    Omega_plot_GHz = Omega_theory_GHz;
 end
 
 %% ---------------- Plot ----------------
@@ -293,7 +292,6 @@ if haveExp
         'MarkerEdgeAlpha', 0.75)
 end
 
-
 hold off
 box on
 
@@ -307,12 +305,16 @@ set(gca, ...
 
 xlim([-6 6])
 
-% Optional: adjust y-limits slightly above the maximum
-ylim([0 1.12*max([Abs_total(:); signal_exp(:)])])
+if haveExp
+    yMax = max([Abs_total(:); signal_exp(:)]);
+else
+    yMax = max(Abs_total(:));
+end
+ylim([0 1.12*yMax])
 
 %% ---------------- Legend outside ----------------
 if haveExp
-    lgd = legend({'Theory', ...
+    lgd = legend({'Theory direct', ...
                   '${}^{85}$Rb contribution', ...
                   '${}^{87}$Rb contribution', ...
                   'Experiment'}, ...
@@ -321,7 +323,7 @@ if haveExp
                   'Location','northoutside', ...
                   'Orientation','horizontal');
 else
-    lgd = legend({'Theory', ...
+    lgd = legend({'Theory direct', ...
                   '${}^{85}$Rb contribution', ...
                   '${}^{87}$Rb contribution'}, ...
                   'Interpreter','latex', ...
@@ -332,7 +334,6 @@ end
 
 lgd.Box = 'off';
 
-% Give more room to the axes after moving the legend outside
 ax = gca;
 ax.Position = [0.12 0.16 0.82 0.68];
 
@@ -340,12 +341,12 @@ ax.Position = [0.12 0.16 0.82 0.68];
 if ~isfolder(outputDir)
     mkdir(outputDir);
 end
-savefig(fig, fullfile(outputDir, 'Rb_absorption_spectrum.fig'));
+savefig(fig, fullfile(outputDir, 'Rb_absorption_spectrum_slow_direct.fig'));
 
 set(fig, 'Renderer', 'painters');
-print(fig, fullfile(outputDir, 'Rb_absorption_spectrum.svg'), '-dsvg');
-print(fig, fullfile(outputDir, 'Rb_absorption_spectrum.pdf'), '-dpdf', '-bestfit');
-print(fig, fullfile(outputDir, 'Rb_absorption_spectrum.png'), '-dpng', '-r300');
+print(fig, fullfile(outputDir, 'Rb_absorption_spectrum_slow_direct.svg'), '-dsvg');
+print(fig, fullfile(outputDir, 'Rb_absorption_spectrum_slow_direct.pdf'), '-dpdf', '-bestfit');
+print(fig, fullfile(outputDir, 'Rb_absorption_spectrum_slow_direct.png'), '-dpng', '-r300');
 fprintf('Figures saved in: %s\n', outputDir);
 
 %% ---------------- Print transition centers ----------------
@@ -356,8 +357,6 @@ fprintf('============================================================\n');
 print_transition_centers(rb85);
 print_transition_centers(rb87);
 
-
-
 fprintf('\n============================================================\n');
 fprintf('Group-center diagnostic from energy gaps and line strengths\n');
 fprintf('============================================================\n');
@@ -367,155 +366,35 @@ diagnose_group_centers(rb87);
 
 toc
 
-function diagnose_group_centers(rb)
-
-fprintf('\n--- %s ---\n', rb.name);
-
-for Fg = rb.Fg
-
-    Eg = hyperfine_shift_MHz(rb.I, rb.Jg, rb.Ag, rb.Bg, Fg);
-
-    centers = [];
-    weights = [];
-
-    fprintf('\nGround manifold F=%g\n', Fg);
-
-    for Fe = rb.Fe
-
-        if abs(Fe-Fg) <= 1 && ~(Fe==0 && Fg==0)
-
-            Ee = hyperfine_shift_MHz(rb.I, rb.Je, rb.Ae, rb.Be, Fe);
-
-            % Paper axis: Omega = nu_85D2 - nu_L
-            center_MHz = -(rb.isoCenter_MHz + Ee - Eg);
-
-            S = relative_strength_steck_D2(rb.isotope, Fg, Fe);
-
-            centers(end+1) = center_MHz;
-            weights(end+1) = S;
-
-            fprintf('  F=%g -> F''=%g : Omega = %+9.3f MHz, S = %.5f\n', ...
-                Fg, Fe, center_MHz, S);
-        end
-    end
-
-    cWeighted = sum(weights .* centers) / sum(weights);
-
-    fprintf('  Weighted center for %s F=%g group: %+9.3f MHz = %+7.4f GHz\n', ...
-        rb.name, Fg, cWeighted, cWeighted*1e-3);
-end
-end
-
-function S = relative_strength_steck_D2(isotope, Fg, Fe)
-% Relative hyperfine transition strengths S_FF' for Rb D2.
-% Values from Steck Table 8.
-
-S = 0;
-
-if isotope == 85
-
-    if Fg == 2 && Fe == 1
-        S = 3/10;
-    elseif Fg == 2 && Fe == 2
-        S = 7/18;
-    elseif Fg == 2 && Fe == 3
-        S = 14/45;
-    elseif Fg == 3 && Fe == 2
-        S = 5/63;
-    elseif Fg == 3 && Fe == 3
-        S = 5/18;
-    elseif Fg == 3 && Fe == 4
-        S = 9/14;
-    end
-
-elseif isotope == 87
-
-    if Fg == 1 && Fe == 0
-        S = 1/6;
-    elseif Fg == 1 && Fe == 1
-        S = 5/12;
-    elseif Fg == 1 && Fe == 2
-        S = 5/12;
-    elseif Fg == 2 && Fe == 1
-        S = 1/20;
-    elseif Fg == 2 && Fe == 2
-        S = 1/4;
-    elseif Fg == 2 && Fe == 3
-        S = 7/10;
-    end
-end
-end
-
 %% ============================================================
 %                         FUNCTIONS
 % ============================================================
 
-function rb = make_rb85(amu, lambda)
-
-rb.name = '85Rb';
-rb.isotope = 85;
-
-rb.I  = 5/2;
-rb.Jg = 1/2;
-rb.Je = 3/2;
-
-rb.Fg = [2 3];
-rb.Fe = [1 2 3 4];
-
-% Hyperfine constants in MHz
-rb.Ag = 1011.9108130;      % 5^2S_{1/2}
-rb.Bg = 0;
-rb.Ae = 25.0354;           % 5^2P_{3/2}
-rb.Be = 25.898;            % 5^2P_{3/2}
-
-rb.mass = 84.911789732 * amu;
-rb.lambda = lambda;
-end
-
-function rb = make_rb87(amu, lambda)
-
-rb.name = '87Rb';
-rb.isotope = 87;
-
-rb.I  = 3/2;
-rb.Jg = 1/2;
-rb.Je = 3/2;
-
-rb.Fg = [1 2];
-rb.Fe = [0 1 2 3];
-
-% Hyperfine constants in MHz
-rb.Ag = 3417.341305452145; % 5^2S_{1/2}
-rb.Bg = 0.0;
-rb.Ae = 84.7185;           % 5^2P_{3/2}
-rb.Be = 12.4965;           % 5^2P_{3/2}
-
-rb.mass = 86.909180520 * amu;
-rb.lambda = lambda;
-end
-
-function alpha = density_matrix_spectrum_fast(rb, Omega_MHz, sigmaD_MHz, Nv, ...
-    Gamma_MHz, Omega0_MHz, ...
-    gamma_g_MHz, polMode, ...
-    dxResponse_MHz, useParallel, useGPU)
+function alpha = density_matrix_spectrum_direct_pairs(rb, Omega_MHz, sigmaD_MHz, Nv, ...
+    Gamma_MHz, Omega0_MHz, gamma_g_MHz, polMode, useParallel)
 % ============================================================
-% Optimized strategy:
+% Direct pair-by-pair density-matrix Doppler spectrum.
 %
-% Instead of solving rho_ss for every pair (Omega,Doppler),
-% solve once for the effective detuning
+% For every laser detuning Omega_i and every Doppler class D_j,
+% this function solves the steady-state master equation
 %
-%       x = Omega - Doppler
+%       L(Omega_i,D_j) rho_ss(Omega_i,D_j) = 0,
+%       Tr[rho_ss] = 1.
 %
-% obtaining Pe_ss(x). Then compute the Doppler average by
-% interpolation:
+% For a single travelling-wave field, the velocity dependence enters as
 %
-%       alpha(Omega) = int dD P(D) Pe_ss(Omega - D).
+%       x_ij = Omega_i - D_j,
+%
+% where D_j = v_z/lambda in MHz.
+%
+% This function intentionally does NOT build a response grid and does
+% NOT call interp1. It computes rho_ss separately for every pair.
 % ============================================================
 
 states = build_basis(rb);
 N = numel(states);
 
-fprintf('%s: Hilbert dimension N = %d, Liouville dimension = %d\n', ...
+fprintf('%s direct: Hilbert dimension N = %d, Liouville dimension = %d\n', ...
     rb.name, N, N^2);
 
 Dip = build_dipole_operator(rb, states, polMode);
@@ -523,57 +402,104 @@ Dip = build_dipole_operator(rb, states, polMode);
 Gamma_rad   = 2*pi*Gamma_MHz;
 gamma_g_rad = 2*pi*gamma_g_MHz;
 
-GammaExtraFWHM_MHz = 0;   % try 0, 20, 40, 63 MHz
+GammaExtraFWHM_MHz = 0;
 Ldiss = build_dissipator(rb, states, Gamma_rad, gamma_g_rad, GammaExtraFWHM_MHz);
 
-% Doppler grid
+% Doppler grid in frequency units D = v_z/lambda [MHz]
 Doppler = linspace(-4*sigmaD_MHz, 4*sigmaD_MHz, Nv);
+
 P = exp(-Doppler.^2/(2*sigmaD_MHz^2));
 P = P / trapz(Doppler, P);
 
-% Effective detuning grid x = Omega - Doppler
-xMin = min(Omega_MHz) - max(Doppler) - 5*Gamma_MHz;
-xMax = max(Omega_MHz) - min(Doppler) + 5*Gamma_MHz;
-
-xGrid = xMin:dxResponse_MHz:xMax;
-Nx = numel(xGrid);
-
-fprintf('%s: response grid Nx = %d, dx = %.2f MHz\n', ...
-    rb.name, Nx, dxResponse_MHz);
-
-% Precompute affine Liouvillian:
+% Affine Liouvillian:
 %
-%       L(x) = L0 + x Ldet
+%       L(Omega,D) = L0 + (Omega-D)Ldet.
 %
-% with trace condition already inserted.
+% This avoids rebuilding sparse operators from scratch, but still solves
+% one independent steady-state problem for every pair (Omega_i,D_j).
 [L0, Ldet, b, absVec] = prepare_affine_liouvillian( ...
     rb, states, Dip, Ldiss, Omega0_MHz);
 
-% Solve response grid
-if useGPU
-    fprintf('%s: solving response grid on GPU...\n', rb.name);
-    RespGrid = solve_response_grid_gpu(L0, Ldet, b, absVec, xGrid);
-else
-    fprintf('%s: solving response grid on CPU...\n', rb.name);
-    RespGrid = solve_response_grid_cpu(L0, Ldet, b, absVec, xGrid, useParallel);
+NOmega = numel(Omega_MHz);
+alpha = zeros(1, NOmega);
+
+fprintf('%s direct: solving %d x %d = %d steady-state systems\n', ...
+    rb.name, NOmega, Nv, NOmega*Nv);
+
+if useParallel
+    try
+        pool = gcp('nocreate');
+        if isempty(pool)
+            parpool;
+        end
+    catch poolError
+        warning('QuAntu:SerialFallback', 'Cannot start parallel pool: %s. Using serial CPU.', poolError.message);
+        useParallel = false;
+    end
 end
 
-% Doppler average by interpolation
-Xmat = Omega_MHz(:) - Doppler(:).';
-RespMat = interp1(xGrid, RespGrid, Xmat, 'linear', 0);
+if useParallel
+    parfor iO = 1:NOmega
 
-alpha = trapz(Doppler, RespMat .* P(:).', 2).';
+        OmegaNow = Omega_MHz(iO);
+        resp_v = zeros(1, Nv);
 
-% Robust sign convention: absorption must be mostly positive.
-% Depending on Hamiltonian/phase conventions, Im(coherence) may
-% acquire an overall minus sign. Correct only the global sign.
+        for iv = 1:Nv
+
+            Dnow = Doppler(iv);
+
+            % Pair-dependent effective detuning.
+            xPair = OmegaNow - Dnow;
+
+            % Pair-dependent steady-state Liouvillian.
+            A = L0 + xPair * Ldet;
+
+            % Solve steady state with trace condition.
+            rhoVec = A \ b;
+
+            % Absorptive optical coherence.
+            resp_v(iv) = imag(absVec.' * rhoVec);
+        end
+
+        % Doppler average for this laser detuning.
+        alpha(iO) = trapz(Doppler, resp_v .* P);
+    end
+
+else
+
+    for iO = 1:NOmega
+
+        OmegaNow = Omega_MHz(iO);
+        resp_v = zeros(1, Nv);
+
+        for iv = 1:Nv
+
+            Dnow = Doppler(iv);
+            xPair = OmegaNow - Dnow;
+
+            A = L0 + xPair * Ldet;
+            rhoVec = A \ b;
+
+            resp_v(iv) = imag(absVec.' * rhoVec);
+        end
+
+        alpha(iO) = trapz(Doppler, resp_v .* P);
+
+        if mod(iO, 10) == 0 || iO == 1 || iO == NOmega
+            fprintf('  %s direct: Omega point %d / %d done\n', ...
+                rb.name, iO, NOmega);
+        end
+    end
+end
+
+% Robust global sign convention.
 if max(alpha) < abs(min(alpha))
     alpha = -alpha;
 end
 
-% Clip only tiny numerical negatives. Remove this line if you want
-% to diagnose dispersive/interference features.
+% Clip tiny numerical negatives.
 alpha(alpha < 0) = 0;
+
 end
 
 function [L0, Ldet, b, absVec] = prepare_affine_liouvillian( ...
@@ -585,10 +511,14 @@ Hdiag_const_MHz = zeros(N,1);
 Hdiag_det_MHz   = zeros(N,1);
 
 for a = 1:N
+
     if states(a).manifold == 'g'
+
         Hdiag_const_MHz(a) = states(a).E_MHz;
         Hdiag_det_MHz(a)   = 0;
+
     else
+
         % Excited rotating-frame energy:
         %
         %       E_e + isotope shift + x
@@ -596,8 +526,13 @@ for a = 1:N
         % Resonance condition:
         %
         %       x + iso + E_e - E_g = 0.
+        %
+        % For each pair:
+        %
+        %       x = Omega - Doppler.
         Hdiag_const_MHz(a) = states(a).E_MHz + rb.isoCenter_MHz;
         Hdiag_det_MHz(a)   = 1;
+
     end
 end
 
@@ -646,11 +581,13 @@ b(1) = 1;
 absVec = sparse(N^2,1);
 
 for g = 1:N
+
     if states(g).manifold ~= 'g'
         continue;
     end
 
     for e = 1:N
+
         if states(e).manifold ~= 'e'
             continue;
         end
@@ -663,78 +600,7 @@ for g = 1:N
         end
     end
 end
-end
 
-function RespGrid = solve_response_grid_cpu(L0, Ldet, b, absVec, xGrid, useParallel)
-
-Nx = numel(xGrid);
-RespGrid = zeros(1,Nx);
-
-if useParallel
-    try
-        pool = gcp('nocreate');
-        if isempty(pool)
-            parpool;
-        end
-    catch poolError
-        warning('QuAntu:SerialFallback', 'Cannot start parallel pool: %s. Using serial CPU.', poolError.message);
-        useParallel = false;
-    end
-end
-
-if useParallel
-    parfor ix = 1:Nx
-        A = L0 + xGrid(ix)*Ldet;
-        rhoVec = A\b;
-        RespGrid(ix) = imag(absVec.' * rhoVec);
-    end
-else
-    for ix = 1:Nx
-        A = L0 + xGrid(ix)*Ldet;
-        rhoVec = A\b;
-        RespGrid(ix) = imag(absVec.' * rhoVec);
-
-        if mod(ix,200)==0
-            fprintf('  response point %d / %d done\n', ix, Nx);
-        end
-    end
-end
-end
-
-function RespGrid = solve_response_grid_gpu(L0, Ldet, b, absVec, xGrid)
-
-try
-    g = gpuDevice;
-    fprintf('Using GPU: %s\n', g.Name);
-catch
-    warning('No GPU available. Falling back to CPU.');
-    RespGrid = solve_response_grid_cpu(L0, Ldet, b, absVec, xGrid, false);
-    return;
-end
-
-Nx = numel(xGrid);
-
-% Dense GPU version.
-% For 85Rb, Liouville dimension is about 1296, so dense matrices
-% are feasible on a 32 GB GPU, but benchmark CPU/parfor too.
-L0g      = gpuArray(full(L0));
-Ldetg    = gpuArray(full(Ldet));
-bg       = gpuArray(b);
-absVecg = gpuArray(full(absVec));
-
-RespGrid_g = gpuArray.zeros(1,Nx);
-
-for ix = 1:Nx
-    A = L0g + xGrid(ix)*Ldetg;
-    rhoVec = A\bg;
-    RespGrid_g(ix) = imag(absVecg.' * rhoVec);
-
-    if mod(ix,200)==0
-        fprintf('  GPU response point %d / %d done\n', ix, Nx);
-    end
-end
-
-RespGrid = gather(RespGrid_g);
 end
 
 function states = build_basis(rb)
@@ -744,31 +610,38 @@ states = struct('manifold',{},'F',{},'m',{},'E_MHz',{},'index',{});
 
 % Ground states
 for F = rb.Fg
+
     Eg = hyperfine_shift_MHz(rb.I, rb.Jg, rb.Ag, rb.Bg, F);
 
     for m = -F:F
+
         count = count + 1;
         states(count).manifold = 'g';
         states(count).F = F;
         states(count).m = m;
         states(count).E_MHz = Eg;
         states(count).index = count;
+
     end
 end
 
 % Excited states
 for F = rb.Fe
+
     Ee = hyperfine_shift_MHz(rb.I, rb.Je, rb.Ae, rb.Be, F);
 
     for m = -F:F
+
         count = count + 1;
         states(count).manifold = 'e';
         states(count).F = F;
         states(count).m = m;
         states(count).E_MHz = Ee;
         states(count).index = count;
+
     end
 end
+
 end
 
 function Dip = build_dipole_operator(rb, states, polMode)
@@ -814,10 +687,12 @@ for ig = 1:N
 
         amp = dipole_amp_D2(rb.I, rb.Jg, rb.Je, Fg, mg, Fe, me);
 
-        % Dip maps ground -> excited
+        % Dip maps ground -> excited.
         Dip(ie,ig) = epsq * amp;
+
     end
 end
+
 end
 
 function pol = polarization_components(polMode)
@@ -828,6 +703,7 @@ pol.q0 = 0;
 pol.qp = 0;
 
 switch polMode
+
     case 'pi'
         pol.q0 = 1;
 
@@ -846,6 +722,7 @@ switch polMode
     otherwise
         error('Unknown polarization mode: %s', polMode);
 end
+
 end
 
 function epsq = get_pol(pol, qLight)
@@ -859,17 +736,13 @@ elseif qLight == 1
 else
     epsq = 0;
 end
+
 end
 
 function amp = dipole_amp_D2(I, Jg, Je, Fg, mg, Fe, me)
 % Dimensionless dipole matrix element in units of
 %
 %       <Jg=1/2 || er || Je=3/2>.
-%
-% Formula consistent with Steck tables:
-%
-%       <Fg mg | er_q | Fe me>
-%       = <Jg||er||Je> * angular_factor.
 %
 % Selection rule in the 3j symbol uses q = mg - me.
 
@@ -892,6 +765,7 @@ phasePower = round(Fe - 1 + mg);
 phase = (-1)^phasePower;
 
 amp = phase * sqrt((2*Fg+1)*(2*Fe+1)*(2*Jg+1)) * w6 * w3;
+
 end
 
 function Ldiss = build_dissipator(rb, states, Gamma_rad, gamma_g_rad, GammaExtraFWHM_MHz)
@@ -919,12 +793,13 @@ for ee = eList
 
         amp = dipole_amp_D2(rb.I, rb.Jg, rb.Je, Fg, mg, Fe, me);
         weights(kk) = abs(amp)^2;
+
     end
 
     sw = sum(weights);
 
     if sw > 0
-        weights = weights/sw;
+        weights = weights / sw;
     end
 
     for kk = 1:numel(gList)
@@ -939,6 +814,7 @@ for ee = eList
         C(gg,ee) = sqrt(Gamma_rad * weights(kk));
 
         Ldiss = Ldiss + lindblad_superoperator(C);
+
     end
 end
 
@@ -948,7 +824,7 @@ end
 % dark states and mimics transit-time / collisional remixing.
 
 Ng = numel(gList);
-pTarget = ones(Ng,1)/Ng;
+pTarget = ones(Ng,1) / Ng;
 
 if gamma_g_rad > 0
 
@@ -964,6 +840,7 @@ if gamma_g_rad > 0
             C(gj,gi) = sqrt(gamma_g_rad * pTarget(jj));
 
             Ldiss = Ldiss + lindblad_superoperator(C);
+
         end
     end
 end
@@ -975,12 +852,17 @@ end
 gammaOpt_rad = 2*pi*GammaExtraFWHM_MHz;
 
 if gammaOpt_rad > 0
+
     for ee = eList
+
         C = sparse(N,N);
         C(ee,ee) = sqrt(gammaOpt_rad);
+
         Ldiss = Ldiss + lindblad_superoperator(C);
+
     end
 end
+
 end
 
 function L = liouvillian_hamiltonian(H)
@@ -990,6 +872,7 @@ Iden = speye(N);
 
 % vec(H rho - rho H) = (I kron H - H^T kron I) vec(rho)
 L = -1i * (kron(Iden,H) - kron(transpose(H),Iden));
+
 end
 
 function Lc = lindblad_superoperator(C)
@@ -999,8 +882,55 @@ Iden = speye(N);
 CdC = C' * C;
 
 Lc = kron(conj(C), C) ...
-    - 0.5*kron(Iden, CdC) ...
-    - 0.5*kron(transpose(CdC), Iden);
+    - 0.5 * kron(Iden, CdC) ...
+    - 0.5 * kron(transpose(CdC), Iden);
+
+end
+
+function rb = make_rb85(amu, lambda)
+
+rb.name = '85Rb';
+rb.isotope = 85;
+
+rb.I  = 5/2;
+rb.Jg = 1/2;
+rb.Je = 3/2;
+
+rb.Fg = [2 3];
+rb.Fe = [1 2 3 4];
+
+% Hyperfine constants in MHz
+rb.Ag = 1011.9108130;      % 5^2S_{1/2}
+rb.Bg = 0;
+rb.Ae = 25.0354;           % 5^2P_{3/2}
+rb.Be = 25.898;            % 5^2P_{3/2}
+
+rb.mass = 84.911789732 * amu;
+rb.lambda = lambda;
+
+end
+
+function rb = make_rb87(amu, lambda)
+
+rb.name = '87Rb';
+rb.isotope = 87;
+
+rb.I  = 3/2;
+rb.Jg = 1/2;
+rb.Je = 3/2;
+
+rb.Fg = [1 2];
+rb.Fe = [0 1 2 3];
+
+% Hyperfine constants in MHz
+rb.Ag = 3417.341305452145; % 5^2S_{1/2}
+rb.Bg = 0.0;
+rb.Ae = 84.7185;           % 5^2P_{3/2}
+rb.Be = 12.4965;           % 5^2P_{3/2}
+
+rb.mass = 86.909180520 * amu;
+rb.lambda = lambda;
+
 end
 
 function dE = hyperfine_shift_MHz(I,J,A,B,F)
@@ -1015,13 +945,17 @@ function dE = hyperfine_shift_MHz(I,J,A,B,F)
 
 K = F*(F+1) - I*(I+1) - J*(J+1);
 
-dE = 0.5*A*K;
+dE = 0.5 * A * K;
 
 if (I > 0.5) && (J > 0.5) && (B ~= 0)
+
     num = (3/2)*K*(K+1) - 2*I*(I+1)*J*(J+1);
     den = 4*I*(2*I-1)*J*(2*J-1);
-    dE = dE + B*num/den;
+
+    dE = dE + B * num / den;
+
 end
+
 end
 
 function print_transition_centers(rb)
@@ -1038,20 +972,105 @@ for Fg = rb.Fg
 
             Ee = hyperfine_shift_MHz(rb.I, rb.Je, rb.Ae, rb.Be, Fe);
 
-            % Optical transition frequency relative to 85Rb D2 center:
+            % Optical transition frequency relative to 85Rb D2 center.
             nuRel_MHz = rb.isoCenter_MHz + Ee - Eg;
 
-            % Paper axis:
+            % Paper/theory axis:
             %
-            %       Omega = nu_85D2 - nu_L
-            %
+            %       Omega = nu_85D2 - nu_L.
             OmegaCenter_MHz = -nuRel_MHz;
 
             fprintf('%s F=%g -> F''=%g : Omega = %+9.3f MHz\n', ...
                 rb.name, Fg, Fe, OmegaCenter_MHz);
+
         end
     end
 end
+
+end
+
+function diagnose_group_centers(rb)
+
+fprintf('\n--- %s ---\n', rb.name);
+
+for Fg = rb.Fg
+
+    Eg = hyperfine_shift_MHz(rb.I, rb.Jg, rb.Ag, rb.Bg, Fg);
+
+    centers = [];
+    weights = [];
+
+    fprintf('\nGround manifold F=%g\n', Fg);
+
+    for Fe = rb.Fe
+
+        if abs(Fe-Fg) <= 1 && ~(Fe==0 && Fg==0)
+
+            Ee = hyperfine_shift_MHz(rb.I, rb.Je, rb.Ae, rb.Be, Fe);
+
+            % Theory axis: Omega = nu_85D2 - nu_L.
+            center_MHz = -(rb.isoCenter_MHz + Ee - Eg);
+
+            S = relative_strength_steck_D2(rb.isotope, Fg, Fe);
+
+            centers(end+1) = center_MHz; %#ok<AGROW>
+            weights(end+1) = S;          %#ok<AGROW>
+
+            fprintf('  F=%g -> F''=%g : Omega = %+9.3f MHz, S = %.5f\n', ...
+                Fg, Fe, center_MHz, S);
+
+        end
+    end
+
+    cWeighted = sum(weights .* centers) / sum(weights);
+
+    fprintf('  Weighted center for %s F=%g group: %+9.3f MHz = %+7.4f GHz\n', ...
+        rb.name, Fg, cWeighted, cWeighted*1e-3);
+
+end
+
+end
+
+function S = relative_strength_steck_D2(isotope, Fg, Fe)
+% Relative hyperfine transition strengths S_FF' for Rb D2.
+% Values from Steck tables.
+
+S = 0;
+
+if isotope == 85
+
+    if Fg == 2 && Fe == 1
+        S = 3/10;
+    elseif Fg == 2 && Fe == 2
+        S = 7/18;
+    elseif Fg == 2 && Fe == 3
+        S = 14/45;
+    elseif Fg == 3 && Fe == 2
+        S = 5/63;
+    elseif Fg == 3 && Fe == 3
+        S = 5/18;
+    elseif Fg == 3 && Fe == 4
+        S = 9/14;
+    end
+
+elseif isotope == 87
+
+    if Fg == 1 && Fe == 0
+        S = 1/6;
+    elseif Fg == 1 && Fe == 1
+        S = 5/12;
+    elseif Fg == 1 && Fe == 2
+        S = 5/12;
+    elseif Fg == 2 && Fe == 1
+        S = 1/20;
+    elseif Fg == 2 && Fe == 2
+        S = 1/4;
+    elseif Fg == 2 && Fe == 3
+        S = 7/10;
+    end
+
+end
+
 end
 
 %% ============================================================
@@ -1061,7 +1080,7 @@ end
 function val = wigner3j_racah(j1,j2,j3,m1,m2,m3)
 % Wigner 3j symbol using Racah formula.
 
-if abs(m1+m2+m3) > 1e-12
+if abs(m1 + m2 + m3) > 1e-12
     val = 0;
     return;
 end
@@ -1079,11 +1098,11 @@ end
 prefPhase = (-1)^round(j1 - j2 - m3);
 
 tri = gamma(j1+j2-j3+1) * gamma(j1-j2+j3+1) * ...
-    gamma(-j1+j2+j3+1) / gamma(j1+j2+j3+2);
+      gamma(-j1+j2+j3+1) / gamma(j1+j2+j3+2);
 
-norm = gamma(j1+m1+1)*gamma(j1-m1+1) * ...
-    gamma(j2+m2+1)*gamma(j2-m2+1) * ...
-    gamma(j3+m3+1)*gamma(j3-m3+1);
+norm = gamma(j1+m1+1) * gamma(j1-m1+1) * ...
+       gamma(j2+m2+1) * gamma(j2-m2+1) * ...
+       gamma(j3+m3+1) * gamma(j3-m3+1);
 
 pref = prefPhase * sqrt(tri * norm);
 
@@ -1105,22 +1124,26 @@ for z = zmin:zmax
         gamma(j3-j1-m2+z+1);
 
     s = s + (-1)^z / denom;
+
 end
 
 val = pref * s;
+
 end
 
 function val = wigner6j_racah(a,b,c,d,e,f)
 % Wigner 6j symbol using Racah formula.
 
 if ~triangle(a,b,c) || ~triangle(a,e,f) || ...
-        ~triangle(d,b,f) || ~triangle(d,e,c)
+   ~triangle(d,b,f) || ~triangle(d,e,c)
+
     val = 0;
     return;
+
 end
 
 pref = delta_tri(a,b,c) * delta_tri(a,e,f) * ...
-    delta_tri(d,b,f) * delta_tri(d,e,c);
+       delta_tri(d,b,f) * delta_tri(d,e,c);
 
 zmin = max([a+b+c, a+e+f, d+b+f, d+e+c]);
 zmax = min([a+b+d+e, a+c+d+f, b+c+e+f]);
@@ -1141,27 +1164,32 @@ for z = zmin:zmax
         gamma(b+c+e+f-z+1);
 
     s = s + (-1)^z * gamma(z+2) / denom;
+
 end
 
 val = pref * s;
+
 end
 
 function tf = triangle(a,b,c)
 
 tf = (abs(a-b) <= c + 1e-12) && ...
-    (c <= a+b + 1e-12) && ...
-    is_int_like(a+b+c);
+     (c <= a+b + 1e-12) && ...
+     is_int_like(a+b+c);
+
 end
 
 function d = delta_tri(a,b,c)
 
 d = sqrt( gamma(a+b-c+1) * ...
-    gamma(a-b+c+1) * ...
-    gamma(-a+b+c+1) / ...
-    gamma(a+b+c+2) );
+          gamma(a-b+c+1) * ...
+          gamma(-a+b+c+1) / ...
+          gamma(a+b+c+2) );
+
 end
 
 function tf = is_int_like(x)
 
 tf = abs(x - round(x)) < 1e-12;
+
 end
