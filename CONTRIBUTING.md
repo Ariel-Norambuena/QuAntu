@@ -17,7 +17,7 @@ Place group-specific work alongside the corresponding materials:
 - [Experimental](experimental/README.md): reference data, apparatus documentation, and MOT educational resources under `experimental/`.
 - [Theory](theory/README.md): physical models, spectroscopy notebooks, reports, atomic references, and lectures under `theory/`.
 
-Keep shared documentation, validation tools, reference fixtures, numerical evidence, and outreach in the root-level `docs/`, `scripts/`, `tests/`, `validation/`, and `outreach/` directories. Organizing a file by group does not change its author credits or source provenance.
+Keep shared documentation, validation tools, reference fixtures, and numerical evidence in the root-level `docs/`, `scripts/`, `tests/`, and `validation/` directories. Organizing a file by group does not change its author credits or source provenance.
 
 ## Data and results
 

@@ -34,10 +34,10 @@ Dates, titles, and identifiers in this table are transcribed from the report's l
 
 [algorithms/education/qiskit](algorithms/education/qiskit/) preserves an English adaptation of the imported snapshot of [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), attributed to Ariel Norambuena by its README and [CITATION.cff](algorithms/education/qiskit/CITATION.cff). Those notices are preserved. No independent license allowing a collection-wide license to be applied to the workshop was identified in the imported files.
 
-Lecture and outreach presentations preserve the names and credits in their originals, including Ariel Norambuena and Alonso Recabarren. Their inclusion does not authorize relicensing their images, brands, or other external components.
+Lecture presentations preserve the names and credits in their originals, including Ariel Norambuena. Their inclusion does not authorize relicensing their images, brands, or other external components.
 
 The Python and MATLAB libraries needed to run the programs are not redistributed here; their licenses and terms belong to their distributors. Generated MOT animation resources remain alongside their sources and documentation. Interpret the animation's illustrative values using the conventions in its README.
 
 ## Provenance record
 
-[docs/inventory.csv](docs/inventory.csv) connects the 126 source paths with their destinations and hashes; [docs/repository-map.md](docs/repository-map.md) explains copies, exclusions, and the Git snapshot. The 11 meeting materials were removed from the published tree, and their originals remain in the project's working folder. Each material's specific notices and conditions continue to govern its reuse.
+[docs/inventory.csv](docs/inventory.csv) connects the 124 source paths with their destinations and hashes; [docs/repository-map.md](docs/repository-map.md) explains copies, exclusions, and the Git snapshot. The 11 meeting materials and two outreach files were removed from the current tree; their originals remain in the project's working folder. Each remaining material's specific notices and conditions continue to govern its reuse.

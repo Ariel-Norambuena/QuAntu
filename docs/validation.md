@@ -2,13 +2,13 @@
 
 Local date: **November 2, 2026**. The [recorded environment](../validation/environment.json) documents the Python version and dependencies actually used. Local execution used Windows and Python 3.13.12 in a virtual environment sharing existing scientific libraries; this is not an isolated, frozen environment.
 
-Structural update on **November 3, 2026**: the 11 meeting files were removed from the published tree, and the remaining 126-file inventory and local links were checked. This does not change the scientific results recorded the previous day.
+Historical structural update on **November 3, 2026**: the 11 meeting files were removed from the published tree, and the then-current 126-file inventory and local links were checked. A later removal of two outreach files leaves the current inventory at 124 files. These structural changes do not change the recorded scientific results.
 
 ## Executed checks
 
 | Component | Evidence | Result and scope |
 | --- | --- | --- |
-| Inventory, references, and syntax | `python scripts/verify_repository.py` | Integrity of the 126 imported files retained for publication, local paths, LaTeX resources, Python sources, and four notebooks. The 11 meeting materials were removed from the published tree. |
+| Inventory, references, and syntax | `python scripts/verify_repository.py` | Integrity of the current 124 imported files, local paths, LaTeX resources, Python sources, and four notebooks. Meeting and outreach materials are excluded from the current tree. |
 | Voigt explorers | `python scripts/check_science.py` | 36 temperature, linewidth, and isotope combinations; finite, nonnegative, normalized values, interface agreement, and temperature scaling. |
 | Python density matrix | [Tests](../theory/models/density-matrix/test_rb_d2.py), [record](../validation/density-matrix-metrics.json) | Two automated tests covering 32 physical states, decay channels, zero drive, and fast/direct comparison on a common grid. |
 | D2 comparison against MATLAB | [Independent fixture](../tests/fixtures/matlab_density_matrix.json) | MATLAB R2025b Update 6 executed original functions: 16 matrices and eight small spectra. Maximum error in rho: `7.79e-16`; in spectra: `9.97e-18`. |
@@ -53,9 +53,11 @@ Office text, and all MOT captions. Proper names, official logos, original citati
 titles, and historical `original_path` identifiers retain their original spelling.
 The original files outside the checkout are unchanged.
 
-All 51 final slides were rendered. The six slides with visible changes and both
-event-document pages were visually reviewed; the other 45 slides were pixel-identical
-to their source renders. The reference PDFs and report were already in English.
+During that English-edition check, before the later outreach removal, all 51 slides
+were rendered. The six slides with visible changes and both event-document pages
+were visually reviewed; the other 45 slides were pixel-identical to their source
+renders. This historical scope includes the two outreach files no longer in the
+current tree. The reference PDFs and report were already in English.
 The complete 98-second MOT video was regenerated, and review images cover every scene.
 Numerical checks, all three absorption notebooks and all 12 Qiskit code cells passed
 again with unchanged scientific results. The [English-edition record](../validation/english-localization.json)
@@ -64,6 +66,10 @@ the inventory.
 
 ## Group organization checked on November 3, 2026
 
-The collection is organized under `algorithms/`, `experimental/`, and `theory/`, each with its own English README. The inventory places 7 imported files in Algorithms, 64 in Experimental, and 53 in Theory; 2 shared outreach imports remain at the root. Shared validation tools, fixtures, requirements, and evidence remain at the root.
+The collection was organized under `algorithms/`, `experimental/`, and `theory/`, each with its own English README. At that stage, the inventory placed 7 imported files in Algorithms, 64 in Experimental, and 53 in Theory, with 2 shared outreach imports at the root. Those two outreach files were later removed; the current three-group inventory totals 124 files. Shared validation tools, fixtures, requirements, and evidence remain at the root.
 
 After relocation, the full validation command passed again, including all numerical tests, three absorption notebooks, and the Qiskit workshop. Model entry points and GitHub Actions use the new paths. Imported documents, data, notebooks, and media retain their bytes; imported changes are limited to active MATLAB output paths and the Qiskit guide commands. Original source files outside this checkout remain unchanged.
+
+## Current collection after outreach removal
+
+The current tree contains 124 imported files: 7 in Algorithms, 64 in Experimental, and 53 in Theory. The two outreach files were removed without rewriting earlier commits. Their removal does not change model inputs, numerical results, or the dated validation records above.

@@ -18,8 +18,6 @@
   "renamed_paths": {
     "models/interactive/mod_interactivo.py": "theory/models/interactive/interactive_model.py",
     "education/qiskit/Taller_Qiskit_Atomos_Neutros_1h.ipynb": "algorithms/education/qiskit/Neutral_Atom_Qiskit_Workshop_1h.ipynb",
-    "outreach/quantu-stem/Presentación Alonso Recabarren/Presentación Alonso Recabarren.pptx": "outreach/quantu-stem/Alonso Recabarren Presentation/Alonso Recabarren Presentation.pptx",
-    "outreach/quantu-stem/Evento QuAntü-STEM.docx": "outreach/quantu-stem/QuAntu-STEM Event.docx",
     "references/hardware/Thorlabs Celda Rb.pdf": "experimental/references/hardware/Thorlabs_Rb_Cell.pdf"
   },
   "numerical_checks": {
@@ -55,5 +53,6 @@
     "algorithms",
     "experimental",
     "theory"
-  ]
+  ],
+  "historical_scope_note": "Validation counts describe the English edition at the time it was tested; only currently retained paths are listed."
 }

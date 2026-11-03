@@ -18,7 +18,7 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 
-EXPECTED_IMPORTS = 126
+EXPECTED_IMPORTS = 124
 INVENTORY_FIELDS = (
     "original_path", "repository_path", "bytes", "sha256",
     "source_sha256", "modified_for_portability",

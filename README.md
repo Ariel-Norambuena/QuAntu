@@ -46,10 +46,9 @@ docs/          shared scientific and repository documentation
 scripts/       shared reproduction and validation commands
 tests/         shared reference fixtures
 validation/    selected numerical evidence
-outreach/      shared QuAntü-STEM materials
 ```
 
-The [repository map](docs/repository-map.md) details file provenance and group placement. [Shared documentation](docs/), [validation records](validation/), and [outreach materials](outreach/quantu-stem/) remain at the repository root. Group placement organizes the available material and does not imply that an experimental setup or hardware algorithm has been demonstrated.
+The [repository map](docs/repository-map.md) details file provenance and group placement. [Shared documentation](docs/) and [validation records](validation/) remain at the repository root. Group placement organizes the available material and does not imply that an experimental setup or hardware algorithm has been demonstrated.
 
 ## Quick start
 
@@ -104,7 +103,7 @@ The D2 model resolves hyperfine bases with magnetic sublevels: 36 states for ⁸
 
 ## Organization and preservation
 
-The published collection preserves **126 working files** from the original folder (57.38 MiB of inventoried files). The [verifiable inventory](docs/inventory.csv) retains original paths and hashes of the source and incorporated files. The 11 meeting files were removed from the tree and history of the published branch; their originals remain in the working folder. Temporary review files and nested Git metadata are excluded.
+The published collection preserves **124 working files** from the original folder (39.61 MiB of inventoried files). The [verifiable inventory](docs/inventory.csv) retains original paths and hashes of the source and incorporated files. The 11 meeting files were removed from the tree and history of the published branch; their originals remain in the working folder. Temporary review files and nested Git metadata are excluded.
 
 The historical [theoretical-group](theory/archive/theoretical-group/) copy preserves figure variants that differ from the main folder. The [Qiskit workshop](algorithms/education/qiskit/) was incorporated as ordinary files from [neutral-atoms-qiskit-workshop](https://github.com/Ariel-Norambuena/neutral-atoms-qiskit-workshop), retaining its original credits in the English documentation and citation. The [repository map](docs/repository-map.md) explains each collection's origin.
 

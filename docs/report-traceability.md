@@ -40,7 +40,6 @@ These items belong to the working collection, although the report does not estab
 | MOT materials | [experimental/education/mot](../experimental/education/mot/README.md) | Video, generator, equations, and educational previews. |
 | Lectures | [theory/education/lectures](../theory/education/lectures/) | Dynamical-modeling presentation. |
 | Open quantum systems | [Python model](../theory/models/open-quantum-systems/two_level.py) | Standalone two-level implementation; [OQS documentation](open-quantum-systems.md) explains provenance and the new QRT routine. Original meeting materials were removed from the published tree. |
-| STEM outreach | [outreach/quantu-stem](../outreach/quantu-stem/) | Event document and Alonso Recabarren's presentation. |
 | Atomic theory references | [theory/references/rubidium-theory](../theory/references/rubidium-theory/) | Documents about both isotopes. |
 | Cell and materials | [experimental/references/hardware](../experimental/references/hardware/) | Thorlabs cell and Borofloat glass documentation; does not establish setup acquisition or characterization. |
 
@@ -48,6 +47,6 @@ These items belong to the working collection, although the report does not estab
 
 The [inventory](inventory.csv) connects original paths with repository paths and includes sizes and hashes. Portability changes, if any, should be reflected in the corresponding fields. This mapping supports incorporation review without confusing organization with new physical validation.
 
-The 11 meeting materials were removed from the published tree at the project owner's request; their originals remain in the working folder. The inventory retains 126 imported files.
+The 11 meeting materials and two outreach files were removed from the current tree at the project owner's request; their originals remain in the working folder. The inventory retains 124 imported files.
 
 Public access does not assign a collection-wide open license to papers, figures, manufacturer documents, or third-party presentations. Their respective holders' attributions and conditions are preserved.

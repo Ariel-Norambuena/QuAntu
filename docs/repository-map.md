@@ -1,6 +1,6 @@
 # QuAntü collection map
 
-The published collection preserves **126 files** from the working folder. The [inventory](inventory.csv) records each original path, repository path, current size, current SHA256, and source SHA256. The `modified_for_portability` column marks any difference from the imported source, including portability adjustments and English translation. Documentation and organizational tools added to the repository are additional to these 126 files. Historical source paths remain unchanged in the inventory's `original_path` field.
+The published collection preserves **124 files** from the working folder. The [inventory](inventory.csv) records each original path, repository path, current size, current SHA256, and source SHA256. The `modified_for_portability` column marks any difference from the imported source, including portability adjustments and English translation. Documentation and organizational tools added to the repository are additional to these 124 files. Historical source paths remain unchanged in the inventory's `original_path` field.
 
 ## Research groups
 
@@ -9,8 +9,7 @@ The published collection preserves **126 files** from the working folder. The [i
 | Algorithms | Dardo Goyeneche, Director | 7 | [Algorithms README](../algorithms/README.md) |
 | Experimental | Jerónimo Maze, Alternate Director | 64 | [Experimental README](../experimental/README.md) |
 | Theory | Ariel Norambuena, Principal Investigator | 53 | [Theory README](../theory/README.md) |
-| Shared outreach | Existing component credits | 2 | [QuAntü-STEM materials](../outreach/quantu-stem/) |
-| **Total** | | **126** | [Inventory](inventory.csv) |
+| **Total** | | **124** | [Inventory](inventory.csv) |
 
 Group placement organizes the current collection; it does not change component authorship or establish new scientific results. Group READMEs and shared tools are additional files, outside the imported-file counts.
 
@@ -45,7 +44,7 @@ Group placement organizes the current collection; it does not change component a
 
 ### Shared materials and tools
 
-[outreach/quantu-stem](../outreach/quantu-stem/) preserves the two imported event files, including Alonso Recabarren's presentation. The root-level [docs](../docs/), [scripts](../scripts/), [tests](../tests/), and [validation](../validation/) directories support all three groups. Dependency manifests and repository configuration also remain at the root.
+The root-level [docs](../docs/), [scripts](../scripts/), [tests](../tests/), and [validation](../validation/) directories support all three groups. Dependency manifests and repository configuration also remain at the root.
 
 ## Preserved duplicates and versions
 
@@ -61,6 +60,8 @@ The workshop came from a nested Git repository with origin [Ariel-Norambuena/neu
 
 The `meetings/` folder, containing 11 meeting files and historical examples, was removed from the tree and history of the published branch at the project owner's request. The original files remain outside this checkout, in the working folder. The [Python two-level model](../theory/models/open-quantum-systems/) remains a standalone implementation with its tests and documentation.
 
+The `outreach/` folder, containing two event files, was later removed from the current tree. That removal does not rewrite earlier commits. The original source files remain outside this checkout.
+
 The original `tmp/` folder contained 91 rendered images and text extractions used for PDF review, totaling 21,029,968 bytes. It was not imported and was not deleted from the working folder. The nested Git repository's 34 internal files, totaling 47,315 bytes, were also excluded. Scientific figures, the report PDF, review frames, and animation resources are included.
 
 New execution results are stored under `results/` (D2 and checks), `outputs/oqs/` (two-level examples), or an explicit directory; both output roots are excluded from Git. Selected evidence is versioned in `validation/`. Output locations, environments, and caches are excluded through `.gitignore`. Attribution scope and external materials are documented in [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
@@ -73,4 +74,4 @@ From the repository root:
 python scripts/verify_repository.py
 ```
 
-The tool uses only the Python standard library. It checks the 126 records, current sizes and hashes, path uniqueness and safety, LaTeX resources, local Markdown links, Python syntax, and notebook code cells. It does not execute models, recompile the PDF, or fetch external links. `source_sha256` preserves the hash recorded at import; the portable check does not require access to the original folder.
+The tool uses only the Python standard library. It checks the 124 records, current sizes and hashes, path uniqueness and safety, LaTeX resources, local Markdown links, Python syntax, and notebook code cells. It does not execute models, recompile the PDF, or fetch external links. `source_sha256` preserves the hash recorded at import; the portable check does not require access to the original folder.

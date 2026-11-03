@@ -62,3 +62,6 @@ htmlcov/
 
 # Meeting material is excluded from the published collection
 /meetings/
+
+# Removed publication material stays outside the current repository
+/outreach/
